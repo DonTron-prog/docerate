@@ -1,6 +1,6 @@
 site:
   title: "Donald's Blog"
-  description: "Personal blog about technology, programming, and more"
+  description: "Personal blog about technology, programming, and more - Now with CDN!"
   author: "Donald McGillivray"
   url: "https://donaldmcgillivray.com"
   language: "en"
