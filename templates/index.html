@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h1>{{ site.title }}</h1>
+    <p class="hero-subtitle">{{ site.description }}</p>
+</div>
+
+<section class="posts-grid">
+    {% for post in posts %}
+    <article class="post-card">
+        <header class="post-header">
+            <h2 class="post-title">
+                <a href="{{ post.url }}">{{ post.metadata.title }}</a>
+            </h2>
+            <div class="post-meta">
+                <time datetime="{{ post.metadata.date.isoformat() }}">
+                    {{ post.metadata.date.strftime(config.blog.date_format) }}
+                </time>
+                {% if post.metadata.category %}
+                    <span class="category">{{ post.metadata.category }}</span>
+                {% endif %}
+            </div>
+        </header>
+        
+        <div class="post-excerpt">
+            {{ post.metadata.excerpt|safe }}
+        </div>
+        
+        {% if post.metadata.tags %}
+        <div class="post-tags">
+            {% for tag in post.metadata.tags %}
+                <a href="/tags/{{ tag }}.html" class="tag">#{{ tag }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <a href="{{ post.url }}" class="read-more">Read more →</a>
+    </article>
+    {% endfor %}
+</section>
+
+{% if categories %}
+<aside class="sidebar">
+    <section class="widget">
+        <h3>Categories</h3>
+        <ul class="category-list">
+            {% for category, posts in categories.items() %}
+            <li>
+                <a href="/categories/{{ category }}.html">
+                    {{ category }} <span class="count">({{ posts|length }})</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    
+    {% if tags %}
+    <section class="widget">
+        <h3>Popular Tags</h3>
+        <div class="tag-cloud">
+            {% for tag, posts in tags.items() %}
+                <a href="/tags/{{ tag }}.html" class="tag-cloud-item" 
+                   style="font-size: {{ (posts|length * 0.2 + 0.8)|round(1) }}em">
+                    {{ tag }}
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</aside>
+{% endif %}
+{% endblock %}
