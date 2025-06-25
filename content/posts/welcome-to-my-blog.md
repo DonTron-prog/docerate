@@ -1,32 +1,32 @@
 ---
-title: "Welcome to My Blog: A Python-Powered Static Site"
+title: "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site"
 date: 2024-01-15
 tags: [python, web-development, static-site, aws]
 category: announcement
-description: "Introducing my new blog built with a custom Python static site generator, featuring markdown support, code highlighting, and blazing-fast performance."
+description: "Introducing my new site built with a custom static site generator, featuring markdown support, code highlighting, and fast performance."
 image: "blog-hero.jpg"
 ---
 
-Welcome to my new blog! I'm excited to share this custom-built static site generator that powers this blog. Built with Python and hosted on AWS S3, it combines simplicity with powerful features.
+# Welcome
 
-## Why Build a Custom Static Site Generator?
+I'd like to introduce you to this new site, powered by a custom-built static site generator. I developed this platform using Python (the language I know best) and chose to host it on AWS S3, aiming for a balance of simplicity and functionality.
 
-While there are many excellent static site generators available (Jekyll, Hugo, Gatsby), I wanted something that:
+## Why I Built My Own Static Site Generator
 
-1. **Gives me complete control** over the layout and functionality
-2. **Stays minimal and fast** - no JavaScript frameworks required
-3. **Integrates perfectly** with my existing AWS infrastructure
-4. **Supports all the features** I need for technical blogging
+There are many excellent options available however I had specific requirements that led me to create my own solution. I wanted a platform that would:
 
-## Features
+1. Give me complete control over both layout and functionality
+2. Remain minimal and fast without requiring JavaScript frameworks
+3. Integrate seamlessly with my existing AWS infrastructure
+4. Support all the technical blogging features I need
 
-This static site generator includes everything needed for a modern blog:
-
+![System Architecture Diagram](system_arch_diagram.png)
+## Key Features
 ### Markdown Support
 
-Write posts in markdown with full support for:
+I can write in markdown with comprehensive support for:
 
-- **Code blocks** with syntax highlighting
+- Code blocks with syntax highlighting
 - Tables for structured data
 - Images with automatic optimization
 - Task lists for project tracking
@@ -51,7 +51,7 @@ def parse_markdown(content):
 
 ### Table Support
 
-The generator also supports GitHub-flavored markdown tables:
+The system supports GitHub-flavored markdown tables, making it easy to present structured data:
 
 | Feature | Description | Status |
 |---------|-------------|--------|
@@ -85,28 +85,30 @@ pygments==2.17.2        # Syntax highlighting
 pillow==10.2.0          # Image processing
 ```
 
-### Build Process
+### The Build Process
 
-The build process is straightforward:
+My build process follows a straightforward workflow:
 
-1. **Parse markdown files** with YAML frontmatter
-2. **Generate HTML** using Jinja2 templates
-3. **Optimize images** and create thumbnails
-4. **Build search index** as JSON
-5. **Deploy to S3** via GitHub Actions
+1. Parse markdown files with YAML frontmatter
+2. Generate HTML using Jinja2 templates
+3. Optimize images and create thumbnails
+4. Build search index as JSON
+5. Deploy to S3 via GitHub Actions
+![The build process flow](build_process.png)
+### Performance Metrics
 
-### Performance
+The site performs quite well across several key metrics:
 
-The site is blazing fast:
-
-- **Build time**: ~1 second for 100 posts
-- **Page size**: <50KB including CSS
-- **Time to interactive**: <500ms with CDN
-- **Perfect Lighthouse score**: 100/100
+| Metric | Result |
+|--------|--------|
+| Build time | ~1 second for 100 posts |
+| Page size | <50KB including CSS |
+| Time to interactive | <500ms with CDN |
+| Lighthouse score | 100/100 |
 
 ## AWS Infrastructure
 
-The blog runs on a simple but effective AWS setup:
+I've implemented a simple but effective AWS setup:
 
 ```yaml
 Infrastructure:
@@ -116,22 +118,22 @@ Infrastructure:
   Deployment: GitHub Actions CI/CD
 ```
 
-## What's Next?
+## Future Plans
 
-I'm planning to add more features:
+I have several features planned for future development:
 
-1. **RSS feed** for subscribers
-2. **Dark mode** toggle
-3. **Comments** via GitHub discussions
-4. **Analytics** with privacy-friendly tracking
-5. **Newsletter** integration
+1. RSS feed for subscribers
+2. Dark mode toggle
+3. Comments via GitHub discussions
+4. Analytics with privacy-friendly tracking
+5. Newsletter integration
 
-## Get the Code
+## Source Code Availability
 
 The entire static site generator is open source. You can use it for your own blog or as inspiration for building your own tools. Check out the [GitHub repository](#) for installation instructions and documentation.
 
 ---
 
-Thanks for reading! I'm excited to share more technical content, tutorials, and insights on this new platform. Stay tuned for posts about Python, AWS, web development, and more.
+Thanks for reading. I look forward to sharing more technical content, tutorials, and insights on this platform. Stay tuned for posts about Python, AWS, web development, and more.
 
-[^1]: Footnotes are great for adding additional context without cluttering the main text.
+[^1]: I love markdown! I can edit it in any application including mobile, it's simple but has all the formatting I need without bloat, and most importantly I can write and edit using keyboard shortcuts like code.

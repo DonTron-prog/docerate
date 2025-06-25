@@ -55,6 +55,22 @@ class BlogPost:
         self.metadata.setdefault('tags', [])
         self.metadata.setdefault('category', 'uncategorized')
         
+        # Normalize date to datetime object
+        if isinstance(self.metadata['date'], str):
+            # Parse string dates
+            try:
+                self.metadata['date'] = datetime.strptime(self.metadata['date'], '%Y-%m-%d')
+            except ValueError:
+                try:
+                    self.metadata['date'] = datetime.strptime(self.metadata['date'], '%Y-%m-%d %H:%M:%S')
+                except ValueError:
+                    # Use file modification time as fallback
+                    self.metadata['date'] = datetime.fromtimestamp(self.filepath.stat().st_mtime)
+        elif hasattr(self.metadata['date'], 'date'):
+            # Convert date to datetime
+            if not isinstance(self.metadata['date'], datetime):
+                self.metadata['date'] = datetime.combine(self.metadata['date'], datetime.min.time())
+        
         # Generate URL
         date = self.metadata['date']
         self.url = f"/{date.year}/{date.month:02d}/{self.filepath.stem}.html"
@@ -72,6 +88,15 @@ class BlogPost:
             'pymdownx.tasklist',
         ])
         self.html = md.convert(self.content)
+        
+        # Fix image paths to point to /images/ directory
+        import re
+        self.html = re.sub(
+            r'<img([^>]*?)src="([^"]*?\.(?:jpg|jpeg|png|gif|webp))"([^>]*?)>',
+            r'<img\1src="/images/\2"\3>',
+            self.html,
+            flags=re.IGNORECASE
+        )
         
         # Extract excerpt
         excerpt_length = self.config['blog']['excerpt_length']
