@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Archive - {{ site.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Archive</h1>
+    <p>All posts in chronological order</p>
+    
+    {% set current_year = None %}
+    {% for post in posts %}
+        {% set post_year = post.metadata.date.year %}
+        {% if post_year != current_year %}
+            {% if current_year is not none %}
+                </ul>
+            {% endif %}
+            <h2>{{ post_year }}</h2>
+            <ul class="archive-list">
+            {% set current_year = post_year %}
+        {% endif %}
+        
+        <li>
+            <span class="date">{{ post.metadata.date.strftime('%b %d') }}</span> - 
+            <a href="{{ post.url }}">{{ post.metadata.title }}</a>
+            {% if post.metadata.tags %}
+                <span class="tags">
+                    {% for tag in post.metadata.tags %}
+                        <a href="/tags/{{ tag }}.html" class="tag">{{ tag }}</a>
+                    {% endfor %}
+                </span>
+            {% endif %}
+        </li>
+    {% endfor %}
+    {% if posts %}
+        </ul>
+    {% endif %}
+</div>
+
+<style>
+.archive-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.archive-list li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.archive-list .date {
+    color: var(--muted-color);
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.archive-list .tags {
+    margin-left: 0.5rem;
+}
+
+.archive-list .tag {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    margin-left: 0.25rem;
+    background-color: var(--tag-bg);
+    color: var(--tag-color);
+    text-decoration: none;
+    font-size: 0.85em;
+    border-radius: 3px;
+}
+
+.archive-list .tag:hover {
+    background-color: var(--tag-hover-bg);
+}
+
+h2 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+</style>
+{% endblock %}

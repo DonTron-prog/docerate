@@ -114,6 +114,7 @@ python orchestration_agent/orchestrator.py
 ```
 
 ![orchestrator](sre_orchestrator_agent.png)
+
 *Orchestrator Agent architecture that intelligently routes alerts through specialized tools - using Calulator, Web-Search, RAG Search for knowledge base queries against documents and incident history, and Deep Research for complex web-based investigations - before generating comprehensive resolutions through an iterative decision-making process.*
 
 It follows a simple yet powerful pattern: analyze, decide, and route.
@@ -271,6 +272,3 @@ I'd love to hear your thoughts, comment or DM.
 **Donald McGillivray**
 
 **mcgillivray.d@gmail.com**
-
----
-# Reference

@@ -220,6 +220,34 @@ class StaticSiteGenerator:
                 config=self.config
             )
             (tags_dir / f'{tag}.html').write_text(html, encoding='utf-8')
+        
+        # Generate tags index page
+        tags_index_template = self.env.get_template('tags_index.html')
+        tags_index_html = tags_index_template.render(
+            tags=self.tags,
+            site=self.config['site'],
+            config=self.config
+        )
+        (tags_dir / 'index.html').write_text(tags_index_html, encoding='utf-8')
+    
+    def generate_archive_page(self):
+        template = self.env.get_template('archive.html')
+        html = template.render(
+            posts=self.posts,
+            site=self.config['site'],
+            config=self.config
+        )
+        archive_dir = self.output_dir / 'archive'
+        archive_dir.mkdir(exist_ok=True)
+        (archive_dir / 'index.html').write_text(html, encoding='utf-8')
+    
+    def generate_404_page(self):
+        template = self.env.get_template('404.html')
+        html = template.render(
+            site=self.config['site'],
+            config=self.config
+        )
+        (self.output_dir / '404.html').write_text(html, encoding='utf-8')
     
     def generate_search_index(self):
         if not self.config['features']['search']:
@@ -264,6 +292,8 @@ class StaticSiteGenerator:
         
         self.generate_index()
         self.generate_tag_pages()
+        self.generate_archive_page()
+        self.generate_404_page()
         self.generate_search_index()
         
         print(f"\nBuild complete! {len(self.posts)} posts generated.")
@@ -274,6 +304,24 @@ class StaticSiteGenerator:
         class Handler(http.server.SimpleHTTPRequestHandler):
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, directory='.', **kwargs)
+            
+            def do_GET(self):
+                # Try to serve the file normally
+                if os.path.exists(self.translate_path(self.path)):
+                    super().do_GET()
+                else:
+                    # Serve custom 404 page
+                    self.send_error(404)
+            
+            def send_error(self, code, message=None):
+                if code == 404 and os.path.exists('404.html'):
+                    self.send_response(404)
+                    self.send_header('Content-Type', 'text/html')
+                    self.end_headers()
+                    with open('404.html', 'rb') as f:
+                        self.wfile.write(f.read())
+                else:
+                    super().send_error(code, message)
         
         with socketserver.TCPServer(("", port), Handler) as httpd:
             print(f"Serving at http://localhost:{port}")
