@@ -7,7 +7,8 @@ description: "A multi-agent investment research system built with Pydantic-AI th
 image: 
 ---
 
-**[Try the Investment Research Agent on Hugging Face](https://huggingface.co/spaces/DonTron/investment-research)**
+- **[Try the Investment Research Agent on Hugging Face](https://huggingface.co/spaces/DonTron/investment-research)**
+- **[See implementation on Github](https://github.com/DonTron-prog/vector-chain.git)**
 
 # Pydantic-AI Investment Research System
 
