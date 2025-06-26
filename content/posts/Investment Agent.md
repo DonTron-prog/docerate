@@ -7,6 +7,8 @@ description: "A multi-agent investment research system built with Pydantic-AI th
 image: 
 ---
 
+**[Try the Investment Research Agent on Hugging Face](https://huggingface.co/spaces/DonTron/investment-research)**
+
 # Pydantic-AI Investment Research System
 
 This document details a multi-agent investment research system designed to autonomously gather and analyze financial data. The system performs comprehensive financial analysis and generates actionable investment insights. Its adaptive architecture, featuring dynamic plan adjustment and intelligent memory management, allows it to evolve its research strategy based on real-time findings.
