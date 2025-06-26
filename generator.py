@@ -102,6 +102,40 @@ class BlogPost:
         excerpt_length = self.config['blog']['excerpt_length']
         text_only = ' '.join(self.html.split()[:excerpt_length])
         self.metadata['excerpt'] = text_only.split('</p>')[0] + '</p>'
+        
+        # Extract first image from markdown content
+        self.extract_first_image()
+    
+    def extract_first_image(self):
+        """Extract the first image from frontmatter or markdown content"""
+        import re
+        
+        # First check if image is specified in frontmatter
+        if 'image' in self.metadata and self.metadata['image']:
+            image_filename = self.metadata['image']
+            # Clean up the image filename (remove any path)
+            image_filename = image_filename.split('/')[-1]
+            # Generate thumbnail filename
+            name, ext = image_filename.rsplit('.', 1)
+            self.metadata['first_image'] = image_filename
+            self.metadata['first_image_thumb'] = f"{name}_thumb.{ext}"
+            return
+        
+        # If not in frontmatter, look for markdown image syntax: ![alt](image.jpg)
+        image_pattern = r'!\[.*?\]\(([^)]+\.(?:jpg|jpeg|png|gif|webp))\)'
+        match = re.search(image_pattern, self.content, re.IGNORECASE)
+        
+        if match:
+            image_filename = match.group(1)
+            # Clean up the image filename (remove any path)
+            image_filename = image_filename.split('/')[-1]
+            # Generate thumbnail filename
+            name, ext = image_filename.rsplit('.', 1)
+            self.metadata['first_image'] = image_filename
+            self.metadata['first_image_thumb'] = f"{name}_thumb.{ext}"
+        else:
+            self.metadata['first_image'] = None
+            self.metadata['first_image_thumb'] = None
 
 
 class StaticSiteGenerator:

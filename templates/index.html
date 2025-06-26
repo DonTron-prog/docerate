@@ -9,33 +9,45 @@
 <section class="posts-grid">
     {% for post in posts %}
     <article class="post-card">
-        <header class="post-header">
-            <h2 class="post-title">
-                <a href="{{ post.url }}">{{ post.metadata.title }}</a>
-            </h2>
-            <div class="post-meta">
-                <time datetime="{{ post.metadata.date.isoformat() }}">
-                    {{ post.metadata.date.strftime(config.blog.date_format) }}
-                </time>
-                {% if post.metadata.category %}
-                    <span class="category">{{ post.metadata.category }}</span>
-                {% endif %}
+        <div class="post-card-content">
+            {% if post.metadata.first_image_thumb %}
+            <div class="post-thumbnail">
+                <a href="{{ post.url }}">
+                    <img src="/images/{{ post.metadata.first_image_thumb }}" alt="{{ post.metadata.title }}" loading="lazy">
+                </a>
             </div>
-        </header>
-        
-        <div class="post-excerpt">
-            {{ post.metadata.description|safe }}
+            {% endif %}
+            
+            <div class="post-info">
+                <header class="post-header">
+                    <h2 class="post-title">
+                        <a href="{{ post.url }}">{{ post.metadata.title }}</a>
+                    </h2>
+                    <div class="post-meta">
+                        <time datetime="{{ post.metadata.date.isoformat() }}">
+                            {{ post.metadata.date.strftime(config.blog.date_format) }}
+                        </time>
+                        {% if post.metadata.category %}
+                            <span class="category">{{ post.metadata.category }}</span>
+                        {% endif %}
+                    </div>
+                </header>
+                
+                <div class="post-excerpt">
+                    {{ post.metadata.description|safe }}
+                </div>
+                
+                {% if post.metadata.tags %}
+                <div class="post-tags">
+                    {% for tag in post.metadata.tags %}
+                        <a href="/tags/{{ tag }}.html" class="tag">#{{ tag }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <a href="{{ post.url }}" class="read-more">Read more →</a>
+            </div>
         </div>
-        
-        {% if post.metadata.tags %}
-        <div class="post-tags">
-            {% for tag in post.metadata.tags %}
-                <a href="/tags/{{ tag }}.html" class="tag">#{{ tag }}</a>
-            {% endfor %}
-        </div>
-        {% endif %}
-        
-        <a href="{{ post.url }}" class="read-more">Read more →</a>
     </article>
     {% endfor %}
 </section>

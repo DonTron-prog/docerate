@@ -160,6 +160,36 @@ a:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.post-card-content {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.post-thumbnail {
+    flex-shrink: 0;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.post-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.post-thumbnail:hover img {
+    transform: scale(1.05);
+}
+
+.post-info {
+    flex: 1;
+    min-width: 0;
+}
+
 .post-header h2 {
     margin-top: 0;
     margin-bottom: 0.5rem;

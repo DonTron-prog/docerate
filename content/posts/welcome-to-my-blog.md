@@ -4,7 +4,7 @@ date: 2024-01-15
 tags: [python, web-development, static-site, aws]
 category: announcement
 description: "Introducing my new site built with a custom static site generator, featuring markdown support, code highlighting, and fast performance."
-image: "blog-hero.jpg"
+image: "blog-hero.png"
 ---
 
 # Welcome
