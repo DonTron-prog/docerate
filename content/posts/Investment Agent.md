@@ -1,13 +1,15 @@
 ---
 title: "Investment Research Workflow"
 date: 2025-06-24 
-tags: [agents] 
+tags: ["AI", "Agents", "Investment", "Financial Analysis", "Pydantic-AI", "Multi-Agent", "Research", "Automation", "Finance"]
 category: Technology
-description: 
+description: "A multi-agent investment research system built with Pydantic-AI that autonomously gathers data, performs financial analysis, and generates actionable investment insights."
 image: 
 ---
 
 # Pydantic-AI Investment Research System
+
+This document details a multi-agent investment research system designed to autonomously gather and analyze financial data. The system performs comprehensive financial analysis and generates actionable investment insights. Its adaptive architecture, featuring dynamic plan adjustment and intelligent memory management, allows it to evolve its research strategy based on real-time findings.
 
 ## Overview
 
