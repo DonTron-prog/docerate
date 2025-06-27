@@ -301,6 +301,16 @@ class StaticSiteGenerator:
             json.dumps(search_data), encoding='utf-8'
         )
     
+    def generate_about_page(self):
+        template = self.env.get_template('about.html')
+        html = template.render(
+            site=self.config['site'],
+            config=self.config
+        )
+        about_dir = self.output_dir / 'about'
+        about_dir.mkdir(exist_ok=True)
+        (about_dir / 'index.html').write_text(html, encoding='utf-8')
+    
     def generate_css(self):
         # Generate Pygments CSS for syntax highlighting
         if self.config['features']['syntax_highlighting']:
@@ -327,6 +337,7 @@ class StaticSiteGenerator:
         self.generate_index()
         self.generate_tag_pages()
         self.generate_archive_page()
+        self.generate_about_page()
         self.generate_404_page()
         self.generate_search_index()
         

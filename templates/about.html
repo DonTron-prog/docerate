@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block title %}About - {{ site.title }}{% endblock %}
+{% block description %}Donald McGillivray - Lead Applied AI Developer{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/about.css">
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <!-- Hero Section -->
+    <div class="about-hero">
+        <h1 class="about-name">Donald McGillivray</h1>
+        <p class="about-title">Lead Applied AI Developer</p>
+        <div class="contact-info">
+            <a href="mailto:mcgillivray.d@gmail.com" class="contact-link">
+                <span class="contact-icon">✉️</span> mcgillivray.d@gmail.com
+            </a>
+            <a href="https://linkedin.com/in/donald-mcgillivray" target="_blank" class="contact-link">
+                <span class="contact-icon">💼</span> LinkedIn
+            </a>
+            <span class="contact-link">
+                <span class="contact-icon">📍</span> Guelph, Ontario
+            </span>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">6+</div>
+            <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">9</div>
+            <div class="stat-label">Publications</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">PhD</div>
+            <div class="stat-label">Chemistry</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">99%</div>
+            <div class="stat-label">OCR Accuracy</div>
+        </div>
+    </div>
+
+    <!-- Resume Sections Grid -->
+    <div class="resume-grid">
+        <!-- Skills Summary -->
+        <div class="resume-tile" data-section="skills">
+            <div class="tile-header">
+                <span class="tile-icon">🎯</span>
+                <h2>Skills Summary</h2>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="tile-summary">
+                <p>Innovative ML Engineer with expertise in LLMs, production systems, and full-stack ML infrastructure</p>
+            </div>
+            <div class="tile-content">
+                <p class="skills-intro">Innovative Machine Learning Engineer with 6+ years of experience designing, developing, and deploying production ML systems that deliver measurable business impact. Expert in LLM fine-tuning, model evaluation, and streaming feature pipelines.</p>
+                
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Core Technical</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Machine Learning & AI</span>
+                            <span class="skill-tag">Statistics</span>
+                            <span class="skill-tag">Analytics</span>
+                            <span class="skill-tag">Optimization</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Specialized</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Quantum Computing</span>
+                            <span class="skill-tag">Material Science</span>
+                            <span class="skill-tag">Chemistry</span>
+                            <span class="skill-tag">Problem Solving</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Work Experience -->
+        <div class="resume-tile" data-section="experience">
+            <div class="tile-header">
+                <span class="tile-icon">💼</span>
+                <h2>Work Experience</h2>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="tile-summary">
+                <p>Lead Applied AI Researcher at Goodlabs Studio • Doctoral Researcher at UWaterloo</p>
+            </div>
+            <div class="tile-content">
+                <div class="job-item">
+                    <h3>Lead Applied AI Researcher and Developer</h3>
+                    <p class="job-meta">Goodlabs Studio • 2021 - Present</p>
+                    <ul class="job-highlights">
+                        <li>Engineering agentic platform automating real-time data solutions with Kafka Streams</li>
+                        <li>Led LLM-powered applications from ideation to production with synthetic data generation</li>
+                        <li>Built OCR/KIE pipeline achieving 99% accuracy using Faster-RCNN and multimodal models</li>
+                        <li>Implemented comprehensive model evaluation frameworks for continuous monitoring</li>
+                        <li>Engineered streaming pipelines for real-time speech recognition with Kafka and Flink</li>
+                        <li>Developed NLP models (BERT, FLAN-T5) for medical information extraction (92.7% accuracy)</li>
+                        <li>Applied quantum computing to optimize RTGS systems, increasing liquidity usage by 10%</li>
+                    </ul>
+                </div>
+                
+                <div class="job-item">
+                    <h3>Doctoral Researcher/Technician</h3>
+                    <p class="job-meta">University of Waterloo • 2013 - 2019</p>
+                    <ul class="job-highlights">
+                        <li>Led research on conducting polymers for optoelectronic applications</li>
+                        <li>Maintained multi-million-dollar scientific instruments</li>
+                        <li>Developed computational models for polymer/semiconductor junctions</li>
+                        <li>Published six peer-reviewed papers and presented at international conferences</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education -->
+        <div class="resume-tile" data-section="education">
+            <div class="tile-header">
+                <span class="tile-icon">🎓</span>
+                <h2>Education</h2>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="tile-summary">
+                <p>PhD Chemistry • MSc Material Science • BSc Physics • Big Data Architecture</p>
+            </div>
+            <div class="tile-content">
+                <div class="education-item">
+                    <h3>PhD Chemistry</h3>
+                    <p class="edu-meta">University of Waterloo • 2013–2019</p>
+                    <p class="thesis"><strong>Thesis:</strong> Enhanced Conducting Polymer PEDOT:PSS/Silicon Photo Sensors: Optimisation of Thin-Film Properties and Heterojunction Interactions</p>
+                </div>
+                
+                <div class="education-item">
+                    <h3>Masters in Science: Material Science</h3>
+                    <p class="edu-meta">Ontario Tech University • 2011–2013</p>
+                    <p class="thesis"><strong>Thesis:</strong> Synthesis and Characterization of Nanostructured Catalyst for Photovoltaic Applications</p>
+                </div>
+                
+                <div class="education-item">
+                    <h3>Bachelor of Science: Physics, minor Math</h3>
+                    <p class="edu-meta">Ontario Tech University • 2007–2011</p>
+                    <p class="thesis"><strong>Thesis:</strong> Synthesis and Functionalization of Carbon Nanotubes for Purpose of Application in a Photovoltaic Device</p>
+                </div>
+                
+                <div class="education-item">
+                    <h3>College Graduate Certificate: Big Data Solutions Architecture</h3>
+                    <p class="edu-meta">Conestoga College • 2020–2021</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Skills -->
+        <div class="resume-tile" data-section="technical">
+            <div class="tile-header">
+                <span class="tile-icon">⚡</span>
+                <h2>Technical Proficiencies</h2>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="tile-summary">
+                <p>Python, PyTorch, Cloud Platforms, ML Frameworks, NLP & Computer Vision</p>
+            </div>
+            <div class="tile-content">
+                <div class="tech-category">
+                    <h4>Languages & Tools</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">SQL</span>
+                        <span class="tech-tag">R</span>
+                        <span class="tech-tag">Matlab</span>
+                        <span class="tech-tag">Bash</span>
+                        <span class="tech-tag">Git</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">DVC</span>
+                    </div>
+                </div>
+                
+                <div class="tech-category">
+                    <h4>ML & AI Frameworks</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">PyTorch</span>
+                        <span class="tech-tag">DSPy</span>
+                        <span class="tech-tag">LangChain</span>
+                        <span class="tech-tag">Hugging Face</span>
+                        <span class="tech-tag">LoRA</span>
+                        <span class="tech-tag">Atomic-Agents</span>
+                        <span class="tech-tag">Scikit-learn</span>
+                    </div>
+                </div>
+                
+                <div class="tech-category">
+                    <h4>Specializations</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">NLP & LLMs</span>
+                        <span class="tech-tag">Computer Vision</span>
+                        <span class="tech-tag">OCR & KIE</span>
+                        <span class="tech-tag">Fine-tuning</span>
+                        <span class="tech-tag">RAG</span>
+                        <span class="tech-tag">Multimodal Learning</span>
+                    </div>
+                </div>
+                
+                <div class="tech-category">
+                    <h4>Data & Cloud</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Databricks</span>
+                        <span class="tech-tag">Azure</span>
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">Confluent</span>
+                        <span class="tech-tag">Flink</span>
+                        <span class="tech-tag">Hadoop</span>
+                        <span class="tech-tag">ETL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Publications -->
+        <div class="resume-tile" data-section="publications">
+            <div class="tile-header">
+                <span class="tile-icon">📚</span>
+                <h2>Publications</h2>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="tile-summary">
+                <p>9 peer-reviewed papers in ML, quantum computing, and materials science</p>
+            </div>
+            <div class="tile-content">
+                <ol class="publication-list">
+                    <li>
+                        <strong>Improving the Efficiency of Payments Systems Using Quantum Computing.</strong><br>
+                        C. McMahon, D. McGillivray, et al. <em>Management Science</em> (2024)
+                    </li>
+                    <li>
+                        <strong>Leveraging Mobile NER for Real-time Capture of Symptoms, Diagnoses, and Treatments from Clinical Dialogues.</strong><br>
+                        R. Rhouma, C. McMahon, D. McGillivray, et al. <em>Artificial Intelligence in Medicine</em> (2024)
+                    </li>
+                    <li>
+                        <strong>Highly Conducting Hybrid Silver Nanowire-Embedded PEDOT:PSS for High-Efficiency Planar-Silicon/Organic Heterojunction Solar Cells.</strong><br>
+                        J.P. Thomas, et al. <em>ACS Nano</em> 12 (2018)
+                    </li>
+                    <li>
+                        <strong>Performance Enhancement by Secondary Doping in PEDOT:PSS/Planar-Si Hybrid Solar Cells.</strong><br>
+                        McGillivray, D., et al. <em>ACS Appl. Mater. Interfaces</em> (2016)
+                    </li>
+                    <li>
+                        <strong>Defect-Rich Dopant-Free ZrO2 Nanostructures with Superior Dilute Ferromagnetic Semiconductor Properties.</strong><br>
+                        Rahman, A., et al. <em>J. Am. Chem. Soc.</em> (2016)
+                    </li>
+                </ol>
+                <p class="more-link"><a href="#" onclick="event.preventDefault(); alert('Full publication list would link to a dedicated page')">View all 9 publications →</a></p>
+            </div>
+        </div>
+
+        <!-- Other Activities -->
+        <div class="resume-tile" data-section="other">
+            <div class="tile-header">
+                <span class="tile-icon">🌟</span>
+                <h2>Leadership & Service</h2>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="tile-summary">
+                <p>Teaching, volunteer work, and industry contributions</p>
+            </div>
+            <div class="tile-content">
+                <div class="activity-section">
+                    <h4>Teaching Experience</h4>
+                    <ul>
+                        <li>Physical Chemistry tutorials (2017-2018) - University of Waterloo</li>
+                        <li>Computational Chemistry and molecular simulations (2013-2018) - University of Waterloo</li>
+                        <li>Physics I and II tutorials (2011-2013) - Ontario Tech University</li>
+                    </ul>
+                </div>
+                
+                <div class="activity-section">
+                    <h4>Volunteer & Leadership</h4>
+                    <ul>
+                        <li><strong>GCAT Board of Directors</strong> (2025-Present) - Guelph Coalition of Active Transportation</li>
+                        <li><strong>NACHA Quantum Working Group</strong> (2023-Present) - Educational materials for quantum computing in payments</li>
+                        <li><strong>Immigration Services Guelph Wellington</strong> (2020-2024) - English conversation circles for newcomers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/about.js"></script>
+{% endblock %}
