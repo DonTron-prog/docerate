@@ -7,7 +7,8 @@ import shutil
 import argparse
 import http.server
 import socketserver
-from datetime import datetime
+import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Any
 
@@ -188,6 +189,16 @@ class StaticSiteGenerator:
     def copy_static(self):
         if self.static_dir.exists():
             shutil.copytree(self.static_dir, self.output_dir / 'static', dirs_exist_ok=True)
+
+            # Copy robots.txt and llms.txt to root
+            robots_src = self.static_dir / 'robots.txt'
+            llms_src = self.static_dir / 'llms.txt'
+
+            if robots_src.exists():
+                shutil.copy2(robots_src, self.output_dir / 'robots.txt')
+
+            if llms_src.exists():
+                shutil.copy2(llms_src, self.output_dir / 'llms.txt')
     
     def copy_images(self):
         images_dir = self.content_dir / 'images'
@@ -286,7 +297,7 @@ class StaticSiteGenerator:
     def generate_search_index(self):
         if not self.config['features']['search']:
             return
-        
+
         search_data = []
         for post in self.posts:
             search_data.append({
@@ -296,10 +307,184 @@ class StaticSiteGenerator:
                 'tags': post.metadata.get('tags', []),
                 'date': post.metadata['date'].isoformat()
             })
-        
+
         (self.output_dir / 'search.json').write_text(
             json.dumps(search_data), encoding='utf-8'
         )
+
+    def generate_sitemap(self):
+        """Generate XML sitemap for search engines and AI crawlers"""
+        urlset = ET.Element('urlset', xmlns='http://www.sitemaps.org/schemas/sitemap/0.9')
+
+        # Add homepage
+        url = ET.SubElement(urlset, 'url')
+        ET.SubElement(url, 'loc').text = self.config['site']['url'] + '/'
+        ET.SubElement(url, 'changefreq').text = 'weekly'
+        ET.SubElement(url, 'priority').text = '1.0'
+
+        # Add static pages
+        static_pages = ['/about/', '/archive/', '/tags/']
+        for page in static_pages:
+            url = ET.SubElement(urlset, 'url')
+            ET.SubElement(url, 'loc').text = self.config['site']['url'] + page
+            ET.SubElement(url, 'changefreq').text = 'monthly'
+            ET.SubElement(url, 'priority').text = '0.8'
+
+        # Add blog posts
+        for post in self.posts:
+            url = ET.SubElement(urlset, 'url')
+            ET.SubElement(url, 'loc').text = self.config['site']['url'] + post.url
+            ET.SubElement(url, 'lastmod').text = post.metadata['date'].strftime('%Y-%m-%d')
+            ET.SubElement(url, 'changefreq').text = 'monthly'
+            ET.SubElement(url, 'priority').text = '0.7'
+
+        # Add tag pages
+        for tag in self.tags:
+            url = ET.SubElement(urlset, 'url')
+            ET.SubElement(url, 'loc').text = f"{self.config['site']['url']}/tags/{tag}.html"
+            ET.SubElement(url, 'changefreq').text = 'weekly'
+            ET.SubElement(url, 'priority').text = '0.5'
+
+        # Write sitemap
+        tree = ET.ElementTree(urlset)
+        ET.indent(tree, space='  ')
+        sitemap_path = self.output_dir / 'sitemap.xml'
+        tree.write(sitemap_path, encoding='utf-8', xml_declaration=True)
+        print(f"  Generated sitemap.xml with {len(self.posts)} posts")
+
+    def generate_llms_txt(self):
+        """Generate dynamic llms.txt file for AI agents"""
+        content = []
+        content.append("# " + self.config['site']['title'])
+        content.append("")
+        content.append("> " + self.config['site']['description'])
+        content.append("")
+        content.append("## About This Site")
+        content.append("")
+        content.append(f"This blog explores the intersection of artificial intelligence, software engineering, and system reliability. Content focuses on practical implementations, research insights, and technical deep-dives into emerging technologies.")
+        content.append("")
+        content.append(f"**Author**: {self.config['site']['author']}")
+        content.append(f"**URL**: {self.config['site']['url']}")
+        content.append(f"**Last Updated**: {datetime.now().strftime('%Y-%m-%d')}")
+        content.append(f"**Total Posts**: {len(self.posts)}")
+        content.append("")
+        content.append("## Recent Content")
+        content.append("")
+
+        # Add recent posts
+        for post in self.posts[:10]:
+            content.append(f"### {post.metadata['title']}")
+            content.append(f"*Published: {post.metadata['date'].strftime('%Y-%m-%d')}*")
+            if post.metadata.get('description'):
+                content.append(post.metadata['description'])
+            content.append(f"URL: {self.config['site']['url']}{post.url}")
+            if post.metadata.get('tags'):
+                content.append(f"Tags: {', '.join(post.metadata['tags'])}")
+            content.append("")
+
+        content.append("## Content Categories")
+        content.append("")
+
+        # Group posts by category
+        categories_dict = {}
+        for post in self.posts:
+            cat = post.metadata.get('category', 'uncategorized')
+            if cat not in categories_dict:
+                categories_dict[cat] = []
+            categories_dict[cat].append(post.metadata['title'])
+
+        for category, titles in categories_dict.items():
+            content.append(f"### {category.title()}")
+            for title in titles[:5]:  # Limit to 5 posts per category
+                content.append(f"- {title}")
+            if len(titles) > 5:
+                content.append(f"- ...and {len(titles) - 5} more")
+            content.append("")
+
+        content.append("## API and Feeds")
+        content.append("")
+        content.append("- **RSS Feed**: `/rss.xml`")
+        content.append("- **Sitemap**: `/sitemap.xml`")
+        content.append("- **Search Index**: `/search.json`")
+        content.append("- **robots.txt**: `/robots.txt`")
+        content.append("")
+        content.append("## Technical Implementation")
+        content.append("")
+        content.append("- **Static Site Generator**: Custom Python-based SSG with Markdown support")
+        content.append("- **Hosting**: AWS S3 + CloudFront CDN")
+        content.append("- **Search**: Client-side JSON index with full-text search")
+        content.append("- **Schema Markup**: JSON-LD structured data for all content")
+        content.append("- **AI Optimization**: Schema.org markup, semantic HTML, OpenGraph tags")
+        content.append("")
+        content.append("## Usage Guidelines")
+        content.append("")
+        content.append("When referencing content from this site:")
+        content.append("1. Articles contain technical implementations with code examples")
+        content.append("2. Focus on practical applications and real-world use cases")
+        content.append("3. Content includes both theoretical background and hands-on tutorials")
+        content.append("4. Code snippets are production-ready and tested")
+        content.append("5. Please provide attribution when citing or adapting content")
+        content.append("")
+        content.append("---")
+        content.append(f"*Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*")
+
+        # Write llms.txt
+        llms_path = self.output_dir / 'llms.txt'
+        llms_path.write_text('\n'.join(content), encoding='utf-8')
+        print(f"  Generated llms.txt with {len(self.posts)} posts indexed")
+
+    def generate_rss(self):
+        """Generate RSS feed with structured data"""
+        rss = ET.Element('rss', version='2.0',
+                        attrib={'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
+                               'xmlns:atom': 'http://www.w3.org/2005/Atom'})
+        channel = ET.SubElement(rss, 'channel')
+
+        # Channel metadata
+        ET.SubElement(channel, 'title').text = self.config['site']['title']
+        ET.SubElement(channel, 'link').text = self.config['site']['url']
+        ET.SubElement(channel, 'description').text = self.config['site']['description']
+        ET.SubElement(channel, 'language').text = self.config['site']['language']
+        ET.SubElement(channel, 'lastBuildDate').text = datetime.now(timezone.utc).strftime('%a, %d %b %Y %H:%M:%S %z')
+
+        # Atom link
+        atom_link = ET.SubElement(channel, '{http://www.w3.org/2005/Atom}link')
+        atom_link.set('href', f"{self.config['site']['url']}/rss.xml")
+        atom_link.set('rel', 'self')
+        atom_link.set('type', 'application/rss+xml')
+
+        # Add posts (limit to 20 most recent)
+        for post in self.posts[:20]:
+            item = ET.SubElement(channel, 'item')
+            ET.SubElement(item, 'title').text = post.metadata['title']
+            ET.SubElement(item, 'link').text = self.config['site']['url'] + post.url
+            ET.SubElement(item, 'guid', isPermaLink='true').text = self.config['site']['url'] + post.url
+
+            # Add description
+            description = post.metadata.get('description', '')
+            if not description:
+                # Generate excerpt from content
+                description = ' '.join(post.content.split()[:30]) + '...'
+            ET.SubElement(item, 'description').text = description
+
+            # Add full content
+            content_encoded = ET.SubElement(item, '{http://purl.org/rss/1.0/modules/content/}encoded')
+            content_encoded.text = post.html
+
+            # Add metadata
+            ET.SubElement(item, 'pubDate').text = post.metadata['date'].strftime('%a, %d %b %Y %H:%M:%S %z')
+            ET.SubElement(item, 'author').text = self.config['site']['author']
+
+            # Add categories/tags
+            for tag in post.metadata.get('tags', []):
+                ET.SubElement(item, 'category').text = tag
+
+        # Write RSS feed
+        tree = ET.ElementTree(rss)
+        ET.indent(tree, space='  ')
+        rss_path = self.output_dir / 'rss.xml'
+        tree.write(rss_path, encoding='utf-8', xml_declaration=True)
+        print(f"  Generated rss.xml with {min(20, len(self.posts))} posts")
     
     def generate_about_page(self):
         template = self.env.get_template('about.html')
@@ -340,7 +525,10 @@ class StaticSiteGenerator:
         self.generate_about_page()
         self.generate_404_page()
         self.generate_search_index()
-        
+        self.generate_sitemap()
+        self.generate_rss()
+        self.generate_llms_txt()
+
         print(f"\nBuild complete! {len(self.posts)} posts generated.")
     
     def serve(self, port=8000):
@@ -433,6 +621,7 @@ date: {date.strftime('%Y-%m-%d')}
 tags: []
 category: general
 description: ""
+image: ""
 ---
 
 # {title}

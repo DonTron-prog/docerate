@@ -1,7 +1,7 @@
 ---
 title: "RAG Context Engineering"
 date: 2025-09-12 
-tags: ["RAG", "AI", "Evaluation", "Agents", "Context Engineering"]
+tags: ["RAG", "AI", "Evaluation", "Agents", "Context Engineering", "Gardrails"]
 category: Infrastructure
 description: "This article explores Retrieval-Augmented Generation (RAG) as a key technique for context engineering in LLMs. It details the RAG workflow, covering data indexing (preprocessing, chunking, embedding, and vector database storage) and online retrieval and generation. It then explores evaluation methods, advanced techniques, and its shortcomings" 
 image: 
