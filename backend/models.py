@@ -19,7 +19,7 @@ class SearchRequest(BaseModel):
 
 class GenerateRequest(BaseModel):
     """Request model for content generation."""
-    query: str = Field(..., description="User query or topic")
+    query: Optional[str] = Field(default="", description="User query or topic (optional)")
     tags: List[str] = Field(default=[], description="Selected topic tags")
     context: Optional[str] = Field(default="", description="Additional context or requirements")
     max_tokens: Optional[int] = Field(default=2048, description="Maximum tokens to generate")

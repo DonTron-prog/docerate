@@ -90,32 +90,29 @@ function App() {
       </header>
 
       <main className="app-main">
-        <div className="content-wrapper">
-          <aside className="sidebar">
-            <TagCloudComponent
-              tags={tags}
-              selectedTags={selectedTags}
-              onTagClick={handleTagClick}
-            />
-          </aside>
+        <div className="main-container">
+          <TagCloudComponent
+            tags={tags}
+            selectedTags={selectedTags}
+            onTagClick={handleTagClick}
+          />
 
-          <section className="main-content">
-            <QueryInput
-              onSubmit={handleGenerate}
-              isLoading={isLoading}
-            />
+          <QueryInput
+            onSubmit={handleGenerate}
+            isLoading={isLoading}
+            selectedTagsCount={selectedTags.length}
+          />
 
-            {error && (
-              <div className="error-message">
-                <p>❌ {error}</p>
-              </div>
-            )}
+          {error && (
+            <div className="error-message">
+              <p>❌ {error}</p>
+            </div>
+          )}
 
-            <ArticleDisplay
-              response={response}
-              isLoading={isLoading}
-            />
-          </section>
+          <ArticleDisplay
+            response={response}
+            isLoading={isLoading}
+          />
         </div>
       </main>
 

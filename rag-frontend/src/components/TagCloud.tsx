@@ -19,16 +19,21 @@ const TagCloudComponent: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagC
   };
 
   return (
-    <div className="tag-cloud-container">
-      <h3>Topics</h3>
+    <div className="tag-cloud-container" style={{
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      padding: '1.5rem',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+    }}>
+      <h3>Select Topics to Filter Content</h3>
       <div className="tag-cloud" style={{
         display: 'flex',
         flexWrap: 'wrap',
         gap: '8px',
         padding: '16px',
-        minHeight: '200px',
+        minHeight: '80px',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
       }}>
         {tags.map(tag => {
           const isSelected = selectedTags.includes(tag.name);
@@ -79,26 +84,31 @@ const TagCloudComponent: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagC
 
       {selectedTags.length > 0 && (
         <div className="selected-tags" style={{
-          marginTop: '16px',
-          padding: '12px',
-          backgroundColor: '#f3f4f6',
-          borderRadius: '8px'
+          marginTop: '12px',
+          padding: '8px 12px',
+          backgroundColor: '#f0f9ff',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          border: '1px solid #bfdbfe'
         }}>
-          <p style={{ marginBottom: '8px', fontWeight: '500' }}>
-            Selected: {selectedTags.join(', ')}
+          <p style={{ margin: 0, fontWeight: '500', color: '#1e40af' }}>
+            Selected tags: <span style={{ fontWeight: 'normal' }}>{selectedTags.join(', ')}</span>
           </p>
           <button
             onClick={() => onTagClick('')}
             className="clear-btn"
             style={{
-              padding: '6px 12px',
+              padding: '4px 10px',
               backgroundColor: '#ef4444',
               color: 'white',
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
-              fontSize: '14px',
-              transition: 'background-color 0.2s'
+              fontSize: '13px',
+              transition: 'background-color 0.2s',
+              marginLeft: '12px'
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.backgroundColor = '#dc2626';

@@ -4,31 +4,38 @@ import { FiSearch, FiSettings } from 'react-icons/fi';
 interface QueryInputProps {
   onSubmit: (query: string, context: string, maxTokens: number, temperature: number) => void;
   isLoading: boolean;
+  selectedTagsCount?: number;
 }
 
-const QueryInput: React.FC<QueryInputProps> = ({ onSubmit, isLoading }) => {
+const QueryInput: React.FC<QueryInputProps> = ({ onSubmit, isLoading, selectedTagsCount = 0 }) => {
   const [query, setQuery] = useState('');
   const [context, setContext] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [maxTokens, setMaxTokens] = useState(1000);
+  const [maxTokens, setMaxTokens] = useState(512);
   const [temperature, setTemperature] = useState(0.7);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
+    // Allow submission if there's either a query or selected tags
+    if (query.trim() || selectedTagsCount > 0) {
       onSubmit(query, context, maxTokens, temperature);
     }
   };
 
   return (
     <div className="query-input-container">
+      {selectedTagsCount > 0 && (
+        <div className="info-message">
+          ✨ {selectedTagsCount} tag{selectedTagsCount > 1 ? 's' : ''} selected. You can generate content based on tags alone or add a specific question.
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div className="input-group">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask a question about the content..."
+            placeholder={selectedTagsCount > 0 ? "Optional: Add a specific question or leave empty to generate from tags..." : "Ask a question about the content..."}
             className="query-input"
             disabled={isLoading}
           />
@@ -42,7 +49,7 @@ const QueryInput: React.FC<QueryInputProps> = ({ onSubmit, isLoading }) => {
           </button>
           <button
             type="submit"
-            disabled={isLoading || !query.trim()}
+            disabled={isLoading || (!query.trim() && selectedTagsCount === 0)}
             className="submit-btn"
           >
             {isLoading ? (

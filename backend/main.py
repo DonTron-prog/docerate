@@ -256,10 +256,17 @@ async def generate(request: GenerateRequest):
     if not app_state["llm_service"]:
         raise HTTPException(status_code=503, detail="Generation service not available")
 
+    # Validate that we have either a query or tags
+    if not request.query and not request.tags:
+        raise HTTPException(status_code=400, detail="Either a query or tags must be provided")
+
     try:
+        # Create search query based on what's provided
+        search_query = request.query if request.query else f"content about {', '.join(request.tags)}"
+
         # Search for relevant chunks
         search_results = app_state["hybrid_search"].search(
-            query=request.query,
+            query=search_query,
             top_k=10,
             filter_tags=request.tags if request.tags else None,
             rerank=True
@@ -283,7 +290,9 @@ async def generate(request: GenerateRequest):
         # Build generation prompt
         context_text = "\n---\n".join(context_chunks)
 
-        generation_prompt = f"""Based on the following context from my blog posts, generate a comprehensive article addressing the user's query.
+        # Create appropriate prompt based on what was provided
+        if request.query:
+            generation_prompt = f"""Based on the following context from my blog posts, generate a comprehensive article addressing the user's query.
 
 Context from blog posts:
 {context_text}
@@ -298,6 +307,24 @@ Generate an article that:
 3. Includes specific examples and technical details from the context
 4. References the source chunks where appropriate using [ref:N] notation
 5. Flows naturally as a cohesive article, not just a collection of chunks
+
+Article:"""
+        else:
+            # Tags-only generation
+            generation_prompt = f"""Based on the following context from my blog posts, generate a comprehensive article about the selected topics.
+
+Context from blog posts:
+{context_text}
+
+Selected Topics: {', '.join(request.tags)}
+Additional Requirements: {request.context if request.context else 'None'}
+
+Generate an article that:
+1. Provides a comprehensive overview of the selected topics
+2. Maintains my technical writing style
+3. Includes specific examples and technical details from the context
+4. References the source chunks where appropriate using [ref:N] notation
+5. Flows naturally as a cohesive article, synthesizing the content meaningfully
 
 Article:"""
 
@@ -329,11 +356,18 @@ async def generate_stream(request: GenerateRequest):
     if not app_state["llm_service"]:
         raise HTTPException(status_code=503, detail="Generation service not available")
 
+    # Validate that we have either a query or tags
+    if not request.query and not request.tags:
+        raise HTTPException(status_code=400, detail="Either a query or tags must be provided")
+
     async def stream_generator():
         try:
+            # Create search query based on what's provided
+            search_query = request.query if request.query else f"content about {', '.join(request.tags)}"
+
             # Search for relevant chunks (same as non-streaming)
             search_results = app_state["hybrid_search"].search(
-                query=request.query,
+                query=search_query,
                 top_k=10,
                 filter_tags=request.tags if request.tags else None,
                 rerank=True
@@ -356,7 +390,12 @@ async def generate_stream(request: GenerateRequest):
 
             # Build and stream content
             context_text = "\n---\n".join(context_chunks)
-            generation_prompt = f"Context:\n{context_text}\n\nQuery: {request.query}\n\nGenerate article:"
+
+            # Create appropriate prompt based on what was provided
+            if request.query:
+                generation_prompt = f"Context:\n{context_text}\n\nQuery: {request.query}\n\nGenerate article:"
+            else:
+                generation_prompt = f"Context:\n{context_text}\n\nTopics: {', '.join(request.tags)}\n\nGenerate a comprehensive article about these topics:"
 
             # Stream from LLM
             if hasattr(app_state["llm_service"], '_generate_stream'):

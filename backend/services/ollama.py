@@ -44,8 +44,10 @@ class OllamaService:
         request_body = {
             "model": self.model,
             "messages": messages,
-            "temperature": temperature,
-            "max_tokens": max_tokens,
+            "options": {
+                "num_predict": max_tokens,
+                "temperature": temperature
+            },
             "stream": stream
         }
 

@@ -55,27 +55,15 @@ body {
 .app-main {
   flex: 1;
   padding: 2rem;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
 }
 
-.content-wrapper {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 2rem;
-  height: 100%;
-}
-
-/* Sidebar */
-.sidebar {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: fit-content;
-  position: sticky;
-  top: 100px;
+.main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .tag-cloud-container h3 {
@@ -118,6 +106,16 @@ body {
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
+}
+
+.info-message {
+  background: linear-gradient(135deg, #667eea15, #764ba215);
+  color: #667eea;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  border-left: 3px solid #667eea;
 }
 
 .input-group {
@@ -458,12 +456,8 @@ code {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .content-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: static;
+  .main-container {
+    gap: 1rem;
   }
 }
 
