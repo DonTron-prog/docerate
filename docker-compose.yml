@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # Ollama service for local LLM
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    command: serve
+    networks:
+      - rag-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend FastAPI service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: rag-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+      - ./content:/app/content
+      - ./backend:/app/backend
+      - ./rag:/app/rag
+    environment:
+      - ENVIRONMENT=local
+      - EMBEDDING_PROVIDER=local
+      - LLM_PROVIDER=ollama
+      - OLLAMA_HOST=http://ollama:11434
+      - DEBUG=true
+    depends_on:
+      - ollama
+    networks:
+      - rag-network
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 5000 --reload
+
+  # Frontend React service
+  frontend:
+    build:
+      context: ./rag-frontend
+      dockerfile: Dockerfile
+    container_name: rag-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./rag-frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+    networks:
+      - rag-network
+    command: npm start
+
+  # Indexer service (run once to build index)
+  indexer:
+    build:
+      context: .
+      dockerfile: Dockerfile.indexer
+    container_name: rag-indexer
+    volumes:
+      - ./data:/app/data
+      - ./content:/app/content
+      - ./rag:/app/rag
+    environment:
+      - EMBEDDING_PROVIDER=local
+    networks:
+      - rag-network
+    profiles:
+      - indexing
+    command: python -m rag.indexer
+
+networks:
+  rag-network:
+    driver: bridge
+
+volumes:
+  ollama_data:

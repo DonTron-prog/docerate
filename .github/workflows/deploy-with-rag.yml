@@ -1,0 +1,154 @@
+name: Build and Deploy Blog with RAG to AWS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-rag.txt
+
+      - name: Build static site
+        run: |
+          python generator.py build
+
+      - name: Generate RAG artifacts
+        run: |
+          echo "Generating RAG indexes and embeddings..."
+          python scripts/index_posts.py
+
+          # Verify RAG artifacts were created
+          echo "RAG artifacts generated:"
+          ls -la data/
+
+      - name: Build React frontend
+        run: |
+          cd rag-frontend
+          npm ci
+          npm run build
+          echo "Frontend build complete"
+
+      - name: Package Lambda function
+        run: |
+          # Create Lambda deployment package
+          mkdir -p lambda-package
+
+          # Copy backend code
+          cp -r backend lambda-package/
+          cp -r rag lambda-package/
+          cp -r data lambda-package/
+
+          # Create requirements file for Lambda
+          cat > lambda-package/requirements.txt << EOF
+          fastapi
+          mangum
+          pydantic
+          numpy
+          scikit-learn
+          boto3
+          httpx
+          EOF
+
+          # Install dependencies to package
+          cd lambda-package
+          pip install -r requirements.txt -t .
+
+          # Create deployment zip
+          zip -r ../lambda-deployment.zip . -x "*.pyc" -x "*__pycache__*"
+          cd ..
+
+          echo "Lambda package size:"
+          ls -lh lambda-deployment.zip
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy static site to S3
+        run: |
+          # Deploy main blog site
+          aws s3 sync output/ s3://donaldmcgillivray.com --delete --exclude ".git/*"
+
+      - name: Deploy RAG frontend to S3
+        run: |
+          # Deploy React app to a subdirectory or separate bucket
+          aws s3 sync rag-frontend/build/ s3://donaldmcgillivray.com/rag/ --delete
+
+          # Set proper content types for static assets
+          aws s3 cp s3://donaldmcgillivray.com/rag/ s3://donaldmcgillivray.com/rag/ \
+            --exclude "*" --include "*.js" --recursive \
+            --metadata-directive REPLACE --content-type "application/javascript"
+
+          aws s3 cp s3://donaldmcgillivray.com/rag/ s3://donaldmcgillivray.com/rag/ \
+            --exclude "*" --include "*.css" --recursive \
+            --metadata-directive REPLACE --content-type "text/css"
+
+      - name: Upload RAG data to S3
+        run: |
+          # Upload RAG indexes to S3 for Lambda to access
+          aws s3 sync data/ s3://donaldmcgillivray-rag-data/data/ --delete
+          echo "RAG data uploaded to S3"
+
+      - name: Deploy Lambda function
+        run: |
+          # Update Lambda function code
+          aws lambda update-function-code \
+            --function-name dontron-blog-rag-api \
+            --zip-file fileb://lambda-deployment.zip \
+            --region us-east-1 || echo "Lambda function does not exist yet - will be created by infrastructure"
+
+          # Update Lambda environment variables
+          aws lambda update-function-configuration \
+            --function-name dontron-blog-rag-api \
+            --environment "Variables={RAG_DATA_BUCKET=donaldmcgillivray-rag-data,USE_BEDROCK=true}" \
+            --region us-east-1 || echo "Lambda configuration update skipped"
+
+      - name: Invalidate CloudFront
+        run: |
+          # Invalidate main site
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+
+          # Invalidate RAG app if separate distribution exists
+          if [ ! -z "${{ secrets.RAG_CLOUDFRONT_DISTRIBUTION_ID }}" ]; then
+            aws cloudfront create-invalidation \
+              --distribution-id ${{ secrets.RAG_CLOUDFRONT_DISTRIBUTION_ID }} \
+              --paths "/*"
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: rag-artifacts
+          path: |
+            data/
+            lambda-deployment.zip
+          retention-days: 30

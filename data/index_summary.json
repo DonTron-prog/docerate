@@ -1,0 +1,79 @@
+{
+  "created_at": "2025-09-30T13:13:30.767311",
+  "num_posts": 6,
+  "num_chunks": 104,
+  "embedding_model": "all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "chunk_config": {
+    "max_tokens": 512,
+    "overlap_tokens": 50
+  },
+  "tags": [
+    "SRE",
+    "Orchestration",
+    "Atomic Agents",
+    "DevOps",
+    "Optimization",
+    "AI",
+    "Finance",
+    "Pydantic-AI",
+    "web-development",
+    "LLM",
+    "Platform Engineering",
+    "RAG",
+    "Observability",
+    "Investment",
+    "Financial Analysis",
+    "Research",
+    "Guardrails",
+    "Context Engineering",
+    "Machine Learning",
+    "Agents",
+    "Metrics",
+    "static-site",
+    "Reliability",
+    "Evaluation",
+    "Performance",
+    "Incident Response",
+    "python",
+    "Multi-Agent",
+    "Incident Management",
+    "Automation",
+    "NLP",
+    "Data Science",
+    "AIOps",
+    "aws"
+  ],
+  "posts": [
+    {
+      "slug": "Agentic Reliability Engineering",
+      "title": "Agentic Reliability Engineering",
+      "num_chunks": 16
+    },
+    {
+      "slug": "Agentic SRE",
+      "title": "Agentic SRE",
+      "num_chunks": 28
+    },
+    {
+      "slug": "Evaluating LLM Performance on Specialized Tasks",
+      "title": "Evaluating LLM Performance on Specialized Tasks",
+      "num_chunks": 19
+    },
+    {
+      "slug": "Investment Agent",
+      "title": "Investment Research Workflow",
+      "num_chunks": 16
+    },
+    {
+      "slug": "RAG_Context_Engineering",
+      "title": "RAG Context Engineering",
+      "num_chunks": 13
+    },
+    {
+      "slug": "welcome-to-my-blog",
+      "title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "num_chunks": 12
+    }
+  ]
+}

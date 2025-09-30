@@ -1,0 +1,1824 @@
+{
+  "chunk_ids": [
+    "319c1d22cfdd41df",
+    "a3f680d2c69e40ef",
+    "c3438c107d8c9a07",
+    "9ae351cafb573d7f",
+    "99cdc85d8d23c694",
+    "9620abd8d1744e2b",
+    "3dfbb7f7a4b2c73b",
+    "d617566255ea9893",
+    "62f771a673cf20e4",
+    "c5ee42e0d2e2a10f",
+    "18f91634520a4cc7",
+    "423a73eb57039d6e",
+    "5f546441e70745a0",
+    "19b18f6131ba7c1c",
+    "7206ac547881253a",
+    "bb2950dba3966aeb",
+    "bce7795e581eab44",
+    "7e0d3b7e0ff9f31c",
+    "38ebe877ce08fd86",
+    "93c27f956f821b19",
+    "f7010dde61ef5f2e",
+    "e4d6195775472635",
+    "4d0ee4c1a5bb955a",
+    "892bb00252373812",
+    "bd2db88eb3344527",
+    "c4fb917b0d95928e",
+    "f730a043c269affc",
+    "82f8fc1a9da8ee8f",
+    "ea7dd2f32e8989a0",
+    "1b96c1f635b06a47",
+    "dccab4502f157c6a",
+    "1243869e53ecd732",
+    "f97e814f48279e4b",
+    "9162d2c3a828d570",
+    "25e3fa3adf10e162",
+    "8ea4a88894ccb9cb",
+    "4f389a4419a704f5",
+    "1c7d57f769bef49b",
+    "e6ffd2566003274f",
+    "e0120170bbc43f4e",
+    "860fba9f2d2b3916",
+    "6c9cb37f4002f119",
+    "04a10c5770a2c4ee",
+    "878dcac78b9f4d92",
+    "6e732feb57c82cb9",
+    "aa0f121268a15849",
+    "9008855c65d63fce",
+    "672dc44b5c69c9ea",
+    "0c81c116c269edda",
+    "c92e0f356971650b",
+    "67897730aa439dfd",
+    "56aff6ad03df81ef",
+    "3e4c45adbf26b02d",
+    "fadd54c58b883505",
+    "304ac2eace18cebc",
+    "8ade5725e9056ba8",
+    "09559b7cd8837b4d",
+    "243ea9be31729a2a",
+    "c976b973fa39deed",
+    "9f78cf3a6db5416c",
+    "bbf75dd7de51e83b",
+    "b1eddfd156a98a4e",
+    "2b82f08815a93aeb",
+    "f9bc1810dd93f2ff",
+    "aa1ad01eec06570c",
+    "5d90ee2a11ea7256",
+    "43b255b81f102607",
+    "221fca9e7807d1a6",
+    "1c66e06ada5765a9",
+    "622723926aceb5cb",
+    "919f848b3cbb8877",
+    "8db7110a0ad9d948",
+    "d638f07ed1f1f480",
+    "37b0d3297145e5b5",
+    "35b2ff6af80b07d6",
+    "288fbeeb1f7caece",
+    "efdf3cf7a9b3ff83",
+    "c31c13835b2aeef2",
+    "8df372853eb4d175",
+    "261390c8d8d8889b",
+    "5a73dd37d2723b82",
+    "c08855e07956673c",
+    "8bd11dc917e03f28",
+    "640e82900e0c90a6",
+    "fb3e3500f5869f84",
+    "bd0959c6244c4e84",
+    "0833a2dead1ef5e6",
+    "8c28deb449419bf0",
+    "026aec13c04c9f49",
+    "8a7aaaa89185e703",
+    "a7b99bc109bf770a",
+    "4dbcbae55dd11b0e",
+    "b029536d0c292d29",
+    "3faaf734230e9d78",
+    "441d774f5e0b0e42",
+    "9901d39655f87a20",
+    "0632cd4a2276a0b5",
+    "9f494b15fbba4d73",
+    "3b96a5689f2676dd",
+    "9b80ffc636f67f88",
+    "449ceb16ea4b79d3",
+    "6538a7c47cb3f47f",
+    "271e61b7a1989db5",
+    "c1d05aa7e6dc2644"
+  ],
+  "metadata": [
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": null,
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "",
+      "position": 0
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Why I Built My Own Static Site Generator",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#why-i-built-my-own-static-site-generator",
+      "position": 1
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Key Features > Markdown Support",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#key-features-markdown-support",
+      "position": 2
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Key Features > Code Highlighting",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#key-features-code-highlighting",
+      "position": 3
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Key Features > Table Support",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#key-features-table-support",
+      "position": 4
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Key Features > Task Lists",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#key-features-task-lists",
+      "position": 5
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Technical Implementation",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#technical-implementation",
+      "position": 6
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Technical Implementation > The Build Process",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#technical-implementation-the-build-process",
+      "position": 7
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Technical Implementation > Performance Metrics",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#technical-implementation-performance-metrics",
+      "position": 8
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "AWS Infrastructure",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#aws-infrastructure",
+      "position": 9
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Future Plans",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#future-plans",
+      "position": 10
+    },
+    {
+      "post_slug": "welcome-to-my-blog",
+      "post_title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "section_heading": "Source Code Availability",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "url_fragment": "#source-code-availability",
+      "position": 11
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": null,
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "",
+      "position": 0
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Overview",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#overview",
+      "position": 1
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": " The Agents",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#-the-agents",
+      "position": 2
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Architecture",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#architecture",
+      "position": 3
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Core Agents > Planning Agents",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#core-agents-planning-agents",
+      "position": 4
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Core Agents > Research Agents",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#core-agents-research-agents",
+      "position": 5
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Core Agents > Specialized Agents",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#core-agents-specialized-agents",
+      "position": 6
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Available Tools",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#available-tools",
+      "position": 7
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Memory Management System",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#memory-management-system",
+      "position": 8
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "How It All Connects: The Workflow",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#how-it-all-connects-the-workflow",
+      "position": 9
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "How It All Connects: The Workflow",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#how-it-all-connects-the-workflow",
+      "position": 10
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Workflow Modes",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#workflow-modes",
+      "position": 11
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Running the System > Prerequisites",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#running-the-system-prerequisites",
+      "position": 12
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Running the System > Usage Options",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#running-the-system-usage-options",
+      "position": 13
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Running the System > Configuration",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#running-the-system-configuration",
+      "position": 14
+    },
+    {
+      "post_slug": "Investment Agent",
+      "post_title": "Investment Research Workflow",
+      "section_heading": "Conclusion: Augmenting Human Expertise",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "url_fragment": "#conclusion-augmenting-human-expertise",
+      "position": 15
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Introduction",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#introduction",
+      "position": 0
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Introduction",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#introduction",
+      "position": 1
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "The Evolution of Site Reliability Engineering",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#the-evolution-of-site-reliability-engineering",
+      "position": 2
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "The Evolution of Site Reliability Engineering > The Agentic SRE Landscape",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#the-evolution-of-site-reliability-engineering-the-agentic-sre-landscape",
+      "position": 3
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "The Evolution of Site Reliability Engineering > The Agentic SRE Landscape",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#the-evolution-of-site-reliability-engineering-the-agentic-sre-landscape",
+      "position": 4
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "The Evolution of Site Reliability Engineering > The Agentic SRE Landscape",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#the-evolution-of-site-reliability-engineering-the-agentic-sre-landscape",
+      "position": 5
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Magnitude of the task",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#magnitude-of-the-task",
+      "position": 6
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Core Capabilities of Agentic SRE Systems",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#core-capabilities-of-agentic-sre-systems",
+      "position": 7
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Core Capabilities of Agentic SRE Systems > Intelligent Incident Triage",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#core-capabilities-of-agentic-sre-systems-intelligent-incident-triage",
+      "position": 8
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Core Capabilities of Agentic SRE Systems > Contextual Knowledge Retrieval",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#core-capabilities-of-agentic-sre-systems-contextual-knowledge-retrieval",
+      "position": 9
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Core Capabilities of Agentic SRE Systems > Automated Root Cause Analysis",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#core-capabilities-of-agentic-sre-systems-automated-root-cause-analysis",
+      "position": 10
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Core Capabilities of Agentic SRE Systems > Adaptive Learning",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#core-capabilities-of-agentic-sre-systems-adaptive-learning",
+      "position": 11
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Common Tools and Technologies",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#common-tools-and-technologies",
+      "position": 12
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Common Tools and Technologies > Observability Platforms",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#common-tools-and-technologies-observability-platforms",
+      "position": 13
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Common Tools and Technologies > Incident Management",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#common-tools-and-technologies-incident-management",
+      "position": 14
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Common Tools and Technologies > Knowledge Management",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#common-tools-and-technologies-knowledge-management",
+      "position": 15
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Common Tools and Technologies > Infrastructure as Code",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#common-tools-and-technologies-infrastructure-as-code",
+      "position": 16
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Future Outlook > Autonomous Remediation",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#future-outlook-autonomous-remediation",
+      "position": 17
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Future Outlook > Predictive Reliability",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#future-outlook-predictive-reliability",
+      "position": 18
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Future Outlook > Cross-System Intelligence",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#future-outlook-cross-system-intelligence",
+      "position": 19
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Future Outlook > Human-AI Collaboration",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#future-outlook-human-ai-collaboration",
+      "position": 20
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Future Outlook > Regulatory and Compliance Integration",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#future-outlook-regulatory-and-compliance-integration",
+      "position": 21
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Challenges and Considerations > Trust and Reliability",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#challenges-and-considerations-trust-and-reliability",
+      "position": 22
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Challenges and Considerations > Integration Complexity",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#challenges-and-considerations-integration-complexity",
+      "position": 23
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Challenges and Considerations > Skills Evolution",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#challenges-and-considerations-skills-evolution",
+      "position": 24
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Challenges and Considerations > Ethical Considerations",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#challenges-and-considerations-ethical-considerations",
+      "position": 25
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "Conclusion",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#conclusion",
+      "position": 26
+    },
+    {
+      "post_slug": "Agentic SRE",
+      "post_title": "Agentic SRE",
+      "section_heading": "References",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "url_fragment": "#references",
+      "position": 27
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": null,
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "",
+      "position": 0
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "How it Works: An Overview",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#how-it-works-an-overview",
+      "position": 1
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "The Starting Point: Alerts",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#the-starting-point-alerts",
+      "position": 2
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "The Power of Memory: Learning from Past Incidents",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#the-power-of-memory-learning-from-past-incidents",
+      "position": 3
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Planning: Charting a Course to Resolution",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#planning-charting-a-course-to-resolution",
+      "position": 4
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Planning: Charting a Course to Resolution > Example of Distributed cloud infrastrucrture",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#planning-charting-a-course-to-resolution-example-of-distributed-cloud-infrastrucrture",
+      "position": 5
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Planning: Charting a Course to Resolution > **Built on Atomic Agents: A Developer-First Framework**",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#planning-charting-a-course-to-resolution-built-on-atomic-agents-a-developer-first-framework",
+      "position": 6
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Orchestration: The Intelligent Coordinator",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#orchestration-the-intelligent-coordinator",
+      "position": 7
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Orchestration: The Intelligent Coordinator",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#orchestration-the-intelligent-coordinator",
+      "position": 8
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Instructor Setup",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#instructor-setup",
+      "position": 9
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Pydantic validations",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#pydantic-validations",
+      "position": 10
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Tools > Internal Knowledge: Retrieval-Augmented Generation (RAG)",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#tools-internal-knowledge-retrieval-augmented-generation-rag",
+      "position": 11
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Tools > Uncovering Nuance with Deep Research",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#tools-uncovering-nuance-with-deep-research",
+      "position": 12
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Reflection: The Key to Improved Performance",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#reflection-the-key-to-improved-performance",
+      "position": 13
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Bringing It All Together: LLM Reasoning and Prompt Assembly",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#bringing-it-all-together-llm-reasoning-and-prompt-assembly",
+      "position": 14
+    },
+    {
+      "post_slug": "Agentic Reliability Engineering",
+      "post_title": "Agentic Reliability Engineering",
+      "section_heading": "Conclusion: Augmenting, Not Replacing, Human Expertise",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "url_fragment": "#conclusion-augmenting-not-replacing-human-expertise",
+      "position": 15
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": null,
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "",
+      "position": 0
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "INTRODUCTION: THE LLM OPTIMIZATION PARADIGM",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#introduction-the-llm-optimization-paradigm",
+      "position": 1
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 1: INITIAL EXPLORATION AND \"VIBE CHECK\"",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-1-initial-exploration-and-vibe-check",
+      "position": 2
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 1: INITIAL EXPLORATION AND \"VIBE CHECK\" > Key Benefits",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-1-initial-exploration-and-vibe-check-key-benefits",
+      "position": 3
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 2: ESTABLISHING EVALUATION METRICS",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-2-establishing-evaluation-metrics",
+      "position": 4
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 2: ESTABLISHING EVALUATION METRICS > Types of Evaluation Metrics",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-2-establishing-evaluation-metrics-types-of-evaluation-metrics",
+      "position": 5
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 2: ESTABLISHING EVALUATION METRICS > Task-Specific Metric Selection",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-2-establishing-evaluation-metrics-task-specific-metric-selection",
+      "position": 6
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 2: ESTABLISHING EVALUATION METRICS > Reference-Based Metrics",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-2-establishing-evaluation-metrics-reference-based-metrics",
+      "position": 7
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 3: BEYOND BASIC METRICS: NUANCED PERFORMANCE ANALYSIS > Measuring Semantics",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-3-beyond-basic-metrics-nuanced-performance-analysis-measuring-semantics",
+      "position": 8
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 3: BEYOND BASIC METRICS: NUANCED PERFORMANCE ANALYSIS > Metric Correlation and Pitfalls",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-3-beyond-basic-metrics-nuanced-performance-analysis-metric-correlation-and-pitfalls",
+      "position": 9
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 3: BEYOND BASIC METRICS: NUANCED PERFORMANCE ANALYSIS > Reasoning Evaluation",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-3-beyond-basic-metrics-nuanced-performance-analysis-reasoning-evaluation",
+      "position": 10
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 3: BEYOND BASIC METRICS: NUANCED PERFORMANCE ANALYSIS > Worst-Case Performance Assessment",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-3-beyond-basic-metrics-nuanced-performance-analysis-worst-case-performance-assessment",
+      "position": 11
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 3: BEYOND BASIC METRICS: NUANCED PERFORMANCE ANALYSIS > Adversarial Testing and Red-Teaming",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-3-beyond-basic-metrics-nuanced-performance-analysis-adversarial-testing-and-red-teaming",
+      "position": 12
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 3: BEYOND BASIC METRICS: NUANCED PERFORMANCE ANALYSIS > Synthetic Data Generation for Distillation: Key Considerations",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-3-beyond-basic-metrics-nuanced-performance-analysis-synthetic-data-generation-for-distillation-key-considerations",
+      "position": 13
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "PHASE 4: HUMAN OVERSIGHT AND CONTINUOUS MONITORING",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#phase-4-human-oversight-and-continuous-monitoring",
+      "position": 14
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "CONCLUSION: A COMPREHENSIVE APPROACH",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#conclusion-a-comprehensive-approach",
+      "position": 15
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "REFERENCES",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#references",
+      "position": 16
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "REFERENCES",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#references",
+      "position": 17
+    },
+    {
+      "post_slug": "Evaluating LLM Performance on Specialized Tasks",
+      "post_title": "Evaluating LLM Performance on Specialized Tasks",
+      "section_heading": "REFERENCES",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "url_fragment": "#references",
+      "position": 18
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": null,
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "",
+      "position": 0
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "The RAG Workflow",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#the-rag-workflow",
+      "position": 1
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "The RAG Workflow",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#the-rag-workflow",
+      "position": 2
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "Part 1: Indexing (Offline) > Ingestion of Documents",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#part-1-indexing-offline-ingestion-of-documents",
+      "position": 3
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "Part 1: Indexing (Offline) > Chunking",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#part-1-indexing-offline-chunking",
+      "position": 4
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "Part 1: Indexing (Offline) > Embedding and Storage",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#part-1-indexing-offline-embedding-and-storage",
+      "position": 5
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "Part 2: Retrieval and Generation (Online) > Retrieval",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#part-2-retrieval-and-generation-online-retrieval",
+      "position": 6
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "Part 2: Retrieval and Generation (Online) > Prompting and Generation",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#part-2-retrieval-and-generation-online-prompting-and-generation",
+      "position": 7
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "Evaluation and Advanced Techniques > Testing and Evaluation",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#evaluation-and-advanced-techniques-testing-and-evaluation",
+      "position": 8
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "Evaluation and Advanced Techniques > Scaling and Advanced RAG",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#evaluation-and-advanced-techniques-scaling-and-advanced-rag",
+      "position": 9
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "Final Thoughts > When Not to Use RAG",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#final-thoughts-when-not-to-use-rag",
+      "position": 10
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "Final Thoughts > Conclusion",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#final-thoughts-conclusion",
+      "position": 11
+    },
+    {
+      "post_slug": "RAG_Context_Engineering",
+      "post_title": "RAG Context Engineering",
+      "section_heading": "References",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "url_fragment": "#references",
+      "position": 12
+    }
+  ],
+  "dimension": 384
+}
