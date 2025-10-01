@@ -48,6 +48,46 @@ export interface Reference {
   url: string;
 }
 
+export interface PostSummary {
+  slug: string;
+  title: string;
+  date: string;
+  tags: string[];
+  category: string;
+  description: string;
+  image?: string;
+  excerpt: string;
+  reading_time: number;
+}
+
+export interface PostDetail {
+  slug: string;
+  title: string;
+  date: string;
+  tags: string[];
+  category: string;
+  description: string;
+  image?: string;
+  content: string;
+  html_content: string;
+  reading_time: number;
+  metadata?: Record<string, any>;
+}
+
+export interface PostListResponse {
+  posts: PostSummary[];
+  total: number;
+  page: number;
+  per_page: number;
+  has_more: boolean;
+}
+
+export interface PostsByTagResponse {
+  tag: string;
+  posts: PostSummary[];
+  total: number;
+}
+
 class ApiService {
   private axiosInstance = axios.create({
     baseURL: API_BASE_URL,
@@ -94,6 +134,32 @@ class ApiService {
       return false;
     }
   }
+
+  // Blog post methods
+  async getPosts(page: number = 1, perPage: number = 10): Promise<PostListResponse> {
+    const response = await this.axiosInstance.get('/api/posts', {
+      params: { page, per_page: perPage },
+    });
+    return response.data;
+  }
+
+  async getPost(slug: string): Promise<PostDetail> {
+    const response = await this.axiosInstance.get(`/api/posts/${slug}`);
+    return response.data;
+  }
+
+  async getRecentPosts(limit: number = 5): Promise<PostSummary[]> {
+    const response = await this.axiosInstance.get('/api/posts/recent', {
+      params: { limit },
+    });
+    return response.data;
+  }
+
+  async getPostsByTag(tag: string): Promise<PostsByTagResponse> {
+    const response = await this.axiosInstance.get(`/api/posts/by-tag/${tag}`);
+    return response.data;
+  }
 }
 
-export default new ApiService();
+export const apiService = new ApiService();
+export default apiService;

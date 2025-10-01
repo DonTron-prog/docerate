@@ -15,6 +15,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from fastapi.staticfiles import StaticFiles
 
 # Add parent directory to path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -23,10 +24,12 @@ from backend.config import settings, is_production
 from backend.models import (
     SearchRequest, SearchResponse, SearchResult, ChunkMetadata,
     GenerateRequest, GenerateResponse, Reference,
-    TagsResponse, TagInfo, HealthResponse, IndexStatus
+    TagsResponse, TagInfo, HealthResponse, IndexStatus,
+    PostSummary, PostDetail, PostListResponse, PostsByTagResponse
 )
 from backend.services.ollama import OllamaService
 from backend.services.bedrock import BedrockService
+from backend.services.posts import PostService
 from rag.search import HybridSearch
 from rag.embeddings import EmbeddingStore, EmbeddingService, EmbeddingConfig
 from rag.bm25 import BM25
@@ -41,7 +44,8 @@ app_state = {
     "hybrid_search": None,
     "llm_service": None,
     "tags_cache": None,
-    "index_status": None
+    "index_status": None,
+    "post_service": None
 }
 
 
@@ -71,6 +75,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files for images
+images_path = Path(__file__).parent.parent / "output" / "images"
+if images_path.exists():
+    app.mount("/images", StaticFiles(directory=str(images_path)), name="images")
 
 
 async def load_search_index():
@@ -156,6 +165,9 @@ async def initialize_services():
         app_state["llm_service"] = BedrockService()
     else:
         app_state["llm_service"] = OllamaService()
+
+    # Initialize post service
+    app_state["post_service"] = PostService()
 
     # Initialize hybrid search
     app_state["hybrid_search"] = HybridSearch(
@@ -431,6 +443,68 @@ async def get_index_status():
         raise HTTPException(status_code=503, detail="Index not loaded")
 
     return app_state["index_status"]
+
+
+# Blog Post Endpoints
+
+@app.get("/api/posts", response_model=PostListResponse)
+async def get_posts(page: int = 1, per_page: int = 10):
+    """Get all blog posts with pagination."""
+    if not app_state["post_service"]:
+        raise HTTPException(status_code=503, detail="Post service not initialized")
+
+    all_posts = app_state["post_service"].get_all_posts()
+    total = len(all_posts)
+
+    # Calculate pagination
+    start = (page - 1) * per_page
+    end = start + per_page
+    posts = all_posts[start:end]
+
+    return PostListResponse(
+        posts=posts,
+        total=total,
+        page=page,
+        per_page=per_page,
+        has_more=end < total
+    )
+
+
+@app.get("/api/posts/recent")
+async def get_recent_posts(limit: int = 5):
+    """Get recent blog posts."""
+    if not app_state["post_service"]:
+        raise HTTPException(status_code=503, detail="Post service not initialized")
+
+    return app_state["post_service"].get_recent_posts(limit=limit)
+
+
+@app.get("/api/posts/by-tag/{tag}", response_model=PostsByTagResponse)
+async def get_posts_by_tag(tag: str):
+    """Get all posts with a specific tag."""
+    if not app_state["post_service"]:
+        raise HTTPException(status_code=503, detail="Post service not initialized")
+
+    posts = app_state["post_service"].get_posts_by_tag(tag)
+
+    return PostsByTagResponse(
+        tag=tag,
+        posts=posts,
+        total=len(posts)
+    )
+
+
+@app.get("/api/posts/{slug}", response_model=PostDetail)
+async def get_post(slug: str):
+    """Get a single post by slug."""
+    if not app_state["post_service"]:
+        raise HTTPException(status_code=503, detail="Post service not initialized")
+
+    post = app_state["post_service"].get_post(slug)
+    if not post:
+        raise HTTPException(status_code=404, detail=f"Post '{slug}' not found")
+
+    return PostDetail(**post)
 
 
 if __name__ == "__main__":

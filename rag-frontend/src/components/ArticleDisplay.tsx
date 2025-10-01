@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -97,14 +98,12 @@ const ArticleDisplay: React.FC<ArticleDisplayProps> = ({ response, isLoading }) 
                   {ref.section_heading && (
                     <div className="ref-section">→ {ref.section_heading}</div>
                   )}
-                  <a
-                    href={`/${ref.post_slug}.html${ref.url.split('#')[1] ? '#' + ref.url.split('#')[1] : ''}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    to={`/blog/${ref.post_slug}`}
                     className="ref-link"
                   >
                     View Source <FiExternalLink />
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))}

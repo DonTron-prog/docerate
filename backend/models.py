@@ -126,3 +126,49 @@ class IndexStatus(BaseModel):
     embedding_model: str
     tags: List[str]
     status: str = Field(..., description="Status: ready, indexing, or error")
+
+
+# Blog Post Models
+
+class PostSummary(BaseModel):
+    """Summary of a blog post for list views."""
+    slug: str
+    title: str
+    date: str
+    tags: List[str]
+    category: str
+    description: str
+    image: Optional[str]
+    excerpt: str
+    reading_time: int = Field(..., description="Estimated reading time in minutes")
+
+
+class PostDetail(BaseModel):
+    """Full blog post with content."""
+    slug: str
+    title: str
+    date: str
+    tags: List[str]
+    category: str
+    description: str
+    image: Optional[str]
+    content: str = Field(..., description="Raw markdown content")
+    html_content: str = Field(..., description="Rendered HTML content")
+    reading_time: int
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+
+class PostListResponse(BaseModel):
+    """Response for post list endpoints."""
+    posts: List[PostSummary]
+    total: int
+    page: int = Field(default=1)
+    per_page: int = Field(default=10)
+    has_more: bool = Field(default=False)
+
+
+class PostsByTagResponse(BaseModel):
+    """Response for posts filtered by tag."""
+    tag: str
+    posts: List[PostSummary]
+    total: int

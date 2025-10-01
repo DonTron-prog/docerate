@@ -20,10 +20,10 @@ const TagCloudComponent: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagC
 
   return (
     <div className="tag-cloud-container" style={{
-      backgroundColor: 'white',
+      backgroundColor: '#272822',
       borderRadius: '12px',
       padding: '1.5rem',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
     }}>
       <h3>Select Topics to Filter Content</h3>
       <div className="tag-cloud" style={{
@@ -50,9 +50,9 @@ const TagCloudComponent: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagC
                 borderRadius: '8px',
                 display: 'inline-block',
                 transition: 'all 0.3s ease',
-                backgroundColor: isSelected ? '#3b82f6' : '#e5e7eb',
-                color: isSelected ? 'white' : '#374151',
-                border: isSelected ? '2px solid #2563eb' : '2px solid transparent',
+                backgroundColor: isSelected ? '#66d9ef' : '#3e3d32',
+                color: isSelected ? '#272822' : '#a6e22e',
+                border: isSelected ? '2px solid #66d9ef' : '2px solid #49483e',
                 fontSize: `${size}px`,
                 fontWeight: tag.count > 20 ? '600' : '400',
                 fontFamily: 'inherit',
@@ -65,13 +65,13 @@ const TagCloudComponent: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagC
               onClick={() => onTagClick(tag.name)}
               onMouseOver={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.backgroundColor = '#d1d5db';
+                  e.currentTarget.style.backgroundColor = '#49483e';
                   e.currentTarget.style.transform = 'scale(1.05)';
                 }
               }}
               onMouseOut={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.backgroundColor = '#e5e7eb';
+                  e.currentTarget.style.backgroundColor = '#3e3d32';
                   e.currentTarget.style.transform = 'scale(1)';
                 }
               }}
@@ -86,35 +86,36 @@ const TagCloudComponent: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagC
         <div className="selected-tags" style={{
           marginTop: '12px',
           padding: '8px 12px',
-          backgroundColor: '#f0f9ff',
+          backgroundColor: 'rgba(102, 217, 239, 0.1)',
           borderRadius: '8px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          border: '1px solid #bfdbfe'
+          border: '1px solid #3e3d32'
         }}>
-          <p style={{ margin: 0, fontWeight: '500', color: '#1e40af' }}>
-            Selected tags: <span style={{ fontWeight: 'normal' }}>{selectedTags.join(', ')}</span>
+          <p style={{ margin: 0, fontWeight: '500', color: '#66d9ef' }}>
+            Selected tags: <span style={{ fontWeight: 'normal', color: '#f8f8f2' }}>{selectedTags.join(', ')}</span>
           </p>
           <button
             onClick={() => onTagClick('')}
             className="clear-btn"
             style={{
               padding: '4px 10px',
-              backgroundColor: '#ef4444',
-              color: 'white',
+              backgroundColor: '#f92672',
+              color: '#272822',
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
               fontSize: '13px',
+              fontWeight: '600',
               transition: 'background-color 0.2s',
               marginLeft: '12px'
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#dc2626';
+              e.currentTarget.style.backgroundColor = '#ff5a95';
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#ef4444';
+              e.currentTarget.style.backgroundColor = '#f92672';
             }}
           >
             Clear All

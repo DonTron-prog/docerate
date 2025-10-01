@@ -1,129 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
-import TagCloudComponent from './components/TagCloud';
-import QueryInput from './components/QueryInput';
-import ArticleDisplay from './components/ArticleDisplay';
-import api, { Tag, GenerateResponse } from './services/api';
+import Navigation from './components/Navigation';
+import AIExplorer from './pages/AIExplorer';
+import BlogList from './components/BlogList';
+import BlogPost from './components/BlogPost';
 
-function App() {
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [response, setResponse] = useState<GenerateResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isHealthy, setIsHealthy] = useState(true);
-
-  useEffect(() => {
-    loadTags();
-    checkHealth();
-  }, []);
-
-  const loadTags = async () => {
-    try {
-      const tagsData = await api.getTags();
-      setTags(tagsData);
-    } catch (err) {
-      console.error('Failed to load tags:', err);
-      setError('Failed to load tags. Please refresh the page.');
-    }
-  };
-
-  const checkHealth = async () => {
-    const healthy = await api.checkHealth();
-    setIsHealthy(healthy);
-    if (!healthy) {
-      setError('Backend service is not available. Please ensure the API is running.');
-    }
-  };
-
-  const handleTagClick = (tagName: string) => {
-    if (tagName === '') {
-      // Clear all tags
-      setSelectedTags([]);
-    } else if (selectedTags.includes(tagName)) {
-      setSelectedTags(selectedTags.filter(t => t !== tagName));
-    } else {
-      setSelectedTags([...selectedTags, tagName]);
-    }
-  };
-
-  const handleGenerate = async (
-    query: string,
-    context: string,
-    maxTokens: number,
-    temperature: number
-  ) => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const result = await api.generate({
-        query,
-        tags: selectedTags,
-        context: context || undefined,
-        max_tokens: maxTokens,
-        temperature,
-      });
-      setResponse(result);
-    } catch (err: any) {
-      console.error('Generation failed:', err);
-      setError(err.response?.data?.detail || 'Failed to generate content. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+function AppContent() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const selectedTag = queryParams.get('tag') || undefined;
 
   return (
     <div className="App">
-      <header className="app-header">
-        <div className="header-content">
-          <h1>McGillivray LAB - RAG Search</h1>
-          <p className="subtitle">
-            AI-powered content generation based on blog posts
-          </p>
-        </div>
-        {!isHealthy && (
-          <div className="health-warning">
-            ⚠️ Backend service is offline. Please check the API connection.
-          </div>
-        )}
-      </header>
+      <Navigation />
 
       <main className="app-main">
-        <div className="main-container">
-          <TagCloudComponent
-            tags={tags}
-            selectedTags={selectedTags}
-            onTagClick={handleTagClick}
-          />
-
-          <QueryInput
-            onSubmit={handleGenerate}
-            isLoading={isLoading}
-            selectedTagsCount={selectedTags.length}
-          />
-
-          {error && (
-            <div className="error-message">
-              <p>❌ {error}</p>
-            </div>
-          )}
-
-          <ArticleDisplay
-            response={response}
-            isLoading={isLoading}
-          />
-        </div>
+        <Routes>
+          <Route path="/" element={<AIExplorer />} />
+          <Route path="/blog" element={<BlogList selectedTag={selectedTag} />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+        </Routes>
       </main>
 
       <footer className="app-footer">
         <p>
           Powered by RAG (Retrieval-Augmented Generation) |
-          <a href="/docs" target="_blank" rel="noopener noreferrer"> API Docs</a> |
-          <a href="https://github.com/yourusername/dontron_blog" target="_blank" rel="noopener noreferrer"> GitHub</a>
+          <a href="http://localhost:5000/docs" target="_blank" rel="noopener noreferrer"> API Docs</a> |
+          <a href="https://github.com/DonTron-prog/dontron_blog" target="_blank" rel="noopener noreferrer"> GitHub</a>
         </p>
       </footer>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 
