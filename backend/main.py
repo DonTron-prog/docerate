@@ -2,6 +2,7 @@
 Main FastAPI application for RAG-powered blog.
 """
 
+import os
 import sys
 import time
 import json
@@ -29,7 +30,9 @@ from backend.models import (
 )
 from backend.services.ollama import OllamaService
 from backend.services.bedrock import BedrockService
+from backend.services.openrouter import OpenRouterService
 from backend.services.posts import PostService
+from backend.services.data_loader import get_data_loader
 from rag.search import HybridSearch
 from rag.embeddings import EmbeddingStore, EmbeddingService, EmbeddingConfig
 from rag.bm25 import BM25
@@ -61,10 +64,15 @@ async def lifespan(app: FastAPI):
     print("Shutting down RAG API...")
 
 
+# Configure root_path for API Gateway stage prefix
+stage = os.environ.get("STAGE", "")
+root_path = f"/{stage}" if stage else ""
+
 app = FastAPI(
     title=settings.api_title,
     version=settings.api_version,
-    lifespan=lifespan
+    lifespan=lifespan,
+    root_path=root_path
 )
 
 # Configure CORS
@@ -77,50 +85,76 @@ app.add_middleware(
 )
 
 # Mount static files for images
-images_path = Path(__file__).parent.parent / "output" / "images"
-if images_path.exists():
-    app.mount("/images", StaticFiles(directory=str(images_path)), name="images")
+image_candidates = []
+
+if settings.image_dir:
+    image_candidates.append(Path(settings.image_dir))
+
+# Fallback paths for local development or legacy output structure
+image_candidates.extend([
+    Path(__file__).parent.parent / "content" / "images",
+    Path(__file__).parent.parent / "output" / "images"
+])
+
+for images_path in image_candidates:
+    if images_path.exists():
+        app.mount("/images", StaticFiles(directory=str(images_path)), name="images")
+        break
 
 
 async def load_search_index():
-    """Load search index artifacts from disk."""
-    print("Loading search index...")
-    data_dir = Path(settings.data_dir)
+    """Load search index artifacts using appropriate data loader."""
+    print(f"Loading search index from {settings.data_source}...")
+    data_loader = get_data_loader()
 
     try:
+        # Check data source availability
+        if not await data_loader.health_check():
+            raise Exception(f"Data source {settings.data_source} is not available")
+
         # Load chunks
-        chunks_path = data_dir / settings.chunks_file
-        with open(chunks_path, 'r') as f:
-            app_state["chunks"] = json.load(f)
+        app_state["chunks"] = await data_loader.load_chunks()
         print(f"Loaded {len(app_state['chunks'])} chunks")
 
         # Load embeddings
-        embeddings_path = data_dir / settings.embeddings_file
-        metadata_path = data_dir / settings.metadata_file
-        app_state["embedding_store"] = EmbeddingStore.load(
-            str(embeddings_path),
-            str(metadata_path)
-        )
+        embeddings = await data_loader.load_embeddings()
+        metadata = await data_loader.load_metadata()
+
+        # Create embedding store from loaded data
+        store = EmbeddingStore(dimension=metadata['dimension'])
+        store.embeddings = embeddings
+        store.chunk_ids = metadata['chunk_ids']
+        store.metadata = metadata['metadata']
+        app_state["embedding_store"] = store
         print(f"Loaded embeddings")
 
         # Load BM25 model
-        bm25_path = data_dir / settings.bm25_file
-        app_state["bm25_model"] = BM25.load(str(bm25_path))
+        app_state["bm25_model"] = await data_loader.load_bm25_index()
         print(f"Loaded BM25 model")
 
         # Load index summary
-        summary_path = data_dir / 'index_summary.json'
-        if summary_path.exists():
-            with open(summary_path, 'r') as f:
-                summary = json.load(f)
-                app_state["index_status"] = IndexStatus(
-                    last_updated=datetime.fromisoformat(summary['created_at']),
-                    num_posts=summary['num_posts'],
-                    num_chunks=summary['num_chunks'],
-                    embedding_model=summary['embedding_model'],
-                    tags=summary['tags'],
-                    status="ready"
-                )
+        summary = await data_loader.load_index_summary()
+        app_state["index_summary"] = summary or {}
+
+        if summary and summary.get('created_at'):
+            app_state["index_status"] = IndexStatus(
+                last_updated=datetime.fromisoformat(summary['created_at']),
+                num_posts=summary.get('num_posts', 0),
+                num_chunks=summary.get('num_chunks', 0),
+                embedding_model=summary.get('embedding_model', ''),
+                tags=summary.get('tags', []),
+                status="ready"
+            )
+        else:
+            # Create status from loaded data
+            app_state["index_status"] = IndexStatus(
+                last_updated=datetime.now(),
+                num_posts=len(set(c.get('post_slug') for c in app_state["chunks"])),
+                num_chunks=len(app_state["chunks"]),
+                embedding_model=settings.embedding_model,
+                tags=list(set(tag for c in app_state["chunks"] for tag in c.get('tags', []))),
+                status="ready"
+            )
 
         # Extract tags for caching
         tags_count = {}
@@ -160,14 +194,28 @@ async def initialize_services():
     )
     app_state["embedding_service"] = EmbeddingService(embedding_config)
 
-    # Initialize LLM service
-    if is_production():
+    # Initialize LLM service based on provider
+    llm_provider = settings.llm_provider.lower()
+    if llm_provider == "bedrock":
         app_state["llm_service"] = BedrockService()
-    else:
+    elif llm_provider == "openrouter":
+        app_state["llm_service"] = OpenRouterService()
+    elif llm_provider == "ollama":
         app_state["llm_service"] = OllamaService()
+    else:
+        # Default based on environment
+        if is_production():
+            app_state["llm_service"] = BedrockService()
+        else:
+            app_state["llm_service"] = OpenRouterService()
 
     # Initialize post service
-    app_state["post_service"] = PostService()
+    app_state["post_service"] = PostService(
+        content_dir=settings.content_dir,
+        data_dir=settings.data_dir,
+        image_base_url=settings.image_base_url,
+        index_summary=app_state.get("index_summary")
+    )
 
     # Initialize hybrid search
     app_state["hybrid_search"] = HybridSearch(
@@ -354,7 +402,7 @@ Article:"""
             article=article,
             references=references,
             generation_time_ms=elapsed_ms,
-            model_used=settings.llm_model if not is_production() else settings.bedrock_model_id,
+            model_used=settings.openrouter_model if settings.llm_provider == "openrouter" else (settings.llm_model if settings.llm_provider == "ollama" else settings.bedrock_model_id),
             chunks_retrieved=len(search_results)
         )
 

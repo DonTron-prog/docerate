@@ -15,8 +15,8 @@ A Retrieval-Augmented Generation (RAG) system that transforms your static blog i
 
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  React Frontend │────▶│  FastAPI Backend │────▶│  LLM Service    │
-│  (Port 3000)    │     │  (Port 5000)     │     │  (Ollama/Bedrock)│
+│  React Frontend │───▶│  FastAPI Backend │───▶│  LLM Service    │
+│  (Port 3000)    │     │  (Port 5000)     │     │ (Ollama/Bedrock)│
 └─────────────────┘     └──────────────────┘     └─────────────────┘
                                │
                                ▼
@@ -48,32 +48,21 @@ ollama pull nomic-embed-text
 
 2. **Set up Python environment**:
 ```bash
-# Using conda (recommended)
-conda create -n blog python=3.11
-conda activate blog
-
-# Or using venv
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
 pip install -r backend/requirements.txt
-pip install --upgrade sentence-transformers huggingface-hub
+pip install sentence-transformers
 ```
 
 3. **Build the search index**:
 ```bash
 python scripts/index_posts.py
 ```
-This will process your blog posts and create the search index in the `data/` directory.
 
-4. **Start the backend** (from project root):
+4. **Start the backend**:
 ```bash
-# Make sure you're in the project root directory
-PYTHONPATH=/path/to/dontron_blog uvicorn backend.main:app --reload --port 5000 --host 0.0.0.0
-
-# Or if PYTHONPATH is already set
-uvicorn backend.main:app --reload --port 5000
+cd backend
+uvicorn main:app --reload --port 5000
 ```
 
 5. **Visit the API docs**:
@@ -254,24 +243,6 @@ SEARCH_ALPHA=0.3  # More weight on keyword search
 
 ### Common Issues
 
-**Backend startup issues:**
-```bash
-# Make sure to start from the project root directory
-cd /path/to/dontron_blog
-
-# Set PYTHONPATH explicitly
-export PYTHONPATH=$PWD
-
-# Then start the server
-uvicorn backend.main:app --reload --port 5000
-```
-
-**Sentence-transformers compatibility error:**
-```bash
-# Upgrade both packages to fix compatibility
-pip install --upgrade sentence-transformers huggingface-hub
-```
-
 **Ollama not responding:**
 ```bash
 # Check if Ollama is running
@@ -296,16 +267,6 @@ ls -la data/
 python scripts/index_posts.py
 ```
 
-**Port already in use:**
-```bash
-# Find and kill process using port 5000
-lsof -i :5000
-kill -9 <PID>
-
-# Or use a different port
-uvicorn backend.main:app --port 5001
-```
-
 ## Next Steps
 
 - [ ] Implement React frontend with tag cloud visualization
@@ -318,3 +279,99 @@ uvicorn backend.main:app --port 5001
 ## License
 
 This project is part of the dontron_blog repository.
+
+```mermaid
+graph TB
+    subgraph "Frontend Layer"
+        UI[React Frontend<br/>Port 3000]
+        UI --> |User Query| API
+        UI --> |Tag Selection| API
+    end
+
+    subgraph "API Layer - FastAPI"
+        API[FastAPI Backend<br/>Port 5000]
+        API --> |/api/search| SEARCH[Search Endpoint]
+        API --> |/api/generate| GEN[Generate Endpoint]
+        API --> |/api/generate/stream| STREAM[Stream Endpoint]
+        API --> |/api/tags| TAGS[Tags Endpoint]
+        API --> |/api/posts| POSTS[Posts Endpoint]
+        API --> |/health| HEALTH[Health Check]
+    end
+
+    subgraph "RAG Processing Pipeline"
+        SEARCH --> HS[Hybrid Search]
+        GEN --> HS
+        STREAM --> HS
+        
+        HS --> |Semantic Search| EMB[Embedding Service]
+        HS --> |Keyword Search| BM25[BM25 Index]
+        HS --> |Reciprocal Rank Fusion| RRF[Score Fusion]
+        
+        RRF --> |Top-K Results| CHUNKS[Chunk Retrieval]
+    end
+
+    subgraph "LLM Services"
+        GEN --> LLM{LLM Provider}
+        STREAM --> LLM
+        
+        LLM --> |Local Dev| OLLAMA[Ollama<br/>llama3.2]
+        LLM --> |Production| BEDROCK[AWS Bedrock<br/>Claude/Titan]
+    end
+
+    subgraph "Offline Indexing Pipeline"
+        MD[Markdown Posts<br/>content/posts/]
+        MD --> INDEXER[Indexer Script]
+        
+        INDEXER --> CHUNKER[Smart Chunker<br/>H2/H3 boundaries]
+        CHUNKER --> EMBGEN[Embedding Generator<br/>all-MiniLM-L6-v2]
+        CHUNKER --> BM25GEN[BM25 Builder]
+        
+        EMBGEN --> EMBSTORE[(Embeddings<br/>embeddings.npy)]
+        BM25GEN --> BM25STORE[(BM25 Index<br/>bm25_index.pkl)]
+        CHUNKER --> CHUNKSTORE[(Chunks<br/>chunks.json)]
+        CHUNKER --> METASTORE[(Metadata<br/>metadata.json)]
+    end
+
+    subgraph "Data Storage"
+        EMBSTORE --> EMB
+        BM25STORE --> BM25
+        CHUNKSTORE --> CHUNKS
+        METASTORE --> CHUNKS
+        
+        TAGS --> TAGCACHE[Tag Cache]
+        POSTS --> POSTSERVICE[Post Service]
+        POSTSERVICE --> MD
+    end
+
+    subgraph "Response Flow"
+        CHUNKS --> |Context| PROMPT[Prompt Builder]
+        PROMPT --> |System + User Prompt| LLM
+        LLM --> |Generated Article| RESP[Response]
+        CHUNKS --> |References| RESP
+        RESP --> API
+    end
+
+    subgraph "Infrastructure Options"
+        DEV[Local Development<br/>Docker Compose]
+        PROD[AWS Deployment<br/>Lambda + S3]
+        
+        DEV -.-> API
+        PROD -.-> API
+    end
+
+    style UI fill:#42a5f5,stroke:#1976d2,stroke-width:2px,color:#000
+    style API fill:#ab47bc,stroke:#7b1fa2,stroke-width:2px,color:#fff
+    style HS fill:#ffa726,stroke:#f57c00,stroke-width:2px,color:#000
+    style LLM fill:#66bb6a,stroke:#388e3c,stroke-width:2px,color:#000
+    style INDEXER fill:#ec407a,stroke:#c2185b,stroke-width:2px,color:#fff
+    style EMBSTORE fill:#9ccc65,stroke:#689f38,stroke-width:2px,color:#000
+    style BM25STORE fill:#9ccc65,stroke:#689f38,stroke-width:2px,color:#000
+    style CHUNKSTORE fill:#9ccc65,stroke:#689f38,stroke-width:2px,color:#000
+    style METASTORE fill:#9ccc65,stroke:#689f38,stroke-width:2px,color:#000
+    style SEARCH fill:#ba68c8,stroke:#8e24aa,stroke-width:2px,color:#fff
+    style GEN fill:#ba68c8,stroke:#8e24aa,stroke-width:2px,color:#fff
+    style STREAM fill:#ba68c8,stroke:#8e24aa,stroke-width:2px,color:#fff
+    style TAGS fill:#ba68c8,stroke:#8e24aa,stroke-width:2px,color:#fff
+    style POSTS fill:#ba68c8,stroke:#8e24aa,stroke-width:2px,color:#fff
+    style HEALTH fill:#ba68c8,stroke:#8e24aa,stroke-width:2px,color:#fff
+```

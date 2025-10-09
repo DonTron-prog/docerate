@@ -7,10 +7,21 @@ __pycache__/
 env/
 venv/
 .env
-blog/
 
-# Generated output
-output/
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn
+
+# Build artifacts
+lambda-package/
+lambda_package/
+lambda_function.zip
+dist/
+build/
 
 # IDE
 .vscode/
@@ -24,10 +35,6 @@ output/
 *.bak
 *.log
 
-# Images (optional - uncomment if you want to ignore large images)
-# *.jpg
-# *.jpeg
-# *.png
-# *.gif
-# !content/images/README.md
-CLAUDE.md
+# React build
+rag-frontend/build/
+rag-frontend/.cache/

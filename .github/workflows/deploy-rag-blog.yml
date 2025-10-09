@@ -1,0 +1,230 @@
+name: Deploy RAG Blog to AWS
+
+on:
+  push:
+    branches:
+      - main
+      - rag_website
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: rag-frontend/package-lock.json
+
+      - name: Cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: rag-frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('rag-frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Step 1: Build RAG indexes locally
+      - name: Install indexing dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-indexing.txt
+
+      - name: Generate RAG indexes
+        run: |
+          export ENVIRONMENT=local
+          export EMBEDDING_PROVIDER=local
+          export PYTHONPATH=$PWD
+          python -m rag.indexer
+
+          # Verify artifacts
+          echo "RAG artifacts generated:"
+          ls -lh data/
+
+      # Step 2: Build React frontend
+      - name: Build React frontend
+        env:
+          REACT_APP_API_URL: ${{ secrets.API_GATEWAY_URL }}
+        run: |
+          cd rag-frontend
+          npm ci
+          npm run build
+          echo "Frontend build complete"
+
+      # Step 3: Package Lambda function with minimal deps
+      - name: Package Lambda function
+        run: |
+          # Create deployment package with Lambda dependencies only
+          mkdir -p lambda-package
+
+          # Install minimal Lambda dependencies
+          pip install -r requirements-lambda.txt -t lambda-package/
+
+          # Copy application code
+          cp -r backend lambda-package/
+          cp -r rag lambda-package/
+
+          # Remove unnecessary files
+          find lambda-package -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+          find lambda-package -type f -name "*.pyc" -delete
+          find lambda-package -type f -name "*.pyo" -delete
+
+          # Create deployment zip
+          cd lambda-package
+          zip -qr ../lambda-deployment.zip . -x "*.pyc" "*.pyo" "__pycache__/*"
+          cd ..
+
+          # Check size
+          SIZE=$(du -h lambda-deployment.zip | cut -f1)
+          echo "Lambda package size: $SIZE"
+
+          # Verify size is under limit
+          BYTES=$(stat -c%s lambda-deployment.zip)
+          if [ $BYTES -gt 262144000 ]; then
+            echo "Error: Lambda package too large ($SIZE > 250MB)"
+            exit 1
+          fi
+
+      # Step 4: Configure AWS
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # Step 5: Deploy RAG data to S3
+      - name: Deploy RAG data to S3
+        env:
+          S3_BUCKET: ${{ secrets.RAG_DATA_BUCKET }}
+        run: |
+          aws s3 sync data/ s3://$S3_BUCKET/ --delete
+          echo "RAG data uploaded to s3://$S3_BUCKET"
+
+      # Step 6: Deploy Lambda function
+      - name: Deploy Lambda function
+        env:
+          FUNCTION_NAME: ${{ secrets.LAMBDA_FUNCTION_NAME }}
+          S3_BUCKET: ${{ secrets.RAG_DATA_BUCKET }}
+        run: |
+          # Update function code
+          aws lambda update-function-code \
+            --function-name $FUNCTION_NAME \
+            --zip-file fileb://lambda-deployment.zip \
+            --region us-east-1 || {
+              echo "Function doesn't exist, creating..."
+              aws lambda create-function \
+                --function-name $FUNCTION_NAME \
+                --runtime python3.11 \
+                --role ${{ secrets.LAMBDA_ROLE_ARN }} \
+                --handler backend.lambda_handler.handler \
+                --zip-file fileb://lambda-deployment.zip \
+                --memory-size 512 \
+                --timeout 30 \
+                --region us-east-1
+            }
+
+          # Update environment variables
+          aws lambda update-function-configuration \
+            --function-name $FUNCTION_NAME \
+            --environment "Variables={
+              ENVIRONMENT=production,
+              DATA_SOURCE=s3,
+              S3_BUCKET=$S3_BUCKET,
+              LLM_PROVIDER=bedrock,
+              EMBEDDING_PROVIDER=bedrock,
+              BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0,
+              BEDROCK_EMBEDDING_MODEL=amazon.titan-embed-text-v1,
+              AWS_REGION=us-east-1
+            }" \
+            --region us-east-1
+
+          # Wait for update to complete
+          aws lambda wait function-updated \
+            --function-name $FUNCTION_NAME \
+            --region us-east-1
+
+      # Step 7: Deploy frontend to S3
+      - name: Deploy frontend to S3
+        env:
+          FRONTEND_BUCKET: ${{ secrets.FRONTEND_BUCKET }}
+        run: |
+          # Sync build files to S3
+          aws s3 sync rag-frontend/build/ s3://$FRONTEND_BUCKET --delete
+
+          # Set proper cache headers
+          aws s3 cp s3://$FRONTEND_BUCKET/ s3://$FRONTEND_BUCKET/ \
+            --exclude "*" --include "*.js" \
+            --recursive --metadata-directive REPLACE \
+            --cache-control "public,max-age=31536000" \
+            --content-type "application/javascript"
+
+          aws s3 cp s3://$FRONTEND_BUCKET/ s3://$FRONTEND_BUCKET/ \
+            --exclude "*" --include "*.css" \
+            --recursive --metadata-directive REPLACE \
+            --cache-control "public,max-age=31536000" \
+            --content-type "text/css"
+
+          # No cache for index.html
+          aws s3 cp rag-frontend/build/index.html s3://$FRONTEND_BUCKET/index.html \
+            --cache-control "no-cache,no-store,must-revalidate" \
+            --content-type "text/html"
+
+      # Step 8: Invalidate CloudFront (if configured)
+      - name: Invalidate CloudFront
+        if: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        env:
+          DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $DISTRIBUTION_ID \
+            --paths "/*"
+          echo "CloudFront invalidation started"
+
+      # Step 9: Upload artifacts for debugging
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-artifacts
+          path: |
+            data/
+            lambda-deployment.zip
+            rag-frontend/build/
+          retention-days: 7
+
+      # Step 10: Output deployment summary
+      - name: Deployment Summary
+        env:
+          FRONTEND_BUCKET: ${{ secrets.FRONTEND_BUCKET }}
+          FUNCTION_NAME: ${{ secrets.LAMBDA_FUNCTION_NAME }}
+        run: |
+          echo "========================================="
+          echo "Deployment Complete!"
+          echo "========================================="
+          echo "Lambda Function: $FUNCTION_NAME"
+          echo "Frontend: https://$FRONTEND_BUCKET.s3-website-us-east-1.amazonaws.com"
+          echo "API Gateway: ${{ secrets.API_GATEWAY_URL }}"
+          if [ ! -z "${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}" ]; then
+            echo "CloudFront: https://$(aws cloudfront get-distribution \
+              --id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+              --query 'Distribution.DomainName' --output text)"
+          fi

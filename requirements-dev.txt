@@ -1,0 +1,23 @@
+# Complete requirements for local development
+# Includes both indexing and runtime dependencies
+
+# Include runtime requirements
+-r requirements-lambda.txt
+
+# Include indexing requirements
+-r requirements-indexing.txt
+
+# Development tools
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+black>=23.0.0
+ruff>=0.1.0
+ipython>=8.0.0
+
+# Optional: For running notebooks
+jupyter>=1.0.0
+matplotlib>=3.5.0
+
+# Optional: For database exploration
+# sqlalchemy>=2.0.0
+# alembic>=1.11.0

@@ -4,7 +4,14 @@ This wrapper allows the FastAPI app to run on AWS Lambda with API Gateway.
 """
 
 from mangum import Mangum
-from main import app
+
+try:
+    from backend.main import app  # Lambda package includes backend/ directory
+except ModuleNotFoundError as exc:  # pragma: no cover - local execution fallback
+    if exc.name in {"backend", "backend.main"}:
+        from main import app  # type: ignore
+    else:
+        raise
 
 # Create the Lambda handler
 handler = Mangum(app)

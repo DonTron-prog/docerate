@@ -11,7 +11,7 @@ image:
 Intelligence is what one can do with a little bit of information. Stupidity is what one can't do with a lot of information. Today's LLMs and AI fall into the latter category; however, we can push them in the direction of the former by providing them with the context they require to make decisions. The most effective way of doing that is with Retrieval-Augmented Generation (RAG).[1]
 
 ![monkey stacking context](monkey_context.png)
-The latest buzzword is **context engineering**. Gone is the way of prompt engineering, where the user had to think of ways to best elicit the desired output from the model. We now know enough to provide the right phrasing in the system prompt and then programmatically retrieve the right context needed for the task to fill in the rest. For example: documentation, date and time, few-shot examples, available tools, etc. RAG is the obvious way to search for relevant information, but ill note it can also be done using agents.
+The latest buzzword is **context engineering**. Gone is the way of prompt engineering, where the user had to think of ways to best elicit the desired output from the model. We now know enough to provide the right phrasing in the system prompt and then programmatically retrieve the right context needed for the task to fill in the rest. For example: documentation, date and time, few-shot examples, available tools, etc. RAG is the obvious way to search for relevant information. Ill note retreaval can also be done using agents, however RAG offers the benifite of trading offline compute for online query performance.
 
 RAG dynamically updates the model's context with relevant information by connecting to data sources and selecting the entries matching the search. RAG is good for real-time data access, combating hallucinations, combating stale knowledge, applying rules or guardrails, and overcoming the model's lack of memory.
 
@@ -26,7 +26,7 @@ RAG can be as simple as a few lines of code and can scale to the enterprise leve
 ![RAG workflow](RAG_pipeline.png)
 RAG is a trade-off: it improves query-time performance at the cost of write-time performance. It can be divided into **data indexing** (offline processing) and **retrieval and generation** (online processing). Since we can pre-process the dataset offline, we can balance accuracy and speed and can return responses in the fashion suitable for the application. This is a continuation of the decoupling trend of separating read/write and storage/compute operations of modern distributed systems and ensures the system is easily adaptable.
 
-It is further split into five main components:
+RAG can be further split into five main components:
 
 Offline:
 

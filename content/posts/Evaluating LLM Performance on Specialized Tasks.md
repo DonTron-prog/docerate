@@ -43,9 +43,9 @@ Essentially, this initial phase helps you internalize the new mantra for the age
 
 _"You can't improve what you don't measure."_ - adage
 
-As we move from initial exploration to systematic optimization of the task, robust metrics become essential. There are a few standard metrics in evaluating these NLP models (as noted in table 1), these can be combined and built upon. Multiple frameworks also exist to assist like DSPy [3], Comet and LangSmith, they are powerful and help get started quickly, but still require an understanding on how to evaluate the task [1]. The metrics chosen in these frameworks will identify weaknesses and guide improvements.
+As we move from initial exploration to systematic optimization of the task, robust metrics become essential. There are a few standard metrics in evaluating these NLP models (as noted in table 1), these can be combined and built upon. Frameworks exist to assist in this like DSPy [3], Comet, and LangSmith, they are powerful and help get started quickly, but still require an understanding on how to evaluate the task [1]. The metrics chosen in these frameworks will identify weaknesses and guide improvements.
 
-The metrics can be a second order optimization problem, one on top of optimizing for your task. They will evolve, adapt, and it is crucial they can be tuned [1, 4]. This happens 1) because new information is gathered, or the metric is not capturing all the dimensions of the task, and 2) the chosen metric is not sensitive enough and not providing enough signal. But like in Phase 1 "Simpler is smarter" and the important thing is to start somewhere and iterate.
+The metrics can be a second order optimization problem, one on top of optimizing for your task. They will evolve, adapt, and it is crucial they can be tuned [1, 4]. This happens 1) because new information is gathered, or the metric is not capturing all the dimensions of the task, and 2) the chosen metric is not sensitive enough and not providing enough signal. But like in Phase 1 "Simpler is smarter" the important thing is to start somewhere and iterate.
 
 A multi-faceted evaluation approach, combining computationally efficient traditional metrics with more complex evaluators, can balance efficiency and fidelity (and cost) [5]. By layering simple quantitative measures with more nuanced qualitative assessments, we can create an evaluation system that captures both surface-level performance and deeper aspects of model capability. Balancing multiple measurements ensures efforts target genuine improvements rather than metric-gaming behaviours [1].
 
@@ -63,7 +63,7 @@ Initially, the same set of metrics might be used across different optimization s
 
 A single metric rarely tells the whole story. Combining metrics into a composite score, weighted according to task priorities, often provides the best signal for optimization. But, of course "simpler is smarter". The following are some task specific considerations [1]:
 
-**Summarization** [7, 8, 9]: Blend faithfulness (ROUGE, BERTSCORE), conciseness (length checks), and coherence (LLM-judge assessment).
+**Summarization**: Blend faithfulness (ROUGE, BERTSCORE), conciseness (length checks), and coherence (LLM-judge assessment).[7, 8, 9]
 
 **Classification/Categorization**: Rely on standard metrics like Accuracy, Precision, Recall, and F1-score, appropriately weighted for the real-world cost of errors.
 
@@ -79,7 +79,7 @@ Comparing metrics against each other is crucial [8]. If coarse and fine-grained 
 
 ### Reference-Based Metrics
 
-If a reference or "gold standard" example of input and output exist then the quantitative measures of similarity can be known and simplify the evaluations. However, these comparisons often struggle with semantics and variations in expression—multiple correct answers or ways to summarize a text. Embedding models and LLM-as-judge can help if this is the case (as described below) [8].
+If a reference or "gold standard" example of input and output exist then the quantitative measures of similarity can be known and simplify the evaluations. However, these comparisons often struggle with semantics and variations in expression, for example multiple correct answers or ways to summarize a text. Embedding models and LLM-as-judge can help if this is the case (as described below) [8].
 
 When reference texts aren't available, several alternatives exist: (1) Use LLM-as-Judge approaches where a stronger model evaluates outputs based on criteria-specific rubrics (GEval is a versatile framework for deploying LLM-as-Judge) [1, 5, 9]; (2) Develop task-specific heuristics that check for required elements or constraints; (3) Implement self-consistency checks comparing multiple outputs from the same model with different sampling parameters; or (4) Create synthetic references using strong models, though these should be validated through human review. The most robust approach combines multiple evaluation methods to overcome the limitations of any single technique, creating a more comprehensive assessment framework even without traditional references. The key is recognizing that even without perfect references, structured evaluation criteria still yield valuable optimization signals.
 

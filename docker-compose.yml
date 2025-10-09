@@ -1,24 +1,7 @@
 version: '3.8'
 
 services:
-  # Ollama service for local LLM
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    command: serve
-    networks:
-      - rag-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # Backend FastAPI service
+  # Backend FastAPI service with OpenRouter
   backend:
     build:
       context: .
@@ -33,12 +16,14 @@ services:
       - ./rag:/app/rag
     environment:
       - ENVIRONMENT=local
+      - DATA_SOURCE=local
       - EMBEDDING_PROVIDER=local
-      - LLM_PROVIDER=ollama
-      - OLLAMA_HOST=http://ollama:11434
+      - LLM_PROVIDER=openrouter
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - OPENROUTER_MODEL=meta-llama/llama-3.2-3b-instruct
+      - OPENROUTER_SITE_URL=https://donaldmcgillivray.com
+      - OPENROUTER_APP_NAME=RAG Blog
       - DEBUG=true
-    depends_on:
-      - ollama
     networks:
       - rag-network
     command: uvicorn backend.main:app --host 0.0.0.0 --port 5000 --reload
@@ -81,6 +66,3 @@ services:
 networks:
   rag-network:
     driver: bridge
-
-volumes:
-  ollama_data:

@@ -1,0 +1,29 @@
+# Minimal requirements for Lambda deployment
+# These are the only dependencies needed at runtime in production
+# Total package size: ~50MB (fits well within Lambda's 250MB limit)
+
+# Core runtime dependencies
+# NumPy is supplied via the docerate-numpy-layer Lambda layer to keep the zip small
+
+# API Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+python-multipart>=0.0.6
+markdown>=3.4.0
+python-frontmatter>=1.0.0
+pygments>=2.17.0
+
+# AWS Services
+boto3>=1.28.0  # For Bedrock (LLM + embeddings) and S3
+mangum>=0.17.0  # Lambda adapter for FastAPI
+
+# HTTP client for OpenRouter (optional)
+httpx>=0.25.0
+
+# Note: We do NOT need:
+# - sentence-transformers (using Bedrock for embeddings in production)
+# - scikit-learn (not used anywhere in the codebase)
+# - PyYAML (only needed for indexing)
+# - tiktoken (only needed for chunking during indexing)

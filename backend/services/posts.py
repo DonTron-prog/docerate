@@ -13,7 +13,13 @@ from functools import lru_cache
 class PostService:
     """Service for managing blog post content."""
 
-    def __init__(self, content_dir: str = "content/posts", data_dir: str = "data"):
+    def __init__(
+        self,
+        content_dir: str = "content/posts",
+        data_dir: str = "data",
+        image_base_url: Optional[str] = None,
+        index_summary: Optional[Dict[str, Any]] = None
+    ):
         """Initialize the post service.
 
         Args:
@@ -22,6 +28,8 @@ class PostService:
         """
         self.content_dir = Path(content_dir)
         self.data_dir = Path(data_dir)
+        self.image_base_url = image_base_url or "/images"
+        self._index_summary = index_summary
         self.md = markdown.Markdown(
             extensions=[
                 'meta',
@@ -53,12 +61,19 @@ class PostService:
 
     def _load_post_metadata(self):
         """Load post metadata from index summary."""
-        summary_path = self.data_dir / "index_summary.json"
-        if summary_path.exists():
-            with open(summary_path, 'r') as f:
-                data = json.load(f)
-                self.post_metadata = data.get('posts', {})
-                self.tags = data.get('tags', {})
+        data: Optional[Dict[str, Any]] = None
+
+        if self._index_summary:
+            data = self._index_summary
+        else:
+            summary_path = self.data_dir / "index_summary.json"
+            if summary_path.exists():
+                with open(summary_path, 'r') as f:
+                    data = json.load(f)
+
+        if data:
+            self.post_metadata = data.get('posts', {})
+            self.tags = data.get('tags', {})
         else:
             self.post_metadata = {}
             self.tags = {}
@@ -271,10 +286,7 @@ class PostService:
             if image_path.startswith('http://') or image_path.startswith('https://'):
                 return match.group(0)
 
-            # Otherwise, prepend our image server URL
-            # Remove any leading slash from image_path
-            image_path = image_path.lstrip('/')
-            return f'![{alt_text}](http://localhost:5000/images/{image_path})'
+            return f'![{alt_text}]({self._build_image_url(image_path)})'
 
         # Match markdown image syntax
         pattern = r'!\[([^\]]*)\]\(([^)]+)\)'
@@ -298,9 +310,7 @@ class PostService:
         if image_url.startswith('http://') or image_url.startswith('https://'):
             return image_url
 
-        # Otherwise, prepend our image server URL
-        image_url = image_url.lstrip('/')
-        return f'http://localhost:5000/images/{image_url}'
+        return self._build_image_url(image_url)
 
     def _create_excerpt(self, content: str, max_length: int = 200) -> str:
         """Create an excerpt from post content.
@@ -328,3 +338,20 @@ class PostService:
             excerpt = excerpt[:max_length].rsplit(' ', 1)[0] + '...'
 
         return excerpt.strip()
+
+    def _build_image_url(self, image_path: str) -> str:
+        """Construct an absolute or relative image URL based on configuration."""
+        path = image_path.lstrip('/')
+        base = (self.image_base_url or '').rstrip('/')
+
+        if not base:
+            return f"/images/{path}"
+
+        if base.startswith('http://') or base.startswith('https://'):
+            return f"{base}/{path}"
+
+        if base.startswith('/'):
+            return f"{base}/{path}"
+
+        # Default to relative path under /images if base is something like "images"
+        return f"/{base}/{path}"

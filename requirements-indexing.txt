@@ -1,0 +1,17 @@
+# Requirements for indexing/building embeddings locally
+# These are only needed when building the RAG index
+
+# Embedding generation
+sentence-transformers>=2.2.0
+
+# Data processing
+numpy>=1.24.0
+PyYAML>=6.0
+tiktoken>=0.5.0
+
+# Note: sentence-transformers will automatically install:
+# - transformers
+# - torch (PyTorch)
+# - scipy
+# - tqdm
+# These add ~1.6GB to the package size

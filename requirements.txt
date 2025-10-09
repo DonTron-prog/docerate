@@ -1,7 +1,35 @@
-markdown==3.5.1
-pymdown-extensions==10.5
-pyyaml==6.0.1
-jinja2==3.1.2
-pygments==2.17.2
-pillow==10.2.0
-watchdog==3.0.0
+# RAG System Requirements - DEPRECATED
+# This file is kept for compatibility but should not be used directly
+#
+# USE INSTEAD:
+# - requirements-lambda.txt   : For production Lambda deployment (minimal, ~50MB)
+# - requirements-indexing.txt : For building indexes locally (includes ML libraries)
+# - requirements-dev.txt      : For local development (includes everything)
+#
+# To install for different environments:
+# - Lambda deployment: pip install -r requirements-lambda.txt
+# - Local indexing only: pip install -r requirements-indexing.txt
+# - Full development: pip install -r requirements-dev.txt
+
+# Core dependencies (see split files for specific use cases)
+sentence-transformers>=2.2.0  # Only needed for indexing
+numpy>=1.24.0
+tiktoken>=0.5.0  # Only needed for indexing
+
+# Backend API
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+pydantic>=2.0.0
+python-multipart>=0.0.6
+
+# AWS integration
+boto3>=1.28.0
+mangum>=0.17.0  # For Lambda deployment
+
+# HTTP client for OpenRouter/Ollama
+httpx>=0.24.0
+
+# Data processing
+PyYAML>=6.0  # Only needed for indexing
+
+# Note: scikit-learn has been removed - it was not used anywhere in the codebase

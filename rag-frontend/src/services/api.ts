@@ -116,14 +116,16 @@ class ApiService {
   }
 
   async generateStream(request: GenerateRequest): Promise<EventSource> {
-    const eventSource = new EventSource(
-      `/api/generate/stream?${new URLSearchParams({
-        query: request.query,
-        tags: request.tags.join(','),
-        ...(request.context && { context: request.context }),
-      })}`
-    );
-    return eventSource;
+    const baseUrl = API_BASE_URL ? API_BASE_URL.replace(/\/$/, '') : '';
+    const params = new URLSearchParams({
+      query: request.query,
+      ...(request.tags.length ? { tags: request.tags.join(',') } : {}),
+      ...(request.context ? { context: request.context } : {}),
+    });
+
+    const streamUrl = `${baseUrl}/api/generate/stream?${params.toString()}`;
+
+    return new EventSource(streamUrl);
   }
 
   async checkHealth(): Promise<boolean> {

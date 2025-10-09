@@ -1,151 +1,216 @@
-RAG-Powered Website Implementation Plan                                                                                                  
-                                                                                                                                          
- Based on your requirements and existing infrastructure, here's a comprehensive plan to transform your static blog into a RAG-powered dynamic content generation website:
-                                                                                                                                          
- Architecture Overview                                                                                                                    
-                                                                                                                                          
- Frontend (React App):                                                                                                                    
- - Landing page with interactive tag cloud                                                                                                
- - Topic selection interface with tag filtering                                                                                           
- - Optional context/question input textbox                                                                                               
- - Generated article display with references                                                                                              
- - Deployed to S3/CloudFront                                                                                                              
-                                                                                                                                          
- Backend (AWS Lambda Functions):                                                                                                          
- - Indexing Lambda: Process markdown posts, chunk by sections, generate embeddings                                                        
- - Search Lambda: Handle hybrid search (semantic + keyword), return relevant chunks                                                       
- - Generation Lambda: Generate custom articles using Bedrock models                                                                       
- - API Gateway: RESTful endpoints for frontend-backend communication                                                                      
-                                                                                                                                          
- Storage & Processing:                                                                                                                    
- - S3: Store preprocessed chunks, embeddings, and BM25 indexes as JSON                                                                    
- - DynamoDB (optional): Store metadata and user sessions                                                                                  
- - CloudFront: CDN for both static site and API caching                                                                                   
-                                                                                                                                          
- Implementation Steps                                                                                                                     
-                                                                                                                                          
- Phase 1: Data Processing & Indexing                                                                                                      
-                                                                                                                                          
- 1. Create indexing pipeline script (rag_indexer.py)                                                                                      
-   - Parse existing markdown posts (H2/H3 sections)                                                                                       
-   - Generate semantic chunks preserving boundaries                                                                                       
-   - Extract metadata (title, tags, date, URLs with fragments)                                                                            
-   - Generate embeddings using Bedrock Titan Embeddings                                                                                   
-   - Calculate BM25 statistics for keyword search                                                                                         
-   - Export as JSON artifacts to S3                                                                                                       
- 2. Update CI/CD pipeline (.github/workflows/deploy.yml)                                                                                  
-   - Add indexing step after build                                                                                                        
-   - Upload RAG artifacts to S3 bucket                                                                                                    
-                                                                                                                                          
- Phase 2: Backend Services                                                                                                                
-                                                                                                                                          
- 3. Create Lambda functions:                                                                                                              
-   - rag-search-lambda: Hybrid search implementation                                                                                      
-       - Load embeddings from S3 (cached in memory)                                                                                       
-     - Perform vector similarity search                                                                                                   
-     - Apply BM25 keyword matching                                                                                                        
-     - Use RRF for result fusion                                                                                                          
-     - Return top-k chunks with metadata                                                                                                  
-   - rag-generate-lambda: Content generation                                                                                              
-       - Receive user query and selected tags                                                                                             
-     - Call search Lambda for relevant chunks                                                                                             
-     - Construct prompt with retrieved context                                                                                            
-     - Call Bedrock Claude/Llama for generation                                                                                           
-     - Format response with references                                                                                                    
-     - Preserve your writing style through prompt engineering                                                                             
- 4. Configure API Gateway                                                                                                                 
-   - /api/search - POST endpoint for chunk retrieval                                                                                      
-   - /api/generate - POST endpoint for article generation                                                                                 
-   - /api/tags - GET endpoint for available tags                                                                                          
-   - Enable CORS for frontend access                                                                                                      
-                                                                                                                                          
- Phase 3: Frontend Development                                                                                                            
-                                                                                                                                          
- 5. Create React application (rag-frontend/)                                                                                              
-   - Component structure:                                                                                                                 
-       - TagCloud.jsx - Interactive tag visualization                                                                                     
-     - QueryInput.jsx - User input interface                                                                                              
-     - ArticleDisplay.jsx - Generated content viewer                                                                                      
-     - References.jsx - Source article links                                                                                              
-   - State management for user selections                                                                                                 
-   - API integration with error handling                                                                                                  
- 6. Implement key features:                                                                                                               
-   - Visual tag cloud with D3.js or similar                                                                                               
-   - Multi-select tag filtering                                                                                                           
-   - Real-time search preview                                                                                                             
-   - Markdown rendering for generated content                                                                                             
-   - Citation links to original articles                                                                                                  
-                                                                                                                                          
- Phase 4: Infrastructure & Deployment                                                                                                     
-                                                                                                                                          
- 7. AWS Configuration:                                                                                                                    
-   - IAM roles for Lambda execution                                                                                                       
-   - S3 buckets for artifacts and frontend                                                                                                
-   - CloudFront distributions                                                                                                             
-   - Route 53 DNS configuration                                                                                                           
-   - API Gateway custom domain                                                                                                            
- 8. Monitoring & Optimization:                                                                                                            
-   - CloudWatch metrics for Lambda performance                                                                                            
-   - X-Ray tracing for latency analysis                                                                                                   
-   - Cost optimization through caching                                                                                                    
-   - A/B testing for retrieval strategies                                                                                                 
-                                                                                                                                          
- Technical Specifications                                                                                                                 
-                                                                                                                                          
- Chunking Strategy:                                                                                                                       
- - Primary: Semantic sections (H2/H3 boundaries)                                                                                          
- - Token limit: 512 tokens per chunk                                                                                                      
- - Overlap: 50 tokens between adjacent chunks                                                                                             
- - Metadata: post_slug, section_id, heading, position, tags                                                                               
-                                                                                                                                          
- Retrieval Configuration:                                                                                                                 
- - Embedding model: Amazon Titan Text Embeddings V2                                                                                       
- - Vector similarity: Cosine similarity                                                                                                   
- - Initial retrieval: Top-20 candidates                                                                                                   
- - Reranking: Top-5 final chunks                                                                                                          
- - Hybrid weight: 0.7 semantic, 0.3 keyword                                                                                               
-                                                                                                                                          
- Generation Prompt Template:                                                                                                              
- You are Donald McGillivray, author of technical blog posts. Generate an article based on the user's query using the provided context chunks. Maintain the technical depth and writing style from the source material.
-                                                                                                                                          
- Context chunks:                                                                                                                          
- {retrieved_chunks}                                                                                                                       
-                                                                                                                                          
- User query: {user_query}                                                                                                                 
- Selected topics: {selected_tags}                                                                                                         
-                                                                                                                                          
- Generate a cohesive article that:                                                                                                        
- 1. Addresses the user's specific question                                                                                                
- 2. Maintains technical accuracy                                                                                                          
- 3. Uses your characteristic writing style                                                                                                
- 4. Includes [ref:N] citations for source chunks                                                                                          
-                                                                                                                                          
- File Structure                                                                                                                           
-                                                                                                                                          
- dontron_blog/                                                                                                                            
- ├── rag/                                                                                                                                 
- │   ├── indexer.py          # Offline processing                                                                                         
- │   ├── embeddings.py        # Bedrock integration                                                                                       
- │   ├── chunker.py           # Document chunking                                                                                         
- │   └── bm25.py              # Keyword search                                                                                            
- ├── lambda/                                                                                                                              
- │   ├── search/              # Search Lambda                                                                                             
- │   ├── generate/            # Generation Lambda                                                                                         
- │   └── requirements.txt                                                                                                                 
- ├── rag-frontend/            # React app                                                                                                 
- │   ├── src/                                                                                                                             
- │   ├── public/                                                                                                                          
- │   └── package.json                                                                                                                     
- └── infrastructure/                                                                                                                      
-     ├── terraform/           # IaC (optional)                                                                                            
-     └── cloudformation/      # Alternative IaC                                                                                           
-                                                                                                                                          
- Estimated Timeline                                                                                                                       
-                                                                                                                                          
- - Week 1-2: Data processing pipeline & indexing                                                                                          
- - Week 2-3: Lambda functions & API Gateway                                                                                               
- - Week 3-4: React frontend development                                                                                                   
- - Week 4-5: Integration, testing & optimization                                                                                          
- - Week 5-6: Deployment & monitoring setup                                                                                                
-                                                                                                                                          
- This plan provides a scalable foundation that can start with in-memory search (<50MB vectors) and later migrate to a vector database as your content grows.
+complete RAG-powered website using FastAPI that can run locally and deploy seamlessly to AWS. Here's the implementation 
+    plan:
+
+    Project Structure
+
+    dontron_blog/
+    ├── rag/                          # RAG processing modules
+    │   ├── __init__.py
+    │   ├── indexer.py               # Document chunking & indexing
+    │   ├── embeddings.py            # Embedding generation
+    │   ├── chunker.py               # Markdown section chunking
+    │   ├── search.py                # Hybrid search implementation
+    │   └── bm25.py                  # BM25 keyword search
+    ├── backend/                      # FastAPI backend
+    │   ├── __init__.py
+    │   ├── main.py                  # FastAPI application
+    │   ├── models.py                # Pydantic models
+    │   ├── config.py                # Configuration
+    │   ├── routers/
+    │   │   ├── search.py            # Search endpoints
+    │   │   ├── generate.py          # Generation endpoints
+    │   │   └── tags.py              # Tag endpoints
+    │   ├── services/
+    │   │   ├── ollama.py            # Local LLM service
+    │   │   ├── bedrock.py           # AWS Bedrock service
+    │   │   └── embeddings.py        # Embedding service
+    │   ├── lambda_handler.py        # AWS Lambda wrapper
+    │   └── requirements.txt
+    ├── rag-frontend/                 # React frontend
+    │   ├── src/
+    │   │   ├── components/
+    │   │   │   ├── TagCloud.jsx
+    │   │   │   ├── QueryInput.jsx
+    │   │   │   ├── ArticleDisplay.jsx
+    │   │   │   └── References.jsx
+    │   │   ├── services/
+    │   │   │   └── api.js
+    │   │   └── App.jsx
+    │   ├── package.json
+    │   └── Dockerfile
+    ├── data/                         # Processed data storage
+    │   ├── chunks.json
+    │   ├── embeddings.npy
+    │   ├── metadata.json
+    │   └── bm25_index.pkl
+    ├── scripts/
+    │   ├── index_posts.py           # Run indexing pipeline
+    │   └── deploy_aws.sh            # Deploy to AWS
+    ├── infrastructure/
+    │   ├── terraform/
+    │   │   ├── main.tf
+    │   │   ├── lambda.tf
+    │   │   ├── api_gateway.tf
+    │   │   └── s3.tf
+    │   └── cloudformation/
+    │       └── rag-stack.yaml
+    ├── docker-compose.yml
+    ├── Dockerfile.backend
+    ├── Dockerfile.indexer
+    └── .env.example
+
+    Implementation Steps
+
+    1. RAG Indexing Pipeline (rag/indexer.py)
+
+    - Parse markdown posts with frontmatter
+    - Chunk by H2/H3 sections (max 512 tokens)
+    - Preserve sentence boundaries
+    - Extract metadata (title, tags, date, URL fragments)
+    - Generate embeddings using sentence-transformers locally
+    - Calculate BM25 statistics for keyword search
+    - Save as JSON/pickle files for fast loading
+
+    2. FastAPI Backend (backend/main.py)
+
+    # Core endpoints:
+    GET  /api/tags           - Get available tags
+    POST /api/search         - Hybrid search for chunks
+    POST /api/generate       - Generate custom article
+    POST /api/generate/stream - Stream generation response
+    GET  /docs              - Interactive API documentation
+    GET  /health            - Health check for monitoring
+
+    Features:
+    - Async/await for concurrent operations
+    - Pydantic models for validation
+    - CORS middleware for frontend access
+    - Environment-based configuration (local vs AWS)
+    - Automatic switching between Ollama (local) and Bedrock (AWS)
+
+    3. Hybrid Search Implementation (rag/search.py)
+
+    - Dense retrieval: Cosine similarity on embeddings
+    - Sparse retrieval: BM25 keyword matching
+    - Reciprocal Rank Fusion (RRF) for result merging
+    - Tag filtering for topic selection
+    - Reranking with cross-encoder model
+    - Return top-k chunks with metadata
+
+    4. React Frontend (rag-frontend/)
+
+    Components:
+    - TagCloud: D3.js interactive visualization
+    - QueryInput: Text input with autocomplete
+    - ArticleDisplay: Markdown renderer with syntax highlighting
+    - References: Collapsible source citations
+
+    Features:
+    - Real-time search preview
+    - Loading states and error handling
+    - Responsive design
+    - Dark mode support
+    - Export generated articles
+
+    5. Local Development Setup
+
+    # Start all services locally
+    docker-compose up -d
+
+    # Or run individually:
+    # Terminal 1: Ollama
+    ollama serve
+    ollama pull llama3.2
+    ollama pull nomic-embed-text
+
+    # Terminal 2: FastAPI
+    cd backend
+    uvicorn main:app --reload --port 5000
+
+    # Terminal 3: React
+    cd rag-frontend
+    npm start
+
+    6. AWS Deployment Configuration
+
+    Lambda Function (backend/lambda_handler.py):
+    from mangum import Mangum
+    from main import app
+    handler = Mangum(app)
+
+    Environment Variables:
+    - ENVIRONMENT: local/production
+    - EMBEDDING_MODEL: local/bedrock
+    - LLM_SERVICE: ollama/bedrock
+    - S3_BUCKET: for production data storage
+    - BEDROCK_MODEL_ID: claude-3-haiku/titan-embed
+
+    API Gateway:
+    - REST API with Lambda proxy integration
+    - Custom domain: api.donaldmcgillivray.com
+    - CORS configuration
+    - Rate limiting and API keys
+
+    7. CI/CD Pipeline Updates
+
+    Add to .github/workflows/deploy.yml:
+    - name: Index blog posts
+      run: |
+        python scripts/index_posts.py
+        
+    - name: Upload RAG artifacts
+      run: |
+        aws s3 sync data/ s3://${{ secrets.RAG_BUCKET }}/data/
+        
+    - name: Deploy Lambda function
+      run: |
+        cd backend
+        zip -r function.zip .
+        aws lambda update-function-code \
+          --function-name rag-api \
+          --zip-file fileb://function.zip
+
+    8. Infrastructure as Code (Terraform)
+
+    - S3 buckets for data and frontend
+    - Lambda functions with appropriate IAM roles
+    - API Gateway with custom domain
+    - CloudFront distribution
+    - Route 53 DNS configuration
+    - CloudWatch logging and monitoring
+
+    Key Features
+
+    1. Seamless Local/AWS Switching:
+      - Same codebase for both environments
+      - Environment variables control service selection
+      - Docker compose for local orchestration
+    2. Performance Optimizations:
+      - In-memory caching of embeddings (<50MB)
+      - Async operations for concurrent processing
+      - CDN caching for static assets
+      - Lambda provisioned concurrency for cold starts
+    3. Monitoring & Observability:
+      - CloudWatch metrics and logs
+      - X-Ray tracing for latency analysis
+      - Custom metrics for search relevance
+      - A/B testing framework ready
+    4. Security:
+      - API key authentication
+      - Rate limiting
+      - Input validation with Pydantic
+      - CORS properly configured
+      - Secrets management with AWS Secrets Manager
+
+    Development Timeline
+
+    - Day 1-2: Set up project structure and RAG indexing pipeline
+    - Day 3-4: Implement FastAPI backend with local Ollama integration
+    - Day 5-6: Create React frontend with core components
+    - Day 7-8: Add hybrid search and reranking
+    - Day 9-10: Docker setup and local testing
+    - Day 11-12: AWS deployment configuration and Lambda wrapper
+    - Day 13-14: Infrastructure as code and CI/CD pipeline
+    - Day 15: Testing, optimization, and documentation
+
+    This implementation provides a production-ready RAG system that works locally with Ollama and deploys seamlessly to AWS with Bedrock.

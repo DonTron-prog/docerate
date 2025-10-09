@@ -9,6 +9,11 @@ from typing import List, Dict, Optional, Union
 from dataclasses import dataclass
 import hashlib
 
+try:
+    from botocore.exceptions import ClientError  # Provided when boto3 is installed
+except ImportError:  # pragma: no cover - allows local runs without boto3
+    ClientError = None
+
 
 @dataclass
 class EmbeddingConfig:
@@ -95,40 +100,49 @@ class EmbeddingService:
             batch_embeddings = []
 
             for text in batch:
+                model_id = self.config.model_name
+
                 # Prepare request based on model
-                if 'titan' in self.config.model_name.lower():
-                    request_body = {
-                        "inputText": text
-                    }
-                    model_id = "amazon.titan-embed-text-v1"
-                elif 'cohere' in self.config.model_name.lower():
+                if 'titan' in model_id.lower():
+                    request_body = {"inputText": text}
+                elif 'cohere' in model_id.lower():
                     request_body = {
                         "texts": [text],
                         "input_type": "search_document"
                     }
-                    model_id = "cohere.embed-english-v3"
                 else:
-                    raise ValueError(f"Unsupported Bedrock model: {self.config.model_name}")
+                    raise ValueError(f"Unsupported Bedrock model: {model_id}")
 
-                # Call Bedrock
-                response = self.bedrock_client.invoke_model(
-                    modelId=model_id,
-                    body=json.dumps(request_body)
-                )
+                try:
+                    response = self.bedrock_client.invoke_model(
+                        modelId=model_id,
+                        body=json.dumps(request_body),
+                        contentType="application/json",
+                        accept="application/json"
+                    )
+                except Exception as error:  # pragma: no cover - network call
+                    if ClientError and isinstance(error, ClientError):
+                        error_code = error.response.get("Error", {}).get("Code", "")
+                        if error_code == "AccessDeniedException":
+                            raise PermissionError(
+                                f"Bedrock denied access to model '{model_id}'. Ensure the model is enabled in your account."
+                            ) from error
+                    raise RuntimeError(
+                        f"Bedrock invoke_model failed for '{model_id}': {error}"
+                    ) from error
 
-                # Parse response
                 response_body = json.loads(response['body'].read())
 
-                if 'titan' in self.config.model_name.lower():
+                if 'titan' in model_id.lower():
                     embedding = response_body['embedding']
-                elif 'cohere' in self.config.model_name.lower():
+                elif 'cohere' in model_id.lower():
                     embedding = response_body['embeddings'][0]
 
                 batch_embeddings.append(embedding)
 
             all_embeddings.extend(batch_embeddings)
 
-        return np.array(all_embeddings)
+        return np.array(all_embeddings, dtype=np.float32)
 
     def embed_query(self, query: str) -> np.ndarray:
         """

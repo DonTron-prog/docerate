@@ -4,7 +4,7 @@ Supports both local and AWS deployment environments.
 """
 
 import os
-from typing import Optional
+from typing import Optional, List
 from pydantic_settings import BaseSettings
 from pydantic import Field
 
@@ -20,14 +20,31 @@ class Settings(BaseSettings):
     api_title: str = "RAG Blog API"
     api_version: str = "1.0.0"
     api_prefix: str = "/api"
-    cors_origins: list = ["http://localhost:3000", "https://donaldmcgillivray.com"]
+    cors_origins: List[str] = Field(
+        default_factory=lambda: [
+            "http://localhost:3000",
+            "https://localhost:3000",
+            "https://donaldmcgillivray.com",
+            "https://www.donaldmcgillivray.com",
+            "https://docerate.com",
+            "https://www.docerate.com",
+            "https://d330crwslcovkm.cloudfront.net"
+        ],
+        env="CORS_ORIGINS"
+    )
 
-    # Data paths
+    # Data configuration
+    data_source: str = Field(default="local", env="DATA_SOURCE")  # "local" or "s3"
     data_dir: str = Field(default="data", env="DATA_DIR")
     chunks_file: str = "chunks.json"
     embeddings_file: str = "embeddings.npy"
     metadata_file: str = "metadata.json"
     bm25_file: str = "bm25_index.pkl"
+
+    # Content configuration
+    content_dir: str = Field(default="content/posts", env="CONTENT_DIR")
+    image_dir: str = Field(default="content/images", env="IMAGE_DIR")
+    image_base_url: str = Field(default="/images", env="IMAGE_BASE_URL")
 
     # Embedding configuration
     embedding_provider: str = Field(default="local", env="EMBEDDING_PROVIDER")
@@ -38,6 +55,12 @@ class Settings(BaseSettings):
     llm_provider: str = Field(default="ollama", env="LLM_PROVIDER")
     llm_model: str = Field(default="llama3.2", env="LLM_MODEL")
     ollama_host: str = Field(default="http://localhost:11434", env="OLLAMA_HOST")
+
+    # OpenRouter configuration
+    openrouter_api_key: str = Field(default="", env="OPENROUTER_API_KEY")
+    openrouter_model: str = Field(default="meta-llama/llama-3.2-3b-instruct", env="OPENROUTER_MODEL")
+    openrouter_site_url: str = Field(default="https://donaldmcgillivray.com", env="OPENROUTER_SITE_URL")
+    openrouter_app_name: str = Field(default="RAG Blog", env="OPENROUTER_APP_NAME")
 
     # AWS Configuration (for production)
     aws_region: str = Field(default="us-east-1", env="AWS_REGION")
