@@ -191,14 +191,18 @@ jobs:
 
       # Step 8: Invalidate CloudFront (if configured)
       - name: Invalidate CloudFront
-        if: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        if: ${{ env.DISTRIBUTION_ID != '' }}
         env:
           DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
         run: |
-          aws cloudfront create-invalidation \
-            --distribution-id $DISTRIBUTION_ID \
-            --paths "/*"
-          echo "CloudFront invalidation started"
+          if [ -n "$DISTRIBUTION_ID" ]; then
+            aws cloudfront create-invalidation \
+              --distribution-id $DISTRIBUTION_ID \
+              --paths "/*"
+            echo "CloudFront invalidation started"
+          else
+            echo "CloudFront distribution ID not configured, skipping invalidation"
+          fi
 
       # Step 9: Upload artifacts for debugging
       - name: Upload build artifacts
