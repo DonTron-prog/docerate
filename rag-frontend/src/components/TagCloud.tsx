@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tag } from '../services/api';
 
 interface TagCloudProps {
@@ -8,6 +8,7 @@ interface TagCloudProps {
 }
 
 const TagCloudComponent: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagClick }) => {
+  const [isCollapsed, setIsCollapsed] = useState(true);
   // Calculate font size based on count
   const maxCount = Math.max(...tags.map(t => t.count), 1);
   const minCount = Math.min(...tags.map(t => t.count), 1);
@@ -25,8 +26,55 @@ const TagCloudComponent: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagC
       padding: '1.5rem',
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
     }}>
-      <h3>Select Topics to Filter Content</h3>
-      <div className="tag-cloud" style={{
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        cursor: 'pointer',
+        userSelect: 'none'
+      }}
+      onClick={() => setIsCollapsed(!isCollapsed)}
+      >
+        <div>
+          <h3 style={{ margin: 0 }}>Select Topics to Filter Content</h3>
+          {isCollapsed && selectedTags.length > 0 && (
+            <p style={{
+              margin: '4px 0 0 0',
+              fontSize: '14px',
+              color: '#66d9ef',
+              fontWeight: '500'
+            }}>
+              {selectedTags.length} topic{selectedTags.length > 1 ? 's' : ''} selected
+            </p>
+          )}
+        </div>
+        <button
+          style={{
+            background: 'none',
+            border: 'none',
+            color: '#a6e22e',
+            fontSize: '24px',
+            cursor: 'pointer',
+            padding: '0 8px',
+            display: 'flex',
+            alignItems: 'center',
+            transition: 'transform 0.3s ease',
+            transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)'
+          }}
+          aria-label={isCollapsed ? 'Expand' : 'Collapse'}
+        >
+          ▼
+        </button>
+      </div>
+
+      <div style={{
+        maxHeight: isCollapsed ? '0' : '1000px',
+        overflow: 'hidden',
+        transition: 'max-height 0.3s ease-in-out',
+        opacity: isCollapsed ? 0 : 1,
+        marginTop: isCollapsed ? '0' : '16px'
+      }}>
+        <div className="tag-cloud" style={{
         display: 'flex',
         flexWrap: 'wrap',
         gap: '8px',
@@ -122,6 +170,7 @@ const TagCloudComponent: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagC
           </button>
         </div>
       )}
+      </div>
     </div>
   );
 };

@@ -128,3 +128,4 @@ PYTHONPATH=$PWD       # Required for imports
 - Use `backend/lambda_handler.py` for Lambda
 - Requires Bedrock permissions for production
 - Store index files in S3 for Lambda access
+- use the conda environment blog
