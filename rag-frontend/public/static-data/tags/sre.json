@@ -1,0 +1,45 @@
+{
+  "tag": "SRE",
+  "posts": [
+    {
+      "slug": "agentic-reliability-engineering",
+      "title": "Agentic Reliability Engineering",
+      "date": "2025-05-29",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "category": "DevOps",
+      "description": "Exploring how AI agents can revolutionize Site Reliability Engineering by automating incident response, reducing search space, and augmenting human expertise through intelligent orchestration.",
+      "image": null,
+      "excerpt": "Building an Agentic-SRE: Future of Incident Response In Site Reliability Engineering (SRE), every second counts. When an alert fires, its a race to identify...",
+      "reading_time": 10
+    },
+    {
+      "slug": "agentic-sre",
+      "title": "Agentic SRE",
+      "date": "2025-05-25",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "category": "DevOps",
+      "description": "A overview of agentic SRE landscape, exploring how AI-driven systems tackling incident response, root cause analysis, and reliability engineering across modern infrastructure platforms.",
+      "image": null,
+      "excerpt": "Introduction The site Reliability Engineering (SRE) position was created out of necessity by Google to maintian its gigital infrastructure and is now a...",
+      "reading_time": 8
+    }
+  ],
+  "total": 2
+}

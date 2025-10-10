@@ -1,0 +1,27 @@
+{
+  "tag": "Performance",
+  "posts": [
+    {
+      "slug": "evaluating-llm-performance-on-specialized-tasks",
+      "title": "Evaluating LLM Performance on Specialized Tasks",
+      "date": "2025-04-28",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "category": "Technology",
+      "description": "A comprehensive guide to evaluating and optimizing Large Language Models for specialized tasks, covering metric selection, semantic analysis, worst-case performance assessment, and best practices for systematic LLM evaluation.",
+      "image": "LLM_evaluation_process.png",
+      "excerpt": "EVALUATING LLM PERFORMANCE ON SPECIALIZED TASKS METRIC EVALUATION BEST PRACTICES INTRODUCTION: THE LLM OPTIMIZATION PARADIGM \"What gets measured gets...",
+      "reading_time": 13
+    }
+  ],
+  "total": 1
+}

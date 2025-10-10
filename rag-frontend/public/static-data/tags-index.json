@@ -1,0 +1,253 @@
+{
+  "tags": [
+    {
+      "name": "AI",
+      "count": 5,
+      "posts": [
+        "investment-agent",
+        "agentic-sre",
+        "agentic-reliability-engineering",
+        "evaluating-llm-performance-on-specialized-tasks",
+        "rag-context-engineering"
+      ]
+    },
+    {
+      "name": "AIOps",
+      "count": 1,
+      "posts": [
+        "agentic-sre"
+      ]
+    },
+    {
+      "name": "Agents",
+      "count": 3,
+      "posts": [
+        "investment-agent",
+        "agentic-reliability-engineering",
+        "rag-context-engineering"
+      ]
+    },
+    {
+      "name": "Atomic Agents",
+      "count": 1,
+      "posts": [
+        "agentic-reliability-engineering"
+      ]
+    },
+    {
+      "name": "Automation",
+      "count": 2,
+      "posts": [
+        "investment-agent",
+        "agentic-sre"
+      ]
+    },
+    {
+      "name": "Context Engineering",
+      "count": 1,
+      "posts": [
+        "rag-context-engineering"
+      ]
+    },
+    {
+      "name": "Data Science",
+      "count": 1,
+      "posts": [
+        "evaluating-llm-performance-on-specialized-tasks"
+      ]
+    },
+    {
+      "name": "DevOps",
+      "count": 1,
+      "posts": [
+        "agentic-sre"
+      ]
+    },
+    {
+      "name": "Evaluation",
+      "count": 2,
+      "posts": [
+        "evaluating-llm-performance-on-specialized-tasks",
+        "rag-context-engineering"
+      ]
+    },
+    {
+      "name": "Finance",
+      "count": 1,
+      "posts": [
+        "investment-agent"
+      ]
+    },
+    {
+      "name": "Financial Analysis",
+      "count": 1,
+      "posts": [
+        "investment-agent"
+      ]
+    },
+    {
+      "name": "Guardrails",
+      "count": 1,
+      "posts": [
+        "rag-context-engineering"
+      ]
+    },
+    {
+      "name": "Incident Management",
+      "count": 1,
+      "posts": [
+        "agentic-sre"
+      ]
+    },
+    {
+      "name": "Incident Response",
+      "count": 1,
+      "posts": [
+        "agentic-reliability-engineering"
+      ]
+    },
+    {
+      "name": "Investment",
+      "count": 1,
+      "posts": [
+        "investment-agent"
+      ]
+    },
+    {
+      "name": "LLM",
+      "count": 1,
+      "posts": [
+        "evaluating-llm-performance-on-specialized-tasks"
+      ]
+    },
+    {
+      "name": "Machine Learning",
+      "count": 1,
+      "posts": [
+        "evaluating-llm-performance-on-specialized-tasks"
+      ]
+    },
+    {
+      "name": "Metrics",
+      "count": 1,
+      "posts": [
+        "evaluating-llm-performance-on-specialized-tasks"
+      ]
+    },
+    {
+      "name": "Multi-Agent",
+      "count": 1,
+      "posts": [
+        "investment-agent"
+      ]
+    },
+    {
+      "name": "NLP",
+      "count": 1,
+      "posts": [
+        "evaluating-llm-performance-on-specialized-tasks"
+      ]
+    },
+    {
+      "name": "Observability",
+      "count": 1,
+      "posts": [
+        "agentic-sre"
+      ]
+    },
+    {
+      "name": "Optimization",
+      "count": 1,
+      "posts": [
+        "evaluating-llm-performance-on-specialized-tasks"
+      ]
+    },
+    {
+      "name": "Orchestration",
+      "count": 1,
+      "posts": [
+        "agentic-reliability-engineering"
+      ]
+    },
+    {
+      "name": "Performance",
+      "count": 1,
+      "posts": [
+        "evaluating-llm-performance-on-specialized-tasks"
+      ]
+    },
+    {
+      "name": "Platform Engineering",
+      "count": 1,
+      "posts": [
+        "agentic-sre"
+      ]
+    },
+    {
+      "name": "Pydantic-AI",
+      "count": 1,
+      "posts": [
+        "investment-agent"
+      ]
+    },
+    {
+      "name": "RAG",
+      "count": 1,
+      "posts": [
+        "rag-context-engineering"
+      ]
+    },
+    {
+      "name": "Reliability",
+      "count": 1,
+      "posts": [
+        "agentic-reliability-engineering"
+      ]
+    },
+    {
+      "name": "Research",
+      "count": 1,
+      "posts": [
+        "investment-agent"
+      ]
+    },
+    {
+      "name": "SRE",
+      "count": 2,
+      "posts": [
+        "agentic-sre",
+        "agentic-reliability-engineering"
+      ]
+    },
+    {
+      "name": "aws",
+      "count": 1,
+      "posts": [
+        "welcome-to-my-blog"
+      ]
+    },
+    {
+      "name": "python",
+      "count": 1,
+      "posts": [
+        "welcome-to-my-blog"
+      ]
+    },
+    {
+      "name": "static-site",
+      "count": 1,
+      "posts": [
+        "welcome-to-my-blog"
+      ]
+    },
+    {
+      "name": "web-development",
+      "count": 1,
+      "posts": [
+        "welcome-to-my-blog"
+      ]
+    }
+  ],
+  "total": 34,
+  "generated_at": "2025-10-10T11:55:16.855550"
+}

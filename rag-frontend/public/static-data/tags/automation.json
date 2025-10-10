@@ -1,0 +1,47 @@
+{
+  "tag": "Automation",
+  "posts": [
+    {
+      "slug": "investment-agent",
+      "title": "Investment Research Workflow",
+      "date": "2025-06-24",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "category": "Technology",
+      "description": "A multi-agent investment research system built with Pydantic-AI that autonomously gathers data, performs financial analysis, and generates actionable investment insights.",
+      "image": null,
+      "excerpt": "- Try the Investment Research Agent on Hugging Face - See implementation on Github Pydantic-AI Investment Research System This document details a multi-agent...",
+      "reading_time": 7
+    },
+    {
+      "slug": "agentic-sre",
+      "title": "Agentic SRE",
+      "date": "2025-05-25",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "category": "DevOps",
+      "description": "A overview of agentic SRE landscape, exploring how AI-driven systems tackling incident response, root cause analysis, and reliability engineering across modern infrastructure platforms.",
+      "image": null,
+      "excerpt": "Introduction The site Reliability Engineering (SRE) position was created out of necessity by Google to maintian its gigital infrastructure and is now a...",
+      "reading_time": 8
+    }
+  ],
+  "total": 2
+}

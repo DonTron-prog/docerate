@@ -13,7 +13,7 @@ FRONTEND_BUCKET=${FRONTEND_BUCKET:-"your-frontend-bucket"}
 CLOUDFRONT_DIST_ID=${CLOUDFRONT_DIST_ID:-""}
 AWS_REGION=${AWS_REGION:-"us-east-1"}
 AWS_PROFILE=${AWS_PROFILE:-"default"}
-API_URL=${REACT_APP_API_URL:-"https://your-api-gateway-url"}
+API_URL=${REACT_APP_API_URL:-"https://9o9ra1wg7f.execute-api.us-east-1.amazonaws.com/prod"}
 
 # Check if bucket is configured
 if [ "$FRONTEND_BUCKET" == "your-frontend-bucket" ]; then
@@ -29,6 +29,16 @@ if [ ! -d "rag-frontend" ]; then
     exit 1
 fi
 
+# Generate static posts data
+echo "Generating static post data..."
+if [ -f "scripts/generate-static-posts.py" ]; then
+    python scripts/generate-static-posts.py || {
+        echo "Warning: Failed to generate static posts, continuing anyway..."
+    }
+else
+    echo "Warning: Static post generator not found, skipping..."
+fi
+
 # Build React app
 echo "Building React application..."
 cd rag-frontend
@@ -42,7 +52,7 @@ fi
 # Set API URL for production
 export REACT_APP_API_URL=$API_URL
 
-# Build for production
+# Build for production (this will also run static generation via npm script)
 echo "Creating production build..."
 npm run build
 
@@ -91,27 +101,40 @@ fi
 
 # Sync files to S3
 echo "Deploying to S3..."
+
+# Sync main assets with long cache
 aws s3 sync rag-frontend/build/ "s3://$FRONTEND_BUCKET" \
     --delete \
     --profile $AWS_PROFILE \
     --region $AWS_REGION \
     --cache-control "public, max-age=31536000" \
     --exclude "index.html" \
-    --exclude "*.json"
+    --exclude "*.json" \
+    --exclude "static-data/*"
 
-# Upload index.html and JSON files with no cache
+# Upload index.html with short cache for quick updates
 aws s3 cp rag-frontend/build/index.html "s3://$FRONTEND_BUCKET/index.html" \
     --profile $AWS_PROFILE \
     --region $AWS_REGION \
-    --cache-control "no-cache, no-store, must-revalidate" \
+    --cache-control "public, max-age=300" \
     --content-type "text/html"
 
+# Upload static post data with medium cache (1 hour)
+echo "Deploying static post data..."
+aws s3 sync rag-frontend/build/static-data/ "s3://$FRONTEND_BUCKET/static-data/" \
+    --profile $AWS_PROFILE \
+    --region $AWS_REGION \
+    --cache-control "public, max-age=3600" \
+    --content-type "application/json"
+
+# Upload other JSON files with no cache
 aws s3 sync rag-frontend/build/ "s3://$FRONTEND_BUCKET" \
     --profile $AWS_PROFILE \
     --region $AWS_REGION \
     --cache-control "no-cache, no-store, must-revalidate" \
     --exclude "*" \
-    --include "*.json"
+    --include "*.json" \
+    --exclude "static-data/*"
 
 # Invalidate CloudFront cache if configured
 if [ ! -z "$CLOUDFRONT_DIST_ID" ]; then

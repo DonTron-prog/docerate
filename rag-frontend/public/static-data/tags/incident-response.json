@@ -1,0 +1,25 @@
+{
+  "tag": "Incident Response",
+  "posts": [
+    {
+      "slug": "agentic-reliability-engineering",
+      "title": "Agentic Reliability Engineering",
+      "date": "2025-05-29",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "category": "DevOps",
+      "description": "Exploring how AI agents can revolutionize Site Reliability Engineering by automating incident response, reducing search space, and augmenting human expertise through intelligent orchestration.",
+      "image": null,
+      "excerpt": "Building an Agentic-SRE: Future of Incident Response In Site Reliability Engineering (SRE), every second counts. When an alert fires, its a race to identify...",
+      "reading_time": 10
+    }
+  ],
+  "total": 1
+}

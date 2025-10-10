@@ -1,0 +1,27 @@
+{
+  "tag": "Investment",
+  "posts": [
+    {
+      "slug": "investment-agent",
+      "title": "Investment Research Workflow",
+      "date": "2025-06-24",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "category": "Technology",
+      "description": "A multi-agent investment research system built with Pydantic-AI that autonomously gathers data, performs financial analysis, and generates actionable investment insights.",
+      "image": null,
+      "excerpt": "- Try the Investment Research Agent on Hugging Face - See implementation on Github Pydantic-AI Investment Research System This document details a multi-agent...",
+      "reading_time": 7
+    }
+  ],
+  "total": 1
+}

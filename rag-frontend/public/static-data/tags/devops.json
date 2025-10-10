@@ -1,0 +1,26 @@
+{
+  "tag": "DevOps",
+  "posts": [
+    {
+      "slug": "agentic-sre",
+      "title": "Agentic SRE",
+      "date": "2025-05-25",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "category": "DevOps",
+      "description": "A overview of agentic SRE landscape, exploring how AI-driven systems tackling incident response, root cause analysis, and reliability engineering across modern infrastructure platforms.",
+      "image": null,
+      "excerpt": "Introduction The site Reliability Engineering (SRE) position was created out of necessity by Google to maintian its gigital infrastructure and is now a...",
+      "reading_time": 8
+    }
+  ],
+  "total": 1
+}

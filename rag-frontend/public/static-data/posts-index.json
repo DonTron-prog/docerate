@@ -1,0 +1,121 @@
+{
+  "posts": [
+    {
+      "slug": "rag-context-engineering",
+      "title": "RAG Context Engineering",
+      "date": "2025-09-12",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "category": "Infrastructure",
+      "description": "This article explores Retrieval-Augmented Generation (RAG) as a key technique for context engineering in LLMs. It details the RAG workflow, covering data indexing (preprocessing, chunking, embedding, and vector database storage) and online retrieval and generation. It then explores evaluation methods, advanced techniques, and its shortcomings",
+      "image": null,
+      "excerpt": "Intelligence is what one can do with a little bit of information. Stupidity is what one can't do with a lot of information. Today's LLMs and AI fall into the...",
+      "reading_time": 11
+    },
+    {
+      "slug": "investment-agent",
+      "title": "Investment Research Workflow",
+      "date": "2025-06-24",
+      "tags": [
+        "AI",
+        "Agents",
+        "Investment",
+        "Financial Analysis",
+        "Pydantic-AI",
+        "Multi-Agent",
+        "Research",
+        "Automation",
+        "Finance"
+      ],
+      "category": "Technology",
+      "description": "A multi-agent investment research system built with Pydantic-AI that autonomously gathers data, performs financial analysis, and generates actionable investment insights.",
+      "image": null,
+      "excerpt": "- Try the Investment Research Agent on Hugging Face - See implementation on Github Pydantic-AI Investment Research System This document details a multi-agent...",
+      "reading_time": 7
+    },
+    {
+      "slug": "agentic-reliability-engineering",
+      "title": "Agentic Reliability Engineering",
+      "date": "2025-05-29",
+      "tags": [
+        "SRE",
+        "AI",
+        "Agents",
+        "Orchestration",
+        "Incident Response",
+        "Reliability",
+        "Atomic Agents"
+      ],
+      "category": "DevOps",
+      "description": "Exploring how AI agents can revolutionize Site Reliability Engineering by automating incident response, reducing search space, and augmenting human expertise through intelligent orchestration.",
+      "image": null,
+      "excerpt": "Building an Agentic-SRE: Future of Incident Response In Site Reliability Engineering (SRE), every second counts. When an alert fires, its a race to identify...",
+      "reading_time": 10
+    },
+    {
+      "slug": "agentic-sre",
+      "title": "Agentic SRE",
+      "date": "2025-05-25",
+      "tags": [
+        "SRE",
+        "AI",
+        "AIOps",
+        "Incident Management",
+        "Platform Engineering",
+        "Observability",
+        "Automation",
+        "DevOps"
+      ],
+      "category": "DevOps",
+      "description": "A overview of agentic SRE landscape, exploring how AI-driven systems tackling incident response, root cause analysis, and reliability engineering across modern infrastructure platforms.",
+      "image": null,
+      "excerpt": "Introduction The site Reliability Engineering (SRE) position was created out of necessity by Google to maintian its gigital infrastructure and is now a...",
+      "reading_time": 8
+    },
+    {
+      "slug": "evaluating-llm-performance-on-specialized-tasks",
+      "title": "Evaluating LLM Performance on Specialized Tasks",
+      "date": "2025-04-28",
+      "tags": [
+        "LLM",
+        "AI",
+        "Machine Learning",
+        "Evaluation",
+        "Metrics",
+        "Performance",
+        "NLP",
+        "Data Science",
+        "Optimization"
+      ],
+      "category": "Technology",
+      "description": "A comprehensive guide to evaluating and optimizing Large Language Models for specialized tasks, covering metric selection, semantic analysis, worst-case performance assessment, and best practices for systematic LLM evaluation.",
+      "image": "LLM_evaluation_process.png",
+      "excerpt": "EVALUATING LLM PERFORMANCE ON SPECIALIZED TASKS METRIC EVALUATION BEST PRACTICES INTRODUCTION: THE LLM OPTIMIZATION PARADIGM \"What gets measured gets...",
+      "reading_time": 13
+    },
+    {
+      "slug": "welcome-to-my-blog",
+      "title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "date": "2024-01-15",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "category": "announcement",
+      "description": "Introducing my new site built with a custom static site generator, featuring markdown support, code highlighting, and fast performance.",
+      "image": "blog-hero.png",
+      "excerpt": "Welcome I'd like to introduce you to this new site, powered by a custom-built static site generator. I developed this platform using Python (the language I...",
+      "reading_time": 3
+    }
+  ],
+  "total": 6,
+  "generated_at": "2025-10-10T11:55:16.855349"
+}

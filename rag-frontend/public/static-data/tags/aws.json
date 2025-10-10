@@ -1,0 +1,22 @@
+{
+  "tag": "aws",
+  "posts": [
+    {
+      "slug": "welcome-to-my-blog",
+      "title": "Welcome to My New Website: Backend Decitions for a Python-Powered Static Site",
+      "date": "2024-01-15",
+      "tags": [
+        "python",
+        "web-development",
+        "static-site",
+        "aws"
+      ],
+      "category": "announcement",
+      "description": "Introducing my new site built with a custom static site generator, featuring markdown support, code highlighting, and fast performance.",
+      "image": "blog-hero.png",
+      "excerpt": "Welcome I'd like to introduce you to this new site, powered by a custom-built static site generator. I developed this platform using Python (the language I...",
+      "reading_time": 3
+    }
+  ],
+  "total": 1
+}

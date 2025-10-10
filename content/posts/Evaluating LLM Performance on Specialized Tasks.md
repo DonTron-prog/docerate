@@ -5,9 +5,8 @@ tags: ["LLM", "AI", "Machine Learning", "Evaluation", "Metrics", "Performance", 
 category: "Technology"
 description: "A comprehensive guide to evaluating and optimizing Large Language Models for specialized tasks, covering metric selection, semantic analysis, worst-case performance assessment, and best practices for systematic LLM evaluation."
 image: "LLM_evaluation_process.png"
- 
- ---
- ---
+---
+
 # EVALUATING LLM PERFORMANCE ON SPECIALIZED TASKS
 **METRIC EVALUATION BEST PRACTICES**
 

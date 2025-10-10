@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiService } from '../services/api';
+import staticApi from '../services/staticApi';
 import './BlogList.css';
 
 interface PostSummary {
@@ -28,10 +29,26 @@ const BlogList: React.FC<BlogListProps> = ({ selectedTag }) => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const data = selectedTag
-          ? await apiService.getPostsByTag(selectedTag)
-          : await apiService.getPosts();
-        setPosts(data.posts);
+
+        // Try to fetch from static data first
+        try {
+          if (selectedTag) {
+            const staticData = await staticApi.getPostsByTag(selectedTag);
+            setPosts(staticData.posts);
+            console.log('Loaded posts by tag from static data');
+          } else {
+            const staticData = await staticApi.getPosts();
+            setPosts(staticData.posts);
+            console.log('Loaded posts from static data');
+          }
+        } catch (staticError) {
+          // Fallback to API if static data is not available
+          console.log('Static data not available, falling back to API');
+          const apiData = selectedTag
+            ? await apiService.getPostsByTag(selectedTag)
+            : await apiService.getPosts();
+          setPosts(apiData.posts);
+        }
       } catch (err) {
         setError('Failed to load blog posts');
         console.error('Error fetching posts:', err);

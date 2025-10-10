@@ -1,0 +1,24 @@
+{
+  "tag": "Context Engineering",
+  "posts": [
+    {
+      "slug": "rag-context-engineering",
+      "title": "RAG Context Engineering",
+      "date": "2025-09-12",
+      "tags": [
+        "RAG",
+        "AI",
+        "Evaluation",
+        "Agents",
+        "Context Engineering",
+        "Guardrails"
+      ],
+      "category": "Infrastructure",
+      "description": "This article explores Retrieval-Augmented Generation (RAG) as a key technique for context engineering in LLMs. It details the RAG workflow, covering data indexing (preprocessing, chunking, embedding, and vector database storage) and online retrieval and generation. It then explores evaluation methods, advanced techniques, and its shortcomings",
+      "image": null,
+      "excerpt": "Intelligence is what one can do with a little bit of information. Stupidity is what one can't do with a lot of information. Today's LLMs and AI fall into the...",
+      "reading_time": 11
+    }
+  ],
+  "total": 1
+}

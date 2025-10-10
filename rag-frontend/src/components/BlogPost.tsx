@@ -5,6 +5,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import { apiService } from '../services/api';
+import staticApi from '../services/staticApi';
 import './BlogPost.css';
 
 interface PostDetail {
@@ -32,8 +33,18 @@ const BlogPost: React.FC = () => {
 
       try {
         setLoading(true);
-        const data = await apiService.getPost(slug);
-        setPost(data);
+
+        // Try to fetch from static data first
+        try {
+          const staticData = await staticApi.getPost(slug);
+          setPost(staticData);
+          console.log('Loaded post from static data');
+        } catch (staticError) {
+          // Fallback to API if static data is not available
+          console.log('Static data not available, falling back to API');
+          const apiData = await apiService.getPost(slug);
+          setPost(apiData);
+        }
       } catch (err) {
         setError('Failed to load blog post');
         console.error('Error fetching post:', err);
