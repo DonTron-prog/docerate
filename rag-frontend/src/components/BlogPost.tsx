@@ -147,6 +147,24 @@ const BlogPost: React.FC = () => {
                   {children}
                 </a>
               ),
+              img: ({ src, alt }) => {
+                // Handle image paths - ensure they point to the correct location
+                let imageSrc = src || '';
+
+                // If the image path doesn't start with http or /, add /images/ prefix
+                if (imageSrc && !imageSrc.startsWith('http') && !imageSrc.startsWith('/')) {
+                  imageSrc = `/images/${imageSrc}`;
+                }
+
+                return (
+                  <img
+                    src={imageSrc}
+                    alt={alt || ''}
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                    loading="lazy"
+                  />
+                );
+              },
             }}
           >
             {post.content}

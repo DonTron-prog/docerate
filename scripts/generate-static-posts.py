@@ -22,8 +22,10 @@ class StaticPostGenerator:
 
     def __init__(self):
         self.content_dir = Path("content/posts")
+        self.images_dir = Path("content/images")
         self.output_dir = Path("rag-frontend/public/static-data")
         self.posts_dir = self.output_dir / "posts"
+        self.public_images_dir = Path("rag-frontend/public/images")
 
         # Markdown processor with extensions
         self.md = markdown.Markdown(
@@ -110,6 +112,15 @@ class StaticPostGenerator:
         truncated = text[:max_length].rsplit(' ', 1)[0]
         return truncated + '...'
 
+    def _fix_image_paths(self, content: str) -> str:
+        """Fix image paths to include /images/ prefix."""
+        import re
+        # Replace markdown image syntax: ![alt](image.png) -> ![alt](/images/image.png)
+        # Only fix if the path doesn't already start with / or http
+        pattern = r'!\[([^\]]*)\]\((?!/)(?!http)([^\)]+\.(png|jpg|jpeg|gif|svg))\)'
+        replacement = r'![\1](/images/\2)'
+        return re.sub(pattern, replacement, content)
+
     def generate_post_json(self, file_path: Path) -> Dict[str, Any]:
         """Generate JSON data for a single post."""
         # Parse the post with frontmatter
@@ -123,8 +134,11 @@ class StaticPostGenerator:
         # Extract metadata from frontmatter
         metadata = post.metadata or {}
 
-        # Generate HTML content
-        html_content = self.md.convert(post.content)
+        # Fix image paths in content
+        fixed_content = self._fix_image_paths(post.content)
+
+        # Generate HTML content with fixed paths
+        html_content = self.md.convert(fixed_content)
 
         # Get and serialize date
         date_value = metadata.get('date', file_info['date'])
@@ -150,10 +164,10 @@ class StaticPostGenerator:
             'category': metadata.get('category', 'Uncategorized'),
             'description': metadata.get('description', ''),
             'image': metadata.get('image'),
-            'content': post.content,
+            'content': fixed_content,  # Use fixed content with updated image paths
             'html_content': html_content,
-            'reading_time': self._calculate_reading_time(post.content),
-            'excerpt': self._extract_excerpt(post.content),
+            'reading_time': self._calculate_reading_time(fixed_content),
+            'excerpt': self._extract_excerpt(post.content),  # Keep original for excerpt
             'metadata': {k: v for k, v in metadata.items() if k not in [
                 'title', 'date', 'tags', 'category', 'description', 'image'
             ]}
@@ -216,11 +230,39 @@ class StaticPostGenerator:
             'generated_at': datetime.now().isoformat()
         }
 
+    def copy_images(self):
+        """Copy images to React public folder."""
+        import shutil
+
+        if self.images_dir.exists():
+            # Create images directory in public if it doesn't exist
+            self.public_images_dir.mkdir(parents=True, exist_ok=True)
+
+            # Copy all image files
+            image_extensions = {'.png', '.jpg', '.jpeg', '.gif', '.svg'}
+            copied_count = 0
+
+            for image_file in self.images_dir.iterdir():
+                if image_file.is_file() and image_file.suffix.lower() in image_extensions:
+                    dest = self.public_images_dir / image_file.name
+                    shutil.copy2(image_file, dest)
+                    copied_count += 1
+
+            print(f"  ✓ Copied {copied_count} images to public folder")
+            return copied_count
+        else:
+            print(f"  ! Warning: Images directory not found: {self.images_dir}")
+            return 0
+
     def run(self):
         """Generate all static files."""
         print("=" * 60)
         print("Static Post Generation")
         print("=" * 60)
+
+        # Copy images first
+        print("\nCopying images...")
+        self.copy_images()
 
         # Create output directories
         self.output_dir.mkdir(parents=True, exist_ok=True)
