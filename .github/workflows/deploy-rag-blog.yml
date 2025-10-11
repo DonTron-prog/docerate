@@ -28,7 +28,7 @@ jobs:
           cache-dependency-path: rag-frontend/package-lock.json
 
       - name: Cache pip packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-*.txt') }}
@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Cache node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: rag-frontend/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('rag-frontend/package-lock.json') }}
@@ -206,7 +206,7 @@ jobs:
 
       # Step 9: Upload artifacts for debugging
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deployment-artifacts
           path: |
