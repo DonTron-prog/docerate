@@ -8,6 +8,7 @@ env/
 venv/
 .env
 .env.*
+.env.production
 
 # Node
 node_modules/
