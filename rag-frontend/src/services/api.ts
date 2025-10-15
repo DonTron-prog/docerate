@@ -111,7 +111,9 @@ class ApiService {
   }
 
   async generate(request: GenerateRequest): Promise<GenerateResponse> {
-    const response = await this.axiosInstance.post('/api/generate', request);
+    const response = await this.axiosInstance.post('/api/generate', request, {
+      timeout: 60000, // 60 second timeout for generation
+    });
     return response.data;
   }
 

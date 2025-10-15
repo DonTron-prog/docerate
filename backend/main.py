@@ -14,7 +14,6 @@ from datetime import datetime
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -75,14 +74,9 @@ app = FastAPI(
     root_path=root_path
 )
 
-# Configure CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# CORS not needed:
+# - Production: Frontend and API served through same CloudFront domain
+# - Local: React dev server proxy routes /api/* to backend (same origin)
 
 # Mount static files for images
 image_candidates = []

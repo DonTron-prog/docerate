@@ -20,18 +20,7 @@ class Settings(BaseSettings):
     api_title: str = "RAG Blog API"
     api_version: str = "1.0.0"
     api_prefix: str = "/api"
-    cors_origins: List[str] = Field(
-        default_factory=lambda: [
-            "http://localhost:3000",
-            "https://localhost:3000",
-            "https://donaldmcgillivray.com",
-            "https://www.donaldmcgillivray.com",
-            "https://docerate.com",
-            "https://www.docerate.com",
-            "https://d330crwslcovkm.cloudfront.net"
-        ],
-        env="CORS_ORIGINS"
-    )
+    # CORS not needed - same origin via CloudFront (prod) and React proxy (local)
 
     # Data configuration
     data_source: str = Field(default="local", env="DATA_SOURCE")  # "local" or "s3"

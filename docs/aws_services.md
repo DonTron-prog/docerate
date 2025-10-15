@@ -7,12 +7,26 @@ This project relies on a small collection of managed AWS services to publish the
 - **docerate-rag-data** – stores Retrieval-Augmented Generation artifacts (chunk metadata, embeddings, BM25 index, summaries). The Lambda function downloads these files at cold start to serve search and generation requests.
 
 ## Amazon CloudFront
-- Sits in front of the S3 frontend bucket to provide global CDN caching, TLS termination, and custom domain support (docerate.com). Invalidation is triggered automatically from the deploy script after each frontend sync.
+- Sits in front of both the S3 frontend bucket and API Gateway to provide:
+  - Global CDN caching for static content and (optionally) API responses
+  - TLS termination for secure HTTPS connections
+  - Custom domain support (docerate.com)
+  - **Unified origin routing** (eliminates CORS)
+- **Two Origins Configured:**
+  1. **S3 Origin** (`docerate-frontend`) - serves static frontend files
+  2. **API Gateway Origin** (`9o9ra1wg7f.execute-api.us-east-1.amazonaws.com`) - serves API requests
+- **Cache Behaviors:**
+  - `/*` (default) → S3 origin for static content
+  - `/api/*` → API Gateway origin for API requests (TTL=0, no caching)
+- **Benefits:** Frontend and API share the same domain (same-origin), eliminating CORS complexity entirely
+- Invalidation is triggered automatically from the deploy script after each frontend sync
 
 ## Amazon API Gateway (HTTP API)
-- Provides the public HTTPS endpoint for the FastAPI backend (`https://9o9ra1wg7f.execute-api.us-east-1.amazonaws.com/prod`).
-- Handles CORS preflight responses and stage prefixing (`/prod`).
-- Integrates directly with Lambda without additional containers or EC2 instances.
+- Provides the backend endpoint for the FastAPI application (now accessed through CloudFront at `/api/*`)
+- Direct endpoint: `https://9o9ra1wg7f.execute-api.us-east-1.amazonaws.com/prod`
+- Stage prefixing (`/prod`) handled by CloudFront origin path configuration
+- **CORS no longer needed** - requests come from same origin (CloudFront)
+- Integrates directly with Lambda without additional containers or EC2 instances
 
 ## AWS Lambda
 - **Function:** `docerate-rag-api` – runs the FastAPI application via Mangum. Reads RAG artifacts from S3, Markdown posts packaged in the deployment bundle, uses Bedrock for embeddings, and invokes OpenRouter for article generation.

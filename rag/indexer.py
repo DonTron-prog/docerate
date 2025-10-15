@@ -29,20 +29,63 @@ class BlogIndexer:
             self.config = yaml.safe_load(f)
 
         self.content_dir = Path(self.config['build']['content_dir'])
-        self.data_dir = Path('data')
+        self.data_dir = Path(self.config['build']['output_dir'])
         self.data_dir.mkdir(exist_ok=True)
 
         # Initialize components
         self.chunker = MarkdownChunker(max_tokens=512, overlap_tokens=50)
 
-        # Configure embedding service (default to local for development)
+        # Configure embedding service using environment variables with config fallback
+        provider = os.getenv('EMBEDDING_PROVIDER')
+        model_name = os.getenv('EMBEDDING_MODEL')
+
+        # If environment variables not set, use config defaults
+        if not provider or not model_name:
+            provider = provider or self.config['embedding'].get('default_provider', 'local')
+            model_name = model_name or self.config['embedding'].get('default_model', 'all-MiniLM-L6-v2')
+            print(f"No environment variables set, using defaults: {provider}/{model_name}")
+        else:
+            print(f"Using environment configuration: {provider}/{model_name}")
+
+        # Get expected dimension from config if available
+        model_configs = self.config['embedding'].get('models', {})
+        expected_dimension = None
+        if model_name in model_configs:
+            expected_dimension = model_configs[model_name].get('dimension')
+            expected_provider = model_configs[model_name].get('provider')
+
+            # Validate provider matches expected
+            if expected_provider and provider != expected_provider:
+                print(f"Warning: Provider mismatch for {model_name}")
+                print(f"  Expected: {expected_provider}, Got: {provider}")
+
+        # Configure embedding service
         embedding_config = EmbeddingConfig(
-            provider=os.getenv('EMBEDDING_PROVIDER', 'local'),
-            model_name=os.getenv('EMBEDDING_MODEL', 'all-MiniLM-L6-v2'),
-            dimension=384  # Will be updated based on model
+            provider=provider,
+            model_name=model_name,
+            dimension=expected_dimension or 384  # Will be updated based on actual model
         )
+
+        print(f"Initializing embedding service...")
+        print(f"  Provider: {embedding_config.provider}")
+        print(f"  Model: {embedding_config.model_name}")
+
         self.embedding_service = EmbeddingService(embedding_config)
-        self.embedding_store = EmbeddingStore(embedding_config.dimension)
+
+        # Log actual dimension after initialization
+        actual_dimension = self.embedding_service.config.dimension
+        print(f"  Dimension: {actual_dimension}")
+
+        # Validate dimension if we have an expected value
+        if expected_dimension and expected_dimension != actual_dimension:
+            raise ValueError(
+                f"Embedding dimension mismatch for {model_name}!\n"
+                f"  Expected: {expected_dimension}\n"
+                f"  Actual: {actual_dimension}\n"
+                f"This may indicate a model configuration error."
+            )
+
+        self.embedding_store = EmbeddingStore(actual_dimension)
 
     def load_posts(self) -> List[Dict[str, Any]]:
         """Load all markdown posts from content directory."""

@@ -2,16 +2,17 @@
 set -e
 
 # Script to upload RAG indexes to S3
-# Run after index-local.sh to upload generated indexes
+# Run after generating indexes with the correct embedding model
 
 echo "==================================="
 echo "Deploying RAG Data to S3"
 echo "==================================="
 
 # Configuration
-S3_BUCKET=${S3_BUCKET:-"your-rag-data-bucket"}
+S3_BUCKET=${S3_BUCKET:-"docerate-rag-data"}
 AWS_REGION=${AWS_REGION:-"us-east-1"}
 AWS_PROFILE=${AWS_PROFILE:-"default"}
+EXPECTED_MODEL=${EXPECTED_MODEL:-"amazon.titan-embed-text-v2:0"}
 
 # Check if S3 bucket is configured
 if [ "$S3_BUCKET" == "your-rag-data-bucket" ]; then
@@ -41,6 +42,37 @@ aws sts get-caller-identity --profile $AWS_PROFILE > /dev/null 2>&1 || {
     echo "Run: aws configure --profile $AWS_PROFILE"
     exit 1
 }
+
+# Validate embedding model in index
+if [ -f "data/index_summary.json" ]; then
+    ACTUAL_MODEL=$(python -c "import json; print(json.load(open('data/index_summary.json'))['embedding_model'])" 2>/dev/null || echo "unknown")
+    echo "Index embedding model: $ACTUAL_MODEL"
+
+    if [ "$ACTUAL_MODEL" != "$EXPECTED_MODEL" ]; then
+        echo ""
+        echo "⚠️  WARNING: Embedding model mismatch!"
+        echo "   Index was built with: $ACTUAL_MODEL"
+        echo "   Production expects: $EXPECTED_MODEL"
+        echo ""
+        echo "This will cause errors in production!"
+        echo ""
+        echo "To fix this:"
+        echo "1. Set environment for production: source .env.production"
+        echo "2. Rebuild index: ./scripts/index-unified.sh prod --force"
+        echo "3. Then run this script again"
+        echo ""
+        read -p "Continue anyway? (y/N): " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "Deployment cancelled."
+            exit 1
+        fi
+    else
+        echo "✓ Embedding model matches production: $ACTUAL_MODEL"
+    fi
+else
+    echo "Warning: No index_summary.json found, cannot verify embedding model"
+fi
 
 # Create bucket if it doesn't exist (optional)
 echo "Checking S3 bucket..."

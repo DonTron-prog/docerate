@@ -45,8 +45,8 @@ flowchart LR
 
     U -->|Blog Posts<br/>Static JSON| CF
     U -->|AI Explorer<br/>Search/Generate| CF
-    CF -->|Static files<br/>& JSON data| S3Frontend
-    CF -->|/api/* routes| APIGW
+    CF -->|"/* (default)<br/>Static files & JSON"| S3Frontend
+    CF -->|"/api/*<br/>Same-origin API"| APIGW
 
     BUILD -->|Deploy| S3Frontend
 
@@ -74,10 +74,21 @@ flowchart LR
   - JS/CSS assets: 1 year (`max-age=31536000`)
 
 ### Dynamic AI Features
-- **AI Explorer** continues to use Lambda API
+- **AI Explorer** uses Lambda API through CloudFront (same-origin)
 - Endpoints: `/api/search`, `/api/generate`, `/api/tags`
 - Lambda only processes **RAG queries** and **content generation**
 - No longer serves blog post content
+
+### CloudFront API Routing (No CORS!)
+- CloudFront has **two origins**:
+  1. **S3 origin** (`docerate-frontend`) - serves static content
+  2. **API Gateway origin** (`9o9ra1wg7f.execute-api.us-east-1.amazonaws.com`) - serves API
+- **Cache behavior** routes `/api/*` → API Gateway origin
+- **Benefits**:
+  - ✅ Single domain (same-origin) - **no CORS needed**
+  - ✅ Cleaner backend code (no CORS middleware)
+  - ✅ Better security (single entry point)
+  - ✅ Edge caching available for API if needed
 
 ### Build & Deployment Flow
 1. `generate-static-posts.py` converts Markdown → JSON
@@ -95,19 +106,31 @@ flowchart LR
 
 ### Data Flow Comparison
 
-#### Before (All Dynamic)
+#### Before (Direct API Gateway - CORS Required)
 ```
-User → CloudFront → API Gateway → Lambda → S3 → Parse Markdown → Response
-Time: ~2-3 seconds (cold start)
-```
-
-#### After (Hybrid Static/Dynamic)
-```
-Blog Posts: User → CloudFront Edge Cache → Static JSON
-Time: <100ms
-
-AI Features: User → CloudFront → API Gateway → Lambda → RAG Processing
-Time: ~500ms-2s (only for AI features)
+User → CloudFront (d2w8hymo03zbys.cloudfront.net) → Frontend
+User → API Gateway (9o9ra1wg7f.execute-api.us-east-1.amazonaws.com) → Lambda
+        ↑ Different domains = CORS complexity
 ```
 
-> **Note:** This hybrid architecture delivers **static blog performance** (<100ms) while maintaining **dynamic AI capabilities**. Blog posts load instantly from CloudFront edge locations worldwide, while Lambda handles only AI-powered features, reducing cold starts by ~90%.
+#### After (Unified CloudFront - No CORS)
+```
+Blog Posts:
+  User → CloudFront → /* → S3 → Static JSON
+  Time: <100ms
+
+AI Features:
+  User → CloudFront → /api/* → API Gateway → Lambda → RAG Processing
+  Time: ~500ms-2s (only for AI features)
+        ↑ Same domain (cloudfront) = No CORS needed!
+```
+
+### Local Development (Also No CORS)
+```
+User → localhost:3000 (React dev server)
+         ├─ /static/* → React app
+         └─ /api/*    → Proxy to localhost:5000 (FastAPI)
+                        ↑ Same origin via proxy - No CORS!
+```
+
+> **Note:** This hybrid architecture delivers **static blog performance** (<100ms) while maintaining **dynamic AI capabilities**. Blog posts load instantly from CloudFront edge locations worldwide, while Lambda handles only AI-powered features, reducing cold starts by ~90%. The unified CloudFront routing eliminates CORS entirely in both production and development.

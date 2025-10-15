@@ -13,7 +13,16 @@ class OpenRouterService:
     """Service for interacting with OpenRouter API."""
 
     def __init__(self):
-        self.api_key = settings.openrouter_api_key
+        # Ensure API key is always a string, not bytes
+        api_key = settings.openrouter_api_key
+        if api_key is None or api_key == "":
+            print(f"WARNING: OpenRouter API key is not set!")
+            self.api_key = ""
+        elif isinstance(api_key, bytes):
+            self.api_key = api_key.decode('utf-8').strip()
+        else:
+            self.api_key = str(api_key).strip()
+
         self.model = settings.openrouter_model
         self.base_url = "https://openrouter.ai/api/v1"
         self.site_url = settings.openrouter_site_url
@@ -108,6 +117,10 @@ class OpenRouterService:
 
     async def health_check(self) -> bool:
         """Check if OpenRouter service is available."""
+        if not self.api_key:
+            print("OpenRouter health check skipped: API key not configured")
+            return False
+
         try:
             async with httpx.AsyncClient(timeout=5.0) as client:
                 # Check if we can list models

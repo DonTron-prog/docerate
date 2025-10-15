@@ -36,6 +36,21 @@ def lambda_handler(event, context):
     # Log the incoming event for debugging (be careful with sensitive data)
     logger.info(f"Received event: {event.get('httpMethod', 'Unknown')} {event.get('path', 'Unknown')}")
 
+    # Handle OPTIONS requests directly (CORS preflight)
+    # API Gateway v2 HTTP API should handle this, but as fallback we handle it here
+    if event.get('requestContext', {}).get('http', {}).get('method') == 'OPTIONS' or event.get('httpMethod') == 'OPTIONS':
+        logger.info("Handling OPTIONS request directly")
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': '*',
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Max-Age': '3600'
+            },
+            'body': ''
+        }
+
     # Process the request through Mangum
     response = handler(event, context)
 

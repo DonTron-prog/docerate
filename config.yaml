@@ -1,0 +1,27 @@
+# RAG Indexer Configuration
+# This file provides defaults that can be overridden by environment variables
+
+build:
+  content_dir: "content"
+  output_dir: "data"
+
+# Embedding configuration
+# These values are defaults - use environment variables for actual configuration:
+# - EMBEDDING_PROVIDER: "local" or "bedrock"
+# - EMBEDDING_MODEL: model name (e.g., "all-MiniLM-L6-v2" or "amazon.titan-embed-text-v2:0")
+embedding:
+  # Default model for local development (can be overridden)
+  default_provider: "local"
+  default_model: "all-MiniLM-L6-v2"
+
+  # Model configurations with expected dimensions
+  models:
+    "all-MiniLM-L6-v2":
+      dimension: 384
+      provider: "local"
+    "amazon.titan-embed-text-v2:0":
+      dimension: 1024
+      provider: "bedrock"
+    "amazon.titan-embed-text-v1":
+      dimension: 1536
+      provider: "bedrock"

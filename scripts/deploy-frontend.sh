@@ -139,9 +139,10 @@ aws s3 sync rag-frontend/build/ "s3://$FRONTEND_BUCKET" \
 # Invalidate CloudFront cache if configured
 if [ ! -z "$CLOUDFRONT_DIST_ID" ]; then
     echo "Invalidating CloudFront cache..."
+    # Invalidate both frontend files and API routes
     aws cloudfront create-invalidation \
         --distribution-id $CLOUDFRONT_DIST_ID \
-        --paths "/*" \
+        --paths "/*" "/api/*" \
         --profile $AWS_PROFILE > /dev/null
 
     # Get CloudFront domain

@@ -129,3 +129,4 @@ PYTHONPATH=$PWD       # Required for imports
 - Requires Bedrock permissions for production
 - Store index files in S3 for Lambda access
 - use the conda environment blog
+- use the conda evironment blog
