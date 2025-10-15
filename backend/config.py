@@ -4,9 +4,44 @@ Supports both local and AWS deployment environments.
 """
 
 import os
+import json
+import logging
 from typing import Optional, List
+from functools import lru_cache
 from pydantic_settings import BaseSettings
 from pydantic import Field
+
+logger = logging.getLogger(__name__)
+
+
+@lru_cache()
+def get_secret(secret_name: str, region: str = "us-east-1") -> dict:
+    """
+    Fetch secrets from AWS Secrets Manager with caching.
+
+    Args:
+        secret_name: Name of the secret in Secrets Manager
+        region: AWS region where secret is stored
+
+    Returns:
+        Dictionary containing secret values
+
+    Raises:
+        Exception: If secret retrieval fails
+    """
+    try:
+        import boto3
+        from botocore.exceptions import ClientError
+
+        client = boto3.client('secretsmanager', region_name=region)
+        response = client.get_secret_value(SecretId=secret_name)
+        return json.loads(response['SecretString'])
+    except ClientError as e:
+        logger.error(f"Failed to retrieve secret {secret_name}: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error retrieving secret {secret_name}: {e}")
+        raise
 
 
 class Settings(BaseSettings):
@@ -46,10 +81,18 @@ class Settings(BaseSettings):
     ollama_host: str = Field(default="http://localhost:11434", env="OLLAMA_HOST")
 
     # OpenRouter configuration
-    openrouter_api_key: str = Field(default="", env="OPENROUTER_API_KEY")
+    # Note: In production, API key is fetched from AWS Secrets Manager (see openrouter_api_key method below)
+    # For local development, set OPENROUTER_API_KEY in .env file
+    openrouter_api_key_env: str = Field(default="", env="OPENROUTER_API_KEY", exclude=True)
     openrouter_model: str = Field(default="meta-llama/llama-3.2-3b-instruct", env="OPENROUTER_MODEL")
     openrouter_site_url: str = Field(default="https://donaldmcgillivray.com", env="OPENROUTER_SITE_URL")
     openrouter_app_name: str = Field(default="RAG Blog", env="OPENROUTER_APP_NAME")
+
+    # Secrets Manager configuration
+    secrets_manager_secret_name: str = Field(
+        default="docerate/production/api-keys",
+        env="SECRETS_MANAGER_SECRET_NAME"
+    )
 
     # AWS Configuration (for production)
     aws_region: str = Field(default="us-east-1", env="AWS_REGION")
@@ -75,6 +118,33 @@ class Settings(BaseSettings):
     # Caching
     cache_ttl: int = Field(default=3600, env="CACHE_TTL")  # seconds
     enable_cache: bool = Field(default=True, env="ENABLE_CACHE")
+
+    @property
+    def openrouter_api_key(self) -> str:
+        """
+        Get OpenRouter API key.
+        In production, fetches from AWS Secrets Manager.
+        In local/dev, uses environment variable.
+
+        Returns:
+            OpenRouter API key string
+        """
+        if self.environment == "production":
+            try:
+                logger.info("Fetching OpenRouter API key from AWS Secrets Manager")
+                secrets = get_secret(self.secrets_manager_secret_name, self.aws_region)
+                api_key = secrets.get('openrouter_api_key', '')
+                if not api_key:
+                    logger.warning("OpenRouter API key not found in Secrets Manager")
+                return api_key
+            except Exception as e:
+                logger.error(f"Failed to retrieve API key from Secrets Manager: {e}")
+                # Fallback to environment variable if Secrets Manager fails
+                logger.warning("Falling back to environment variable for API key")
+                return self.openrouter_api_key_env
+        else:
+            # Local development - use environment variable
+            return self.openrouter_api_key_env
 
     class Config:
         env_file = ".env"

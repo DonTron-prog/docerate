@@ -12,6 +12,7 @@ Meta had a great paper about reasoning in latent space, where the embeddings wer
 A beuatiful web site has traditionaly been desigend with dynamic visuals and elegently written prose tailored to the audiance. Or for trafic SEO drove keyword optimization and link building—tactics designed to game search algorithms. But AI agents don't think like search crawlers. They understand context, relationships, and semantic meaning. They want to know not just what your content says, but what it means and how it connects to everything else.
 
 ## The Problem with Human-Centric Web Design
+Natural language is not the the most efficent way to think. I don't think we have reached that optimum and it keeps changing. different languages might be at different optimas in the language landscape. The Sapir-Whorf hypothesis is that language shapes how speakers think, and even bias what thoughts are natural. Concepts that are unfamilar to a language will be hard to express and not as transmittable. (This is why keeping a diversity of languages is vital)  
 
 Most websites are optimized for human consumption: beautiful layouts, engaging visuals, and intuitive navigation. But strip away the CSS and JavaScript, and what remains is often a semantic wasteland. AI agents trying to understand your content are left parsing through navigation menus, sidebar widgets, and footer links to find the actual signal amidst the noise.
 

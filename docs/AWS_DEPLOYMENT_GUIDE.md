@@ -645,23 +645,31 @@ aws lambda update-function-configuration \
 
 Before going live:
 
+- [ ] **S3 Security (Origin Access Control)**
+  - [ ] OAC configured: run `./scripts/setup-s3-oac.sh`
+  - [ ] S3 bucket is private (not publicly accessible)
+  - [ ] Block Public Access enabled (all 4 settings)
+  - [ ] Direct S3 URLs return 403 Forbidden
+  - [ ] CloudFront URL works (200 OK)
+  - [ ] Custom error pages configured (403/404 → /index.html)
 - [ ] **CloudFront API routing configured** (eliminates CORS)
-  - [ ] Two origins: S3 + API Gateway
+  - [ ] Two origins: S3 (with OAC) + API Gateway
   - [ ] Cache behavior for `/api/*` paths
   - [ ] Frontend uses relative URLs (empty `REACT_APP_API_URL`)
+  - [ ] S3 origin uses REST API endpoint (not website endpoint)
 - [ ] Custom domain configured (Route 53 + CloudFront)
 - [ ] SSL/TLS certificate added to CloudFront (ACM)
 - [ ] CloudFront caching optimized (cache behaviors)
 - [ ] Lambda provisioned concurrency enabled (if needed)
 - [ ] CloudWatch alarms configured for errors
 - [ ] API Gateway throttling configured
-- [ ] S3 bucket policies restrict public access
 - [ ] IAM roles follow least privilege principle
 - [ ] OpenRouter account has sufficient credits
 - [ ] Bedrock model access enabled in AWS account
 - [ ] Cost monitoring and budgets configured
 - [ ] Backup strategy for S3 buckets (versioning)
 - [ ] Verify no CORS errors in browser console (production test)
+- [ ] Verify React SPA routing works (test deep links)
 
 ---
 
@@ -693,12 +701,16 @@ Before going live:
 
 1. **Never commit API keys** to version control
 2. **Use AWS Secrets Manager** for sensitive values (optional)
-3. **Enable S3 bucket encryption** at rest
-4. **Use CloudFront signed URLs** for premium content (if needed)
-5. **Implement API rate limiting** in API Gateway
-6. **Enable AWS CloudTrail** for audit logging
-7. **Regularly rotate** API keys and credentials
-8. **Use IAM roles** instead of access keys where possible
+3. **✅ S3 Origin Access Control (OAC)** - S3 bucket is private, only accessible via CloudFront
+   - Run `./scripts/setup-s3-oac.sh` to configure OAC security
+   - See `docs/S3_SECURITY_OAC.md` for detailed guide
+4. **Enable S3 Block Public Access** - all four settings enabled (configured by OAC setup)
+5. **Enable S3 bucket encryption** at rest
+6. **Use CloudFront signed URLs** for premium content (if needed)
+7. **Implement API rate limiting** in API Gateway
+8. **Enable AWS CloudTrail** for audit logging
+9. **Regularly rotate** API keys and credentials
+10. **Use IAM roles** instead of access keys where possible
 
 ---
 
@@ -716,6 +728,45 @@ For issues with this deployment, check CloudWatch logs first, then review the tr
 
 ## Recent Architecture Changes
 
+### S3 Origin Access Control (Security Enhancement)
+
+As of October 2024, S3 security has been hardened with Origin Access Control (OAC):
+
+**Before (Insecure):**
+- S3 bucket was publicly accessible
+- Anyone could bypass CloudFront and access S3 directly
+- Security gap: no access control or logging for direct S3 access
+
+**After (Secure):**
+- S3 bucket is **completely private**
+- Only CloudFront can access S3 via OAC signatures (AWS Signature v4)
+- S3 Block Public Access enabled (all 4 settings)
+- Direct S3 URLs return 403 Forbidden
+
+**Benefits:**
+- ✅ Zero-trust S3 access (CloudFront-only)
+- ✅ Prevents bandwidth theft and unauthorized access
+- ✅ Defense in depth (S3 blocks access even if CloudFront misconfigured)
+- ✅ Foundation for future WAF rules and security controls
+- ✅ Deployment workflows unchanged (AWS CLI uses IAM credentials)
+
+**Configuration:**
+```bash
+# Automated setup script handles all OAC configuration
+./scripts/setup-s3-oac.sh
+```
+
+**Verification:**
+```bash
+# CloudFront URL works (200 OK)
+curl -I https://d2w8hymo03zbys.cloudfront.net
+
+# Direct S3 URL blocked (403 Forbidden)
+curl -I https://docerate-frontend.s3.amazonaws.com/index.html
+```
+
+See `docs/S3_SECURITY_OAC.md` for complete details and technical architecture.
+
 ### CloudFront API Routing (Eliminates CORS)
 
 As of October 2024, the architecture has been updated to route API requests through CloudFront:
@@ -726,7 +777,7 @@ As of October 2024, the architecture has been updated to route API requests thro
 - Required CORS middleware in backend
 
 **After:**
-- Frontend: CloudFront → /* → S3
+- Frontend: CloudFront → /* → S3 (secured with OAC)
 - API: CloudFront → /api/* → API Gateway
 - Same domain = No CORS needed!
 

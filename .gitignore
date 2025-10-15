@@ -40,3 +40,5 @@ build/
 # React build
 rag-frontend/build/
 rag-frontend/.cache/
+.env.production
+.env.local

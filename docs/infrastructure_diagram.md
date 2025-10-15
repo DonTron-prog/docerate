@@ -81,7 +81,10 @@ flowchart LR
 
 ### CloudFront API Routing (No CORS!)
 - CloudFront has **two origins**:
-  1. **S3 origin** (`docerate-frontend`) - serves static content
+  1. **S3 origin** (`docerate-frontend.s3.us-east-1.amazonaws.com`) - serves static content
+     - Uses REST API endpoint (not website endpoint)
+     - **Origin Access Control (OAC):** `docerate-frontend-oac` (E1FNALM72KAMN1)
+     - S3 bucket is **private** (only CloudFront can access)
   2. **API Gateway origin** (`9o9ra1wg7f.execute-api.us-east-1.amazonaws.com`) - serves API
 - **Cache behavior** routes `/api/*` → API Gateway origin
 - **Benefits**:
@@ -89,11 +92,34 @@ flowchart LR
   - ✅ Cleaner backend code (no CORS middleware)
   - ✅ Better security (single entry point)
   - ✅ Edge caching available for API if needed
+  - ✅ S3 secured with OAC (zero-trust access)
+
+### S3 Security with Origin Access Control (OAC)
+- **S3 bucket is PRIVATE** (not publicly accessible)
+- **Origin Access Control (OAC):**
+  - CloudFront uses AWS Signature v4 to sign requests to S3
+  - S3 bucket policy only allows CloudFront service principal with specific distribution ARN
+  - Block Public Access enabled (all 4 settings)
+- **Benefits:**
+  - ✅ Prevents direct S3 access and bandwidth theft
+  - ✅ Defense in depth (even if CloudFront misconfigured, S3 blocks access)
+  - ✅ Centralized access logging at CloudFront level
+  - ✅ Foundation for future WAF rules and security controls
+- **Deployment workflows unchanged:** AWS CLI uses IAM credentials (separate from OAC)
+
+**Security Verification:**
+```bash
+# CloudFront URL works (200 OK)
+curl -I https://d2w8hymo03zbys.cloudfront.net
+
+# Direct S3 URL blocked (403 Forbidden)
+curl -I https://docerate-frontend.s3.amazonaws.com/index.html
+```
 
 ### Build & Deployment Flow
 1. `generate-static-posts.py` converts Markdown → JSON
 2. React build bundles app with static data
-3. Deploy to S3 with optimized cache headers
+3. Deploy to S3 with optimized cache headers (uses IAM credentials)
 4. CloudFront invalidation for immediate updates
 
 ### URLs & Endpoints

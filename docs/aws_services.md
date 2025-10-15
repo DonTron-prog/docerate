@@ -4,6 +4,10 @@ This project relies on a small collection of managed AWS services to publish the
 
 ## Amazon S3
 - **docerate-frontend** – static hosting bucket for the built React application. Deployed via `scripts/deploy-frontend.sh`, fronted by CloudFront. Objects are uploaded with long-lived cache headers except for `index.html`/JSON which remain un-cached for fast version rollout.
+  - **Security:** Bucket is **private** (not publicly accessible). Access restricted to CloudFront via Origin Access Control (OAC).
+  - **Block Public Access:** All four settings enabled to prevent accidental public exposure.
+  - **Bucket Policy:** Allows only CloudFront service principal with specific distribution ARN condition.
+  - **Static Website Hosting:** Disabled (CloudFront handles routing via custom error pages).
 - **docerate-rag-data** – stores Retrieval-Augmented Generation artifacts (chunk metadata, embeddings, BM25 index, summaries). The Lambda function downloads these files at cold start to serve search and generation requests.
 
 ## Amazon CloudFront
@@ -12,14 +16,25 @@ This project relies on a small collection of managed AWS services to publish the
   - TLS termination for secure HTTPS connections
   - Custom domain support (docerate.com)
   - **Unified origin routing** (eliminates CORS)
+  - **Secure S3 access** via Origin Access Control (OAC)
 - **Two Origins Configured:**
-  1. **S3 Origin** (`docerate-frontend`) - serves static frontend files
+  1. **S3 Origin** (`docerate-frontend.s3.us-east-1.amazonaws.com`) - serves static frontend files
+     - Uses REST API endpoint (not website endpoint)
+     - **Origin Access Control (OAC):** `docerate-frontend-oac` (E1FNALM72KAMN1)
+     - Signing protocol: AWS Signature Version 4 (sigv4)
+     - S3 bucket is private; only CloudFront can access via OAC signatures
   2. **API Gateway Origin** (`9o9ra1wg7f.execute-api.us-east-1.amazonaws.com`) - serves API requests
 - **Cache Behaviors:**
   - `/*` (default) → S3 origin for static content
   - `/api/*` → API Gateway origin for API requests (TTL=0, no caching)
-- **Benefits:** Frontend and API share the same domain (same-origin), eliminating CORS complexity entirely
-- Invalidation is triggered automatically from the deploy script after each frontend sync
+- **Custom Error Pages:**
+  - `403 Forbidden` → `/index.html` (HTTP 200) - for React SPA routing
+  - `404 Not Found` → `/index.html` (HTTP 200) - for React SPA routing
+- **Benefits:**
+  - Frontend and API share the same domain (same-origin), eliminating CORS complexity entirely
+  - S3 bucket secured with zero-trust access (only CloudFront can access)
+  - Prevents direct S3 access and bandwidth theft
+- **Security:** Invalidation is triggered automatically from the deploy script after each frontend sync
 
 ## Amazon API Gateway (HTTP API)
 - Provides the backend endpoint for the FastAPI application (now accessed through CloudFront at `/api/*`)
